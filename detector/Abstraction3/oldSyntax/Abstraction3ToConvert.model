@@ -1,0 +1,1483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ujf.verimag.bip.Core.Modules:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ujf.verimag.bip.Core.ActionLanguage.Actions="http:///ujf/verimag/bip/Core/ActionLanguage/Actions.ecore" xmlns:ujf.verimag.bip.Core.ActionLanguage.Expressions="http:///ujf/verimag/bip/Core/ActionLanguage/Expressions.ecore" xmlns:ujf.verimag.bip.Core.Behaviors="http:///ujf/verimag/bip/Core/Behaviors.ecore" xmlns:ujf.verimag.bip.Core.Interactions="http:///ujf/verimag/bip/Core/Interactions.ecore" xmlns:ujf.verimag.bip.Core.Modules="http:///ujf/verimag/bip/Core/Modules.ecore" xmlns:ujf.verimag.bip.Core.PortExpressions="http:///ujf/verimag/bip/Core/PortExpressions.ecore" name="Abstraction3" srcFileName="Abstraction3ToConvert.bip">
+  <bipType xsi:type="ujf.verimag.bip.Core.Behaviors:PortType" name="Port"/>
+  <bipType xsi:type="ujf.verimag.bip.Core.Behaviors:PortType" name="innerTransition"/>
+  <bipType xsi:type="ujf.verimag.bip.Core.Behaviors:PortType" name="transferRecordDatabase">
+    <dataParameter name="replicaIDofTheDetectorOwningTheDB" type="//@dataType.0"/>
+    <dataParameter name="replicaID" type="//@dataType.0"/>
+    <dataParameter name="validityReplica" type="//@dataType.1"/>
+    <dataParameter name="consecutiveFaultyReports" type="//@dataType.0"/>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Behaviors:PortType" name="validityReportPort"/>
+  <bipType xsi:type="ujf.verimag.bip.Core.Behaviors:PortType" name="validityReportPortNew">
+    <dataParameter name="replicaIDValidityReport" type="//@dataType.0"/>
+    <dataParameter name="controllerTimestampValidityReport" type="//@dataType.0"/>
+    <dataParameter name="detectorTimestampValidityReport" type="//@dataType.0"/>
+    <dataParameter name="healthValidityReport" type="//@dataType.0"/>
+    <dataParameter name="validValidityReport" type="//@dataType.1"/>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Behaviors:PortType" name="performCheckInsideDatabase"/>
+  <bipType xsi:type="ujf.verimag.bip.Core.Behaviors:AtomType" name="Masker">
+    <dataParameter name="id" type="//@dataType.0"/>
+    <port name="sendReport" type="//@bipType.4">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.6/@portDefinition.0"/>
+    </port>
+    <port name="generateReport" type="//@bipType.3">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.6/@portDefinition.1"/>
+    </port>
+    <behavior xsi:type="ujf.verimag.bip.Core.Behaviors:PetriNet" initialState="//@bipType.6/@behavior/@state.0">
+      <state name="HAVE_A_REPORT_TO_SEND" incoming="//@bipType.6/@behavior/@transition.1" outgoing="//@bipType.6/@behavior/@transition.0"/>
+      <state name="REPORT_SENT" incoming="//@bipType.6/@behavior/@transition.0" outgoing="//@bipType.6/@behavior/@transition.1"/>
+      <transition origin="//@bipType.6/@behavior/@state.0" destination="//@bipType.6/@behavior/@state.1">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.6/@portDefinition.0"/>
+      </transition>
+      <transition origin="//@bipType.6/@behavior/@state.1" destination="//@bipType.6/@behavior/@state.0">
+        <action xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction">
+          <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+            <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.4"/>
+            <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.0"/>
+          </content>
+          <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+            <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.5"/>
+            <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.9"/>
+          </content>
+          <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+            <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.6"/>
+            <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.10"/>
+          </content>
+          <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+            <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.8"/>
+            <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BooleanLiteral"/>
+          </content>
+        </action>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.6/@portDefinition.1"/>
+      </transition>
+      <initialization xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction">
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.1"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="1"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.2"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.0"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:DataParameterReference" targetParameter="//@bipType.6/@dataParameter.0"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.3"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="10"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.9"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="1"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.10"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="1"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.7"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.4"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.0"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.5"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.9"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.6"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.10"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.6/@variable.8"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BooleanLiteral" bValue="true"/>
+        </content>
+      </initialization>
+    </behavior>
+    <variable name="replicaID" type="//@dataType.0"/>
+    <variable name="one" type="//@dataType.0"/>
+    <variable name="zero" type="//@dataType.0"/>
+    <variable name="maxConsecutiveFaultyReports" type="//@dataType.0"/>
+    <variable name="replicaIDValidityReport" type="//@dataType.0"/>
+    <variable name="controllerTimestampValidityReport" type="//@dataType.0"/>
+    <variable name="detectorTimestampValidityReport" type="//@dataType.0"/>
+    <variable name="healthValidityReport" type="//@dataType.0"/>
+    <variable name="validValidityReport" type="//@dataType.1"/>
+    <variable name="controllerTimestampGenerator" type="//@dataType.0"/>
+    <variable name="detectorTimestampGenerator" type="//@dataType.0"/>
+    <portDefinition name="sendReport" type="//@bipType.4" exposedVariable="//@bipType.6/@variable.4 //@bipType.6/@variable.5 //@bipType.6/@variable.6 //@bipType.6/@variable.7 //@bipType.6/@variable.8"/>
+    <portDefinition name="generateReport" type="//@bipType.3"/>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Behaviors:AtomType" name="DatabaseReplicas">
+    <dataParameter name="id" type="//@dataType.0"/>
+    <port name="chooseRecord1" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.0"/>
+    </port>
+    <port name="chooseRecord2" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.1"/>
+    </port>
+    <port name="chooseRecord3" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.2"/>
+    </port>
+    <port name="update1" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.3"/>
+    </port>
+    <port name="update2" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.4"/>
+    </port>
+    <port name="update3" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.5"/>
+    </port>
+    <port name="noUpdate1" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.6"/>
+    </port>
+    <port name="noUpdate2" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.7"/>
+    </port>
+    <port name="noUpdate3" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.8"/>
+    </port>
+    <port name="faultyReport1" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.9"/>
+    </port>
+    <port name="faultyReport2" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.10"/>
+    </port>
+    <port name="faultyReport3" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.11"/>
+    </port>
+    <port name="nonFaultyReport1" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.12"/>
+    </port>
+    <port name="nonFaultyReport2" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.13"/>
+    </port>
+    <port name="nonFaultyReport3" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.14"/>
+    </port>
+    <port name="performCheckDelay1" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.15"/>
+    </port>
+    <port name="performCheckDelay2" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.16"/>
+    </port>
+    <port name="performCheckDelay3" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.17"/>
+    </port>
+    <port name="finish1" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.18"/>
+    </port>
+    <port name="finish2" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.19"/>
+    </port>
+    <port name="finish3" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.20"/>
+    </port>
+    <port name="continue1" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.21"/>
+    </port>
+    <port name="continue2" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.22"/>
+    </port>
+    <port name="continue3" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.23"/>
+    </port>
+    <port name="noDetectDelayFault1" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.24"/>
+    </port>
+    <port name="noDetectDelayFault2" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.25"/>
+    </port>
+    <port name="noDetectDelayFault3" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.26"/>
+    </port>
+    <port name="detectDelayFault1" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.27"/>
+    </port>
+    <port name="detectDelayFault2" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.28"/>
+    </port>
+    <port name="detectDelayFault3" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.29"/>
+    </port>
+    <port name="detectCrashFault1" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.30"/>
+    </port>
+    <port name="detectCrashFault2" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.31"/>
+    </port>
+    <port name="detectCrashFault3" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.32"/>
+    </port>
+    <port name="noDetectCrashFault1" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.33"/>
+    </port>
+    <port name="noDetectCrashFault2" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.34"/>
+    </port>
+    <port name="noDetectCrashFault3" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.35"/>
+    </port>
+    <port name="continueCrash1" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.36"/>
+    </port>
+    <port name="continueCrash2" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.37"/>
+    </port>
+    <port name="continueCrash3" type="//@bipType.2">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.38"/>
+    </port>
+    <port name="performCheckCrash1" type="//@bipType.5">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.39"/>
+    </port>
+    <port name="performCheckCrash2" type="//@bipType.5">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.40"/>
+    </port>
+    <port name="performCheckCrash3" type="//@bipType.5">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.41"/>
+    </port>
+    <port name="performCheckDetectors1" type="//@bipType.5">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.42"/>
+    </port>
+    <port name="performCheckDetectors2" type="//@bipType.5">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.43"/>
+    </port>
+    <port name="performCheckDetectors3" type="//@bipType.5">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.44"/>
+    </port>
+    <port name="backToBeginningState" type="//@bipType.5">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.45"/>
+    </port>
+    <port name="init1" type="//@bipType.5">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.46"/>
+    </port>
+    <port name="init2" type="//@bipType.5">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.47"/>
+    </port>
+    <port name="init3" type="//@bipType.5">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.7/@portDefinition.48"/>
+    </port>
+    <behavior xsi:type="ujf.verimag.bip.Core.Behaviors:PetriNet" initialState="//@bipType.7/@behavior/@state.0">
+      <state name="START" outgoing="//@bipType.7/@behavior/@transition.0 //@bipType.7/@behavior/@transition.1 //@bipType.7/@behavior/@transition.2"/>
+      <state name="READY_TO_UPDATE" incoming="//@bipType.7/@behavior/@transition.0 //@bipType.7/@behavior/@transition.1 //@bipType.7/@behavior/@transition.2 //@bipType.7/@behavior/@transition.51" outgoing="//@bipType.7/@behavior/@transition.3 //@bipType.7/@behavior/@transition.4 //@bipType.7/@behavior/@transition.5"/>
+      <state name="CHOSEN_RECORD1" incoming="//@bipType.7/@behavior/@transition.3" outgoing="//@bipType.7/@behavior/@transition.6 //@bipType.7/@behavior/@transition.15"/>
+      <state name="CHOSEN_RECORD2" incoming="//@bipType.7/@behavior/@transition.4" outgoing="//@bipType.7/@behavior/@transition.7 //@bipType.7/@behavior/@transition.16"/>
+      <state name="CHOSEN_RECORD3" incoming="//@bipType.7/@behavior/@transition.5" outgoing="//@bipType.7/@behavior/@transition.8 //@bipType.7/@behavior/@transition.17"/>
+      <state name="UPDATE1" incoming="//@bipType.7/@behavior/@transition.6" outgoing="//@bipType.7/@behavior/@transition.9 //@bipType.7/@behavior/@transition.12"/>
+      <state name="UPDATE2" incoming="//@bipType.7/@behavior/@transition.7" outgoing="//@bipType.7/@behavior/@transition.10 //@bipType.7/@behavior/@transition.13"/>
+      <state name="UPDATE3" incoming="//@bipType.7/@behavior/@transition.8" outgoing="//@bipType.7/@behavior/@transition.11 //@bipType.7/@behavior/@transition.14"/>
+      <state name="UPDATED1" incoming="//@bipType.7/@behavior/@transition.9 //@bipType.7/@behavior/@transition.12" outgoing="//@bipType.7/@behavior/@transition.21"/>
+      <state name="UPDATED2" incoming="//@bipType.7/@behavior/@transition.10 //@bipType.7/@behavior/@transition.13" outgoing="//@bipType.7/@behavior/@transition.22"/>
+      <state name="UPDATED3" incoming="//@bipType.7/@behavior/@transition.11 //@bipType.7/@behavior/@transition.14" outgoing="//@bipType.7/@behavior/@transition.23"/>
+      <state name="NOUPDATE1" incoming="//@bipType.7/@behavior/@transition.15" outgoing="//@bipType.7/@behavior/@transition.18"/>
+      <state name="NOUPDATE2" incoming="//@bipType.7/@behavior/@transition.16" outgoing="//@bipType.7/@behavior/@transition.19"/>
+      <state name="NOUPDATE3" incoming="//@bipType.7/@behavior/@transition.17" outgoing="//@bipType.7/@behavior/@transition.20"/>
+      <state name="FINISHED_CHECK_DELAY1"/>
+      <state name="FINISHED_CHECK_DELAY2"/>
+      <state name="FINISHED_CHECK_DELAY3"/>
+      <state name="CHECKING_DELAY1" incoming="//@bipType.7/@behavior/@transition.18 //@bipType.7/@behavior/@transition.21" outgoing="//@bipType.7/@behavior/@transition.24 //@bipType.7/@behavior/@transition.30"/>
+      <state name="CHECKING_DELAY2" incoming="//@bipType.7/@behavior/@transition.19 //@bipType.7/@behavior/@transition.22" outgoing="//@bipType.7/@behavior/@transition.25 //@bipType.7/@behavior/@transition.31"/>
+      <state name="CHECKING_DELAY3" incoming="//@bipType.7/@behavior/@transition.20 //@bipType.7/@behavior/@transition.23" outgoing="//@bipType.7/@behavior/@transition.26 //@bipType.7/@behavior/@transition.32"/>
+      <state name="DELAY_FAULTY1" incoming="//@bipType.7/@behavior/@transition.24" outgoing="//@bipType.7/@behavior/@transition.27"/>
+      <state name="DELAY_FAULTY2" incoming="//@bipType.7/@behavior/@transition.25" outgoing="//@bipType.7/@behavior/@transition.28"/>
+      <state name="DELAY_FAULTY3" incoming="//@bipType.7/@behavior/@transition.26" outgoing="//@bipType.7/@behavior/@transition.29"/>
+      <state name="CHECKED_DELAY1" incoming="//@bipType.7/@behavior/@transition.27 //@bipType.7/@behavior/@transition.30" outgoing="//@bipType.7/@behavior/@transition.33"/>
+      <state name="CHECKED_DELAY2" incoming="//@bipType.7/@behavior/@transition.28 //@bipType.7/@behavior/@transition.31" outgoing="//@bipType.7/@behavior/@transition.34"/>
+      <state name="CHECKED_DELAY3" incoming="//@bipType.7/@behavior/@transition.29 //@bipType.7/@behavior/@transition.32" outgoing="//@bipType.7/@behavior/@transition.35"/>
+      <state name="CHECKED_CRASH1" incoming="//@bipType.7/@behavior/@transition.39 //@bipType.7/@behavior/@transition.42" outgoing="//@bipType.7/@behavior/@transition.45"/>
+      <state name="CHECKED_CRASH2" incoming="//@bipType.7/@behavior/@transition.40 //@bipType.7/@behavior/@transition.43" outgoing="//@bipType.7/@behavior/@transition.46"/>
+      <state name="CHECKED_CRASH3" incoming="//@bipType.7/@behavior/@transition.41 //@bipType.7/@behavior/@transition.44" outgoing="//@bipType.7/@behavior/@transition.47"/>
+      <state name="CHECKING_CRASH1" incoming="//@bipType.7/@behavior/@transition.33" outgoing="//@bipType.7/@behavior/@transition.36 //@bipType.7/@behavior/@transition.42"/>
+      <state name="CHECKING_CRASH2" incoming="//@bipType.7/@behavior/@transition.34" outgoing="//@bipType.7/@behavior/@transition.37 //@bipType.7/@behavior/@transition.43"/>
+      <state name="CHECKING_CRASH3" incoming="//@bipType.7/@behavior/@transition.35" outgoing="//@bipType.7/@behavior/@transition.38 //@bipType.7/@behavior/@transition.44"/>
+      <state name="CHECKED_DETECTORS1" incoming="//@bipType.7/@behavior/@transition.45" outgoing="//@bipType.7/@behavior/@transition.48"/>
+      <state name="CHECKED_DETECTORS2" incoming="//@bipType.7/@behavior/@transition.46" outgoing="//@bipType.7/@behavior/@transition.49"/>
+      <state name="CHECKED_DETECTORS3" incoming="//@bipType.7/@behavior/@transition.47" outgoing="//@bipType.7/@behavior/@transition.50"/>
+      <state name="CHECKING_DETECTORS1"/>
+      <state name="CHECKING_DETECTORS2"/>
+      <state name="CHECKING_DETECTORS3"/>
+      <state name="CRASH_FAULTY1" incoming="//@bipType.7/@behavior/@transition.36" outgoing="//@bipType.7/@behavior/@transition.39"/>
+      <state name="CRASH_FAULTY2" incoming="//@bipType.7/@behavior/@transition.37" outgoing="//@bipType.7/@behavior/@transition.40"/>
+      <state name="CRASH_FAULTY3" incoming="//@bipType.7/@behavior/@transition.38" outgoing="//@bipType.7/@behavior/@transition.41"/>
+      <state name="FINISHED" incoming="//@bipType.7/@behavior/@transition.48 //@bipType.7/@behavior/@transition.49 //@bipType.7/@behavior/@transition.50" outgoing="//@bipType.7/@behavior/@transition.51"/>
+      <state name="READY_TO_CHECK"/>
+      <state name="CHECKING_CRASH"/>
+      <state name="CHECKING_DETECTORS"/>
+      <state name="CHECKED_DELAY"/>
+      <state name="CHECKED_CRASH"/>
+      <state name="CHECKED_DETECTORS"/>
+      <state name="START_CHECKING_CRASH"/>
+      <state name="START_CHECKING_DETECTORS"/>
+      <state name="DETERMINED_MAX_DETECTOR_TS"/>
+      <state name="LAST_DETECTOR1_CHECKED"/>
+      <state name="LAST_DETECTOR2_CHECKED"/>
+      <transition origin="//@bipType.7/@behavior/@state.0" destination="//@bipType.7/@behavior/@state.1">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.0"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="1"/>
+        </guard>
+        <action xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction">
+          <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+            <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.3"/>
+            <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BooleanLiteral" bValue="true"/>
+          </content>
+        </action>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.46"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.0" destination="//@bipType.7/@behavior/@state.1">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.0"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="2"/>
+        </guard>
+        <action xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction">
+          <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+            <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.6"/>
+            <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BooleanLiteral" bValue="true"/>
+          </content>
+        </action>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.47"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.0" destination="//@bipType.7/@behavior/@state.1">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.0"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="3"/>
+        </guard>
+        <action xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction">
+          <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+            <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.9"/>
+            <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BooleanLiteral" bValue="true"/>
+          </content>
+        </action>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.48"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.1" destination="//@bipType.7/@behavior/@state.2">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.0"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.1" destination="//@bipType.7/@behavior/@state.3">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.1"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.1" destination="//@bipType.7/@behavior/@state.4">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.2"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.2" destination="//@bipType.7/@behavior/@state.5">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.3"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.3" destination="//@bipType.7/@behavior/@state.6">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.4"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.4" destination="//@bipType.7/@behavior/@state.7">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.5"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.5" destination="//@bipType.7/@behavior/@state.8">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.9"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.6" destination="//@bipType.7/@behavior/@state.9">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.10"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.7" destination="//@bipType.7/@behavior/@state.10">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.11"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.5" destination="//@bipType.7/@behavior/@state.8">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.12"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.6" destination="//@bipType.7/@behavior/@state.9">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.13"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.7" destination="//@bipType.7/@behavior/@state.10">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.14"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.2" destination="//@bipType.7/@behavior/@state.11">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.6"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.3" destination="//@bipType.7/@behavior/@state.12">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.7"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.4" destination="//@bipType.7/@behavior/@state.13">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.8"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.11" destination="//@bipType.7/@behavior/@state.17">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.15"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.12" destination="//@bipType.7/@behavior/@state.18">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.16"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.13" destination="//@bipType.7/@behavior/@state.19">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.17"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.8" destination="//@bipType.7/@behavior/@state.17">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.15"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.9" destination="//@bipType.7/@behavior/@state.18">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.16"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.10" destination="//@bipType.7/@behavior/@state.19">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.17"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.17" destination="//@bipType.7/@behavior/@state.20">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.1"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="10"/>
+        </guard>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.27"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.18" destination="//@bipType.7/@behavior/@state.21">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.4"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="10"/>
+        </guard>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.28"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.19" destination="//@bipType.7/@behavior/@state.22">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.7"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="10"/>
+        </guard>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.29"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.20" destination="//@bipType.7/@behavior/@state.23">
+        <action xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction">
+          <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+            <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.1"/>
+            <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral"/>
+          </content>
+        </action>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.21"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.21" destination="//@bipType.7/@behavior/@state.24">
+        <action xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction">
+          <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+            <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.4"/>
+            <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral"/>
+          </content>
+        </action>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.22"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.22" destination="//@bipType.7/@behavior/@state.25">
+        <action xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction">
+          <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+            <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.7"/>
+            <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral"/>
+          </content>
+        </action>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.23"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.17" destination="//@bipType.7/@behavior/@state.23">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="less_than">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.1"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="10"/>
+        </guard>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.24"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.18" destination="//@bipType.7/@behavior/@state.24">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="less_than">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.4"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="10"/>
+        </guard>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.25"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.19" destination="//@bipType.7/@behavior/@state.25">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="less_than">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.7"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="10"/>
+        </guard>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.26"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.23" destination="//@bipType.7/@behavior/@state.29">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.39"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.24" destination="//@bipType.7/@behavior/@state.30">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.40"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.25" destination="//@bipType.7/@behavior/@state.31">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.41"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.29" destination="//@bipType.7/@behavior/@state.38">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.10"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="1"/>
+        </guard>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.30"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.30" destination="//@bipType.7/@behavior/@state.39">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.10"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="2"/>
+        </guard>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.31"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.31" destination="//@bipType.7/@behavior/@state.40">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.10"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="3"/>
+        </guard>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.32"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.38" destination="//@bipType.7/@behavior/@state.26">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.36"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.39" destination="//@bipType.7/@behavior/@state.27">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.37"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.40" destination="//@bipType.7/@behavior/@state.28">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.38"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.29" destination="//@bipType.7/@behavior/@state.26">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="inequality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.10"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="1"/>
+        </guard>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.33"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.30" destination="//@bipType.7/@behavior/@state.27">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="inequality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.10"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="2"/>
+        </guard>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.34"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.31" destination="//@bipType.7/@behavior/@state.28">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="inequality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.10"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="3"/>
+        </guard>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.35"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.26" destination="//@bipType.7/@behavior/@state.32">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.42"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.27" destination="//@bipType.7/@behavior/@state.33">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.43"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.28" destination="//@bipType.7/@behavior/@state.34">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.44"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.32" destination="//@bipType.7/@behavior/@state.41">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.18"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.33" destination="//@bipType.7/@behavior/@state.41">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.19"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.34" destination="//@bipType.7/@behavior/@state.41">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.20"/>
+      </transition>
+      <transition origin="//@bipType.7/@behavior/@state.41" destination="//@bipType.7/@behavior/@state.1">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.7/@portDefinition.45"/>
+      </transition>
+      <initialization xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction">
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.2"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="1"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.5"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="2"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.8"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="3"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.0"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:DataParameterReference" targetParameter="//@bipType.7/@dataParameter.0"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.1"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.4"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.7"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.7/@variable.10"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral"/>
+        </content>
+      </initialization>
+    </behavior>
+    <variable name="ownerID" type="//@dataType.0"/>
+    <variable name="consecutiveFaultyReports1" type="//@dataType.0"/>
+    <variable name="replicaID1" type="//@dataType.0"/>
+    <variable name="validityReplica1" type="//@dataType.1"/>
+    <variable name="consecutiveFaultyReports2" type="//@dataType.0"/>
+    <variable name="replicaID2" type="//@dataType.0"/>
+    <variable name="validityReplica2" type="//@dataType.1"/>
+    <variable name="consecutiveFaultyReports3" type="//@dataType.0"/>
+    <variable name="replicaID3" type="//@dataType.0"/>
+    <variable name="validityReplica3" type="//@dataType.1"/>
+    <variable name="maxControllerTS" type="//@dataType.0"/>
+    <variable name="maxDetectorTS" type="//@dataType.0"/>
+    <portDefinition name="chooseRecord1" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.2 //@bipType.7/@variable.3 //@bipType.7/@variable.1"/>
+    <portDefinition name="chooseRecord2" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.5 //@bipType.7/@variable.6 //@bipType.7/@variable.4"/>
+    <portDefinition name="chooseRecord3" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.8 //@bipType.7/@variable.9 //@bipType.7/@variable.7"/>
+    <portDefinition name="update1" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.2 //@bipType.7/@variable.3 //@bipType.7/@variable.1"/>
+    <portDefinition name="update2" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.5 //@bipType.7/@variable.6 //@bipType.7/@variable.4"/>
+    <portDefinition name="update3" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.8 //@bipType.7/@variable.9 //@bipType.7/@variable.7"/>
+    <portDefinition name="noUpdate1" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.2 //@bipType.7/@variable.3 //@bipType.7/@variable.1"/>
+    <portDefinition name="noUpdate2" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.5 //@bipType.7/@variable.6 //@bipType.7/@variable.4"/>
+    <portDefinition name="noUpdate3" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.8 //@bipType.7/@variable.9 //@bipType.7/@variable.7"/>
+    <portDefinition name="faultyReport1" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.2 //@bipType.7/@variable.3 //@bipType.7/@variable.1"/>
+    <portDefinition name="faultyReport2" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.5 //@bipType.7/@variable.6 //@bipType.7/@variable.4"/>
+    <portDefinition name="faultyReport3" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.8 //@bipType.7/@variable.9 //@bipType.7/@variable.7"/>
+    <portDefinition name="nonFaultyReport1" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.2 //@bipType.7/@variable.3 //@bipType.7/@variable.1"/>
+    <portDefinition name="nonFaultyReport2" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.5 //@bipType.7/@variable.6 //@bipType.7/@variable.4"/>
+    <portDefinition name="nonFaultyReport3" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.8 //@bipType.7/@variable.9 //@bipType.7/@variable.7"/>
+    <portDefinition name="performCheckDelay1" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.2 //@bipType.7/@variable.3 //@bipType.7/@variable.1"/>
+    <portDefinition name="performCheckDelay2" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.5 //@bipType.7/@variable.6 //@bipType.7/@variable.4"/>
+    <portDefinition name="performCheckDelay3" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.8 //@bipType.7/@variable.9 //@bipType.7/@variable.7"/>
+    <portDefinition name="finish1" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.2 //@bipType.7/@variable.3 //@bipType.7/@variable.1"/>
+    <portDefinition name="finish2" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.5 //@bipType.7/@variable.6 //@bipType.7/@variable.4"/>
+    <portDefinition name="finish3" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.8 //@bipType.7/@variable.9 //@bipType.7/@variable.7"/>
+    <portDefinition name="continue1" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.2 //@bipType.7/@variable.3 //@bipType.7/@variable.1"/>
+    <portDefinition name="continue2" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.5 //@bipType.7/@variable.6 //@bipType.7/@variable.4"/>
+    <portDefinition name="continue3" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.8 //@bipType.7/@variable.9 //@bipType.7/@variable.7"/>
+    <portDefinition name="noDetectDelayFault1" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.2 //@bipType.7/@variable.3 //@bipType.7/@variable.1"/>
+    <portDefinition name="noDetectDelayFault2" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.5 //@bipType.7/@variable.6 //@bipType.7/@variable.4"/>
+    <portDefinition name="noDetectDelayFault3" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.8 //@bipType.7/@variable.9 //@bipType.7/@variable.7"/>
+    <portDefinition name="detectDelayFault1" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.2 //@bipType.7/@variable.3 //@bipType.7/@variable.1"/>
+    <portDefinition name="detectDelayFault2" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.5 //@bipType.7/@variable.6 //@bipType.7/@variable.4"/>
+    <portDefinition name="detectDelayFault3" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.8 //@bipType.7/@variable.9 //@bipType.7/@variable.7"/>
+    <portDefinition name="detectCrashFault1" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.2 //@bipType.7/@variable.3 //@bipType.7/@variable.1"/>
+    <portDefinition name="detectCrashFault2" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.5 //@bipType.7/@variable.6 //@bipType.7/@variable.4"/>
+    <portDefinition name="detectCrashFault3" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.8 //@bipType.7/@variable.9 //@bipType.7/@variable.7"/>
+    <portDefinition name="noDetectCrashFault1" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.2 //@bipType.7/@variable.3 //@bipType.7/@variable.1"/>
+    <portDefinition name="noDetectCrashFault2" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.5 //@bipType.7/@variable.6 //@bipType.7/@variable.4"/>
+    <portDefinition name="noDetectCrashFault3" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.8 //@bipType.7/@variable.9 //@bipType.7/@variable.7"/>
+    <portDefinition name="continueCrash1" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.2 //@bipType.7/@variable.3 //@bipType.7/@variable.1"/>
+    <portDefinition name="continueCrash2" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.5 //@bipType.7/@variable.6 //@bipType.7/@variable.4"/>
+    <portDefinition name="continueCrash3" type="//@bipType.2" exposedVariable="//@bipType.7/@variable.0 //@bipType.7/@variable.8 //@bipType.7/@variable.9 //@bipType.7/@variable.7"/>
+    <portDefinition name="performCheckCrash1" type="//@bipType.5"/>
+    <portDefinition name="performCheckCrash2" type="//@bipType.5"/>
+    <portDefinition name="performCheckCrash3" type="//@bipType.5"/>
+    <portDefinition name="performCheckDetectors1" type="//@bipType.5"/>
+    <portDefinition name="performCheckDetectors2" type="//@bipType.5"/>
+    <portDefinition name="performCheckDetectors3" type="//@bipType.5"/>
+    <portDefinition name="backToBeginningState" type="//@bipType.5"/>
+    <portDefinition name="init1" type="//@bipType.5"/>
+    <portDefinition name="init2" type="//@bipType.5"/>
+    <portDefinition name="init3" type="//@bipType.5"/>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Behaviors:AtomType" name="DetectorReplica">
+    <dataParameter name="id" type="//@dataType.0"/>
+    <port name="receiveReportNew" type="//@bipType.4">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.8/@portDefinition.0"/>
+    </port>
+    <port name="chooseRecord" type="//@bipType.4">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.8/@portDefinition.1"/>
+    </port>
+    <port name="update" type="//@bipType.4">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.8/@portDefinition.2"/>
+    </port>
+    <port name="noUpdate" type="//@bipType.4">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.8/@portDefinition.3"/>
+    </port>
+    <port name="faultyReport" type="//@bipType.4">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.8/@portDefinition.4"/>
+    </port>
+    <port name="nonFaultyReport" type="//@bipType.4">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.8/@portDefinition.5"/>
+    </port>
+    <port name="performCheckDelay" type="//@bipType.4">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.8/@portDefinition.6"/>
+    </port>
+    <port name="performCheckCrash" type="//@bipType.4">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.8/@portDefinition.7"/>
+    </port>
+    <port name="performCheckDetectors" type="//@bipType.4">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.8/@portDefinition.8"/>
+    </port>
+    <port name="backToBeginningState" type="//@bipType.4">
+      <binding xsi:type="ujf.verimag.bip.Core.Behaviors:DefinitionBinding" definition="//@bipType.8/@portDefinition.9"/>
+    </port>
+    <behavior xsi:type="ujf.verimag.bip.Core.Behaviors:PetriNet" initialState="//@bipType.8/@behavior/@state.0">
+      <state name="READY_TO_RECEIVE_REPORT" incoming="//@bipType.8/@behavior/@transition.10" outgoing="//@bipType.8/@behavior/@transition.0"/>
+      <state name="REPORT_RECEIVED" incoming="//@bipType.8/@behavior/@transition.0" outgoing="//@bipType.8/@behavior/@transition.1"/>
+      <state name="CHOSEN_RECORD" incoming="//@bipType.8/@behavior/@transition.1" outgoing="//@bipType.8/@behavior/@transition.2 //@bipType.8/@behavior/@transition.3"/>
+      <state name="UPDATE" incoming="//@bipType.8/@behavior/@transition.2" outgoing="//@bipType.8/@behavior/@transition.4 //@bipType.8/@behavior/@transition.5"/>
+      <state name="UPDATED" incoming="//@bipType.8/@behavior/@transition.4 //@bipType.8/@behavior/@transition.5" outgoing="//@bipType.8/@behavior/@transition.7"/>
+      <state name="NOUPDATED" incoming="//@bipType.8/@behavior/@transition.3" outgoing="//@bipType.8/@behavior/@transition.6"/>
+      <state name="CHECKING_DELAY" incoming="//@bipType.8/@behavior/@transition.6 //@bipType.8/@behavior/@transition.7" outgoing="//@bipType.8/@behavior/@transition.8"/>
+      <state name="CHECKING_CRASH" incoming="//@bipType.8/@behavior/@transition.8" outgoing="//@bipType.8/@behavior/@transition.9"/>
+      <state name="CHECKING_DETECTORS" incoming="//@bipType.8/@behavior/@transition.9" outgoing="//@bipType.8/@behavior/@transition.10"/>
+      <transition origin="//@bipType.8/@behavior/@state.0" destination="//@bipType.8/@behavior/@state.1">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.8/@portDefinition.0"/>
+      </transition>
+      <transition origin="//@bipType.8/@behavior/@state.1" destination="//@bipType.8/@behavior/@state.2">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.8/@portDefinition.1"/>
+      </transition>
+      <transition origin="//@bipType.8/@behavior/@state.2" destination="//@bipType.8/@behavior/@state.3">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="inequality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.8/@variable.7"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral"/>
+        </guard>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.8/@portDefinition.2"/>
+      </transition>
+      <transition origin="//@bipType.8/@behavior/@state.2" destination="//@bipType.8/@behavior/@state.5">
+        <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.8/@variable.7"/>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral"/>
+        </guard>
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.8/@portDefinition.3"/>
+      </transition>
+      <transition origin="//@bipType.8/@behavior/@state.3" destination="//@bipType.8/@behavior/@state.4">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.8/@portDefinition.4"/>
+      </transition>
+      <transition origin="//@bipType.8/@behavior/@state.3" destination="//@bipType.8/@behavior/@state.4">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.8/@portDefinition.5"/>
+      </transition>
+      <transition origin="//@bipType.8/@behavior/@state.5" destination="//@bipType.8/@behavior/@state.6">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.8/@portDefinition.6"/>
+      </transition>
+      <transition origin="//@bipType.8/@behavior/@state.4" destination="//@bipType.8/@behavior/@state.6">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.8/@portDefinition.6"/>
+      </transition>
+      <transition origin="//@bipType.8/@behavior/@state.6" destination="//@bipType.8/@behavior/@state.7">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.8/@portDefinition.7"/>
+      </transition>
+      <transition origin="//@bipType.8/@behavior/@state.7" destination="//@bipType.8/@behavior/@state.8">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.8/@portDefinition.8"/>
+      </transition>
+      <transition origin="//@bipType.8/@behavior/@state.8" destination="//@bipType.8/@behavior/@state.0">
+        <trigger xsi:type="ujf.verimag.bip.Core.Behaviors:PortDefinitionReference" target="//@bipType.8/@portDefinition.9"/>
+      </transition>
+      <initialization xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction">
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.8/@variable.0"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:DataParameterReference" targetParameter="//@bipType.8/@dataParameter.0"/>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.8/@variable.7"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:UnaryExpression" operator="negative">
+            <operand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="1"/>
+          </assignedValue>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:VariableReference" targetVariable="//@bipType.8/@variable.8"/>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:UnaryExpression" operator="negative">
+            <operand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="1"/>
+          </assignedValue>
+        </content>
+      </initialization>
+    </behavior>
+    <variable name="replicaID" type="//@dataType.0"/>
+    <variable name="detectorTimestamp" type="//@dataType.0"/>
+    <variable name="detectorHealth" type="//@dataType.0"/>
+    <variable name="checkResultDelay" type="//@dataType.0"/>
+    <variable name="checkResultCrash" type="//@dataType.0"/>
+    <variable name="checkResultDetectors" type="//@dataType.0"/>
+    <variable name="replicaIDValidityReport" type="//@dataType.0"/>
+    <variable name="controllerTimestampValidityReport" type="//@dataType.0"/>
+    <variable name="detectorTimestampValidityReport" type="//@dataType.0"/>
+    <variable name="healthValidityReport" type="//@dataType.0"/>
+    <variable name="validValidityReport" type="//@dataType.1"/>
+    <portDefinition name="receiveReportNew" type="//@bipType.4" exposedVariable="//@bipType.8/@variable.6 //@bipType.8/@variable.7 //@bipType.8/@variable.8 //@bipType.8/@variable.9 //@bipType.8/@variable.10"/>
+    <portDefinition name="chooseRecord" type="//@bipType.4" exposedVariable="//@bipType.8/@variable.6 //@bipType.8/@variable.7 //@bipType.8/@variable.8 //@bipType.8/@variable.9 //@bipType.8/@variable.10"/>
+    <portDefinition name="update" type="//@bipType.4" exposedVariable="//@bipType.8/@variable.6 //@bipType.8/@variable.7 //@bipType.8/@variable.8 //@bipType.8/@variable.9 //@bipType.8/@variable.10"/>
+    <portDefinition name="noUpdate" type="//@bipType.4" exposedVariable="//@bipType.8/@variable.6 //@bipType.8/@variable.7 //@bipType.8/@variable.8 //@bipType.8/@variable.9 //@bipType.8/@variable.10"/>
+    <portDefinition name="faultyReport" type="//@bipType.4" exposedVariable="//@bipType.8/@variable.6 //@bipType.8/@variable.7 //@bipType.8/@variable.8 //@bipType.8/@variable.9 //@bipType.8/@variable.10"/>
+    <portDefinition name="nonFaultyReport" type="//@bipType.4" exposedVariable="//@bipType.8/@variable.6 //@bipType.8/@variable.7 //@bipType.8/@variable.8 //@bipType.8/@variable.9 //@bipType.8/@variable.10"/>
+    <portDefinition name="performCheckDelay" type="//@bipType.4" exposedVariable="//@bipType.8/@variable.6 //@bipType.8/@variable.7 //@bipType.8/@variable.8 //@bipType.8/@variable.9 //@bipType.8/@variable.10"/>
+    <portDefinition name="performCheckCrash" type="//@bipType.4" exposedVariable="//@bipType.8/@variable.6 //@bipType.8/@variable.7 //@bipType.8/@variable.8 //@bipType.8/@variable.9 //@bipType.8/@variable.10"/>
+    <portDefinition name="performCheckDetectors" type="//@bipType.4" exposedVariable="//@bipType.8/@variable.6 //@bipType.8/@variable.7 //@bipType.8/@variable.8 //@bipType.8/@variable.9 //@bipType.8/@variable.10"/>
+    <portDefinition name="backToBeginningState" type="//@bipType.4" exposedVariable="//@bipType.8/@variable.6 //@bipType.8/@variable.7 //@bipType.8/@variable.8 //@bipType.8/@variable.9 //@bipType.8/@variable.10"/>
+    <portDefinition name="performCheckCrashAndNotifyRebooter" type="//@bipType.1"/>
+    <portDefinition name="performCheckDetectorsAndNotifyRebooter" type="//@bipType.1"/>
+    <portDefinition name="backToBeginningStateNotifyRebooter" type="//@bipType.1"/>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Interactions:ConnectorType" name="BeginUpdateDatabase">
+    <interactionSpecification>
+      <interaction>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.9/@portParameter.0"/>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.9/@portParameter.1"/>
+      </interaction>
+      <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+        <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.2/@dataParameter.1">
+          <portReference target="//@bipType.9/@portParameter.0"/>
+        </leftOperand>
+        <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.0">
+          <portReference target="//@bipType.9/@portParameter.1"/>
+        </rightOperand>
+      </guard>
+      <downAction xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction"/>
+    </interactionSpecification>
+    <portParameter name="chooseRecordOnDatabase" type="//@bipType.2"/>
+    <portParameter name="chooseRecordOnDetector" type="//@bipType.4"/>
+    <definition xsi:type="ujf.verimag.bip.Core.PortExpressions:ACFusion">
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.9/@portParameter.0"/>
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.9/@portParameter.1"/>
+    </definition>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Interactions:ConnectorType" name="TransferValidityReport">
+    <interactionSpecification>
+      <interaction>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.10/@portParameter.0"/>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.10/@portParameter.1"/>
+      </interaction>
+      <downAction xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction">
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.0">
+            <portReference target="//@bipType.10/@portParameter.1"/>
+          </assignedTarget>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.0">
+            <portReference target="//@bipType.10/@portParameter.0"/>
+          </assignedValue>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.1">
+            <portReference target="//@bipType.10/@portParameter.1"/>
+          </assignedTarget>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.1">
+            <portReference target="//@bipType.10/@portParameter.0"/>
+          </assignedValue>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.2">
+            <portReference target="//@bipType.10/@portParameter.1"/>
+          </assignedTarget>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.2">
+            <portReference target="//@bipType.10/@portParameter.0"/>
+          </assignedValue>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.3">
+            <portReference target="//@bipType.10/@portParameter.1"/>
+          </assignedTarget>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.3">
+            <portReference target="//@bipType.10/@portParameter.0"/>
+          </assignedValue>
+        </content>
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.4">
+            <portReference target="//@bipType.10/@portParameter.1"/>
+          </assignedTarget>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.4">
+            <portReference target="//@bipType.10/@portParameter.0"/>
+          </assignedValue>
+        </content>
+      </downAction>
+    </interactionSpecification>
+    <portParameter name="masker" type="//@bipType.4"/>
+    <portParameter name="detector1" type="//@bipType.4"/>
+    <definition xsi:type="ujf.verimag.bip.Core.PortExpressions:ACFusion">
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.10/@portParameter.0"/>
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.10/@portParameter.1"/>
+    </definition>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Interactions:ConnectorType" name="PerformCheckCrash">
+    <interactionSpecification>
+      <interaction>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.11/@portParameter.0"/>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.11/@portParameter.1"/>
+      </interaction>
+      <downAction xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction"/>
+    </interactionSpecification>
+    <portParameter name="performCheckCrashReplica" type="//@bipType.5"/>
+    <portParameter name="performCheckCrash" type="//@bipType.4"/>
+    <definition xsi:type="ujf.verimag.bip.Core.PortExpressions:ACFusion">
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.11/@portParameter.0"/>
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.11/@portParameter.1"/>
+    </definition>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Interactions:ConnectorType" name="PerformCheckDetectors">
+    <interactionSpecification>
+      <interaction>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.12/@portParameter.0"/>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.12/@portParameter.1"/>
+      </interaction>
+      <downAction xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction"/>
+    </interactionSpecification>
+    <portParameter name="performCheckDetectorsReplica" type="//@bipType.5"/>
+    <portParameter name="performCheckDetectors" type="//@bipType.4"/>
+    <definition xsi:type="ujf.verimag.bip.Core.PortExpressions:ACFusion">
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.12/@portParameter.0"/>
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.12/@portParameter.1"/>
+    </definition>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Interactions:ConnectorType" name="BackToBeginningState">
+    <interactionSpecification>
+      <interaction>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.13/@portParameter.0"/>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.13/@portParameter.1"/>
+      </interaction>
+      <downAction xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction"/>
+    </interactionSpecification>
+    <portParameter name="backToBeginningStateDatabase" type="//@bipType.5"/>
+    <portParameter name="backToBeginningStateDetector" type="//@bipType.1"/>
+    <definition xsi:type="ujf.verimag.bip.Core.PortExpressions:ACFusion">
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.13/@portParameter.0"/>
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.13/@portParameter.1"/>
+    </definition>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Interactions:ConnectorType" name="Singleton">
+    <interactionSpecification>
+      <interaction>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.14/@portParameter.0"/>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.14/@portParameter.1"/>
+      </interaction>
+      <downAction xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction"/>
+    </interactionSpecification>
+    <portParameter name="recordReplica" type="//@bipType.2"/>
+    <portParameter name="detectorPort" type="//@bipType.4"/>
+    <definition xsi:type="ujf.verimag.bip.Core.PortExpressions:ACFusion">
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.14/@portParameter.0"/>
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.14/@portParameter.1"/>
+    </definition>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Interactions:ConnectorType" name="Singleton2">
+    <interactionSpecification>
+      <interaction>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.15/@portParameter.0"/>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.15/@portParameter.1"/>
+      </interaction>
+      <downAction xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction"/>
+    </interactionSpecification>
+    <portParameter name="recordReplica" type="//@bipType.5"/>
+    <portParameter name="detectorPort" type="//@bipType.4"/>
+    <definition xsi:type="ujf.verimag.bip.Core.PortExpressions:ACFusion">
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.15/@portParameter.0"/>
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.15/@portParameter.1"/>
+    </definition>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Interactions:ConnectorType" name="RealSingleton">
+    <interactionSpecification>
+      <interaction>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.16/@portParameter.0"/>
+      </interaction>
+      <downAction xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction"/>
+    </interactionSpecification>
+    <portParameter name="recordReplica" type="//@bipType.5"/>
+    <definition xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.16/@portParameter.0"/>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Interactions:ConnectorType" name="RealSingleton2">
+    <interactionSpecification>
+      <interaction>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.17/@portParameter.0"/>
+      </interaction>
+      <downAction xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction"/>
+    </interactionSpecification>
+    <portParameter name="recordReplica" type="//@bipType.3"/>
+    <definition xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.17/@portParameter.0"/>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Interactions:ConnectorType" name="RealSingleton3">
+    <interactionSpecification>
+      <interaction>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.18/@portParameter.0"/>
+      </interaction>
+      <downAction xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction"/>
+    </interactionSpecification>
+    <portParameter name="recordReplica" type="//@bipType.2"/>
+    <definition xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.18/@portParameter.0"/>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Interactions:ConnectorType" name="IncreaseHealth">
+    <interactionSpecification>
+      <interaction>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.19/@portParameter.0"/>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.19/@portParameter.1"/>
+      </interaction>
+      <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="logical_and">
+        <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="logical_and">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+            <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.4">
+              <portReference target="//@bipType.19/@portParameter.1"/>
+            </leftOperand>
+            <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BooleanLiteral" bValue="true"/>
+          </leftOperand>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+            <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.2/@dataParameter.1">
+              <portReference target="//@bipType.19/@portParameter.0"/>
+            </leftOperand>
+            <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.0">
+              <portReference target="//@bipType.19/@portParameter.1"/>
+            </rightOperand>
+          </rightOperand>
+        </leftOperand>
+        <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="greater_than">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.2/@dataParameter.3">
+            <portReference target="//@bipType.19/@portParameter.0"/>
+          </leftOperand>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral"/>
+        </rightOperand>
+      </guard>
+      <downAction xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction">
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.2/@dataParameter.3">
+            <portReference target="//@bipType.19/@portParameter.0"/>
+          </assignedTarget>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="substraction">
+            <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.2/@dataParameter.3">
+              <portReference target="//@bipType.19/@portParameter.0"/>
+            </leftOperand>
+            <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="1"/>
+          </assignedValue>
+        </content>
+      </downAction>
+    </interactionSpecification>
+    <portParameter name="recordReplica" type="//@bipType.2"/>
+    <portParameter name="detectorPort" type="//@bipType.4"/>
+    <definition xsi:type="ujf.verimag.bip.Core.PortExpressions:ACFusion">
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.19/@portParameter.0"/>
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.19/@portParameter.1"/>
+    </definition>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Interactions:ConnectorType" name="NoIncreaseHealth">
+    <interactionSpecification>
+      <interaction>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.20/@portParameter.0"/>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.20/@portParameter.1"/>
+      </interaction>
+      <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="logical_and">
+        <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="logical_and">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+            <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.4">
+              <portReference target="//@bipType.20/@portParameter.1"/>
+            </leftOperand>
+            <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BooleanLiteral" bValue="true"/>
+          </leftOperand>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+            <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.2/@dataParameter.1">
+              <portReference target="//@bipType.20/@portParameter.0"/>
+            </leftOperand>
+            <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.0">
+              <portReference target="//@bipType.20/@portParameter.1"/>
+            </rightOperand>
+          </rightOperand>
+        </leftOperand>
+        <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.2/@dataParameter.3">
+            <portReference target="//@bipType.20/@portParameter.0"/>
+          </leftOperand>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral"/>
+        </rightOperand>
+      </guard>
+      <downAction xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction"/>
+    </interactionSpecification>
+    <portParameter name="recordReplica" type="//@bipType.2"/>
+    <portParameter name="detectorPort" type="//@bipType.4"/>
+    <definition xsi:type="ujf.verimag.bip.Core.PortExpressions:ACFusion">
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.20/@portParameter.0"/>
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.20/@portParameter.1"/>
+    </definition>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Interactions:ConnectorType" name="DecreaseHealth">
+    <interactionSpecification>
+      <interaction>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.21/@portParameter.0"/>
+        <port xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.21/@portParameter.1"/>
+      </interaction>
+      <guard xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="logical_and">
+        <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.4">
+            <portReference target="//@bipType.21/@portParameter.1"/>
+          </leftOperand>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BooleanLiteral"/>
+        </leftOperand>
+        <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression" operator="equality">
+          <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.2/@dataParameter.1">
+            <portReference target="//@bipType.21/@portParameter.0"/>
+          </leftOperand>
+          <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.4/@dataParameter.0">
+            <portReference target="//@bipType.21/@portParameter.1"/>
+          </rightOperand>
+        </rightOperand>
+      </guard>
+      <downAction xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:CompositeAction">
+        <content xsi:type="ujf.verimag.bip.Core.ActionLanguage.Actions:AssignmentAction">
+          <assignedTarget xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.2/@dataParameter.3">
+            <portReference target="//@bipType.21/@portParameter.0"/>
+          </assignedTarget>
+          <assignedValue xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:BinaryExpression">
+            <leftOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:RequiredDataParameterReference" targetParameter="//@bipType.2/@dataParameter.3">
+              <portReference target="//@bipType.21/@portParameter.0"/>
+            </leftOperand>
+            <rightOperand xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="1"/>
+          </assignedValue>
+        </content>
+      </downAction>
+    </interactionSpecification>
+    <portParameter name="recordReplica" type="//@bipType.2"/>
+    <portParameter name="detectorPort" type="//@bipType.4"/>
+    <definition xsi:type="ujf.verimag.bip.Core.PortExpressions:ACFusion">
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.21/@portParameter.0"/>
+      <operand xsi:type="ujf.verimag.bip.Core.Interactions:PortParameterReference" target="//@bipType.21/@portParameter.1"/>
+    </definition>
+  </bipType>
+  <bipType xsi:type="ujf.verimag.bip.Core.Interactions:CompoundType" name="DetectorsSimulation">
+    <connector name="fromMaskerToDetectors" type="//@bipType.10">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.6/@port.0">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.1"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.0">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="startUpdate11" type="//@bipType.9">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.0">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.1">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="startUpdate12" type="//@bipType.9">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.1">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.1">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="startUpdate13" type="//@bipType.9">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.2">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.1">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="update11" type="//@bipType.14">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.3">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.2">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="update12" type="//@bipType.14">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.4">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.2">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="update13" type="//@bipType.14">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.5">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.2">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="noUpdate11" type="//@bipType.14">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.6">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.3">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="noUpdate12" type="//@bipType.14">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.7">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.3">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="noUpdate13" type="//@bipType.14">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.8">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.3">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="performCheckDelay11" type="//@bipType.14">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.15">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.6">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="performCheckDelay12" type="//@bipType.14">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.16">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.6">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="performCheckDelay13" type="//@bipType.14">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.17">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.6">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="performCheckCrash11" type="//@bipType.15">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.39">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.7">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="performCheckCrash12" type="//@bipType.15">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.40">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.7">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="performCheckCrash13" type="//@bipType.15">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.41">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.7">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="performCheckDetectors11" type="//@bipType.15">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.42">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.8">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="performCheckDetectors12" type="//@bipType.15">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.43">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.8">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="performCheckDetectors13" type="//@bipType.15">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.44">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.8">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="backToBeginningState11" type="//@bipType.15">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.45">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.9">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="init11" type="//@bipType.16">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.46">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="init12" type="//@bipType.16">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.47">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="init13" type="//@bipType.16">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.48">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="generate" type="//@bipType.17">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.6/@port.1">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.1"/>
+      </actualPort>
+    </connector>
+    <connector name="nonFaultyReportIncrease11" type="//@bipType.19">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.12">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.5">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="nonFaultyReportIncrease12" type="//@bipType.19">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.13">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.5">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="nonFaultyReportIncrease13" type="//@bipType.19">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.14">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.5">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="nonFaultyReport11" type="//@bipType.20">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.12">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.5">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="nonFaultyReport12" type="//@bipType.20">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.13">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.5">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="nonFaultyReport13" type="//@bipType.20">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.14">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.5">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="faultyReport11" type="//@bipType.21">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.9">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.4">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="faultyReport12" type="//@bipType.21">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.10">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.4">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="faultyReport13" type="//@bipType.21">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.11">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.8/@port.4">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.0"/>
+      </actualPort>
+    </connector>
+    <connector name="detectDelayfault11" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.27">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="detectDelayfault12" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.28">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="detectDelayfault13" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.29">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="noDetectDelayfault11" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.24">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="noDetectDelayfault12" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.25">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="noDetectDelayfault13" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.26">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="continue11" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.21">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="continue12" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.22">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="continue13" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.23">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="finish11" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.18">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="finish12" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.19">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="finish13" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.20">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="detectCrashFault11" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.30">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="detectCrashFault12" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.31">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="detectCrashFault13" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.32">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="continueCrash11" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.36">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="continueCrash12" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.37">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="continueCrash13" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.38">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="noDetectCrashFault1" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.33">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="noDetectCrashFault2" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.34">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <connector name="noDetectCrashFault3" type="//@bipType.18">
+      <actualPort xsi:type="ujf.verimag.bip.Core.Interactions:InnerPortReference" targetPort="//@bipType.7/@port.35">
+        <targetInstance targetPart="//@bipType.22/@subcomponent.2"/>
+      </actualPort>
+    </connector>
+    <subcomponent name="dr1" type="//@bipType.8">
+      <actualData xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="1"/>
+    </subcomponent>
+    <subcomponent name="m1" type="//@bipType.6">
+      <actualData xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="1"/>
+    </subcomponent>
+    <subcomponent name="db1" type="//@bipType.7">
+      <actualData xsi:type="ujf.verimag.bip.Core.ActionLanguage.Expressions:IntegerLiteral" iValue="1"/>
+    </subcomponent>
+  </bipType>
+  <dataType xsi:type="ujf.verimag.bip.Core.Modules:OpaqueElement" body="int"/>
+  <dataType xsi:type="ujf.verimag.bip.Core.Modules:OpaqueElement" body="bool"/>
+  <root name="start" type="//@bipType.22"/>
+</ujf.verimag.bip.Core.Modules:System>

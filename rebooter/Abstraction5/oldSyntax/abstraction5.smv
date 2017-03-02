@@ -1,0 +1,467 @@
+MODULE BUFFER2(active_interaction, NuDPid)
+
+	VAR
+		NuPwrite1		:		boolean;
+		NuPread1		:		boolean;
+		NuPwrite2		:		boolean;
+		NuPread2		:		boolean;
+		NuPwrite3		:		boolean;
+		NuPread3		:		boolean;
+		NuVreplicaID		:		unsigned word[3];
+		NuVfaultyReplicaID1		:		unsigned word[3];
+		NuVfaultyReplicaID2		:		unsigned word[3];
+		NuVfaultyReplicaID3		:		unsigned word[3];
+		NuVdelivered		:		unsigned word[3];
+		Nuplace		:		{NuSR0_W0_EMPTY, NuSW1_R0, NuSW1_R1, NuSW2_R1, NuSW2_R2, NuSW0_R1, NuSW0_R2, NuSW1_R2, NuSW1_R1_FULL, NuSW0_R0_FULL, NuSW2_R2_FULL, NuSW2_R0};
+
+
+	INIT
+		( (Nuplace) = (NuSR0_W0_EMPTY) ) &
+		( (NuVreplicaID) = (NuDPid) );
+
+	INVAR
+		( (NuPwrite1) <-> (( (( (( (Nuplace) = (NuSR0_W0_EMPTY) )) | (( (Nuplace) = (NuSW0_R1) )) )) | (( (Nuplace) = (NuSW0_R2) )) )) ) &
+		( (NuPread2) <-> (( (( (( (Nuplace) = (NuSW2_R1) )) | (( (Nuplace) = (NuSW0_R1) )) )) | (( (Nuplace) = (NuSW1_R1_FULL) )) )) ) &
+		( (NuPread1) <-> (( (( (( (Nuplace) = (NuSW2_R0) )) | (( (Nuplace) = (NuSW0_R0_FULL) )) )) | (( (Nuplace) = (NuSW1_R0) )) )) ) &
+		( (NuPread3) <-> (( (( (( (Nuplace) = (NuSW0_R2) )) | (( (Nuplace) = (NuSW1_R2) )) )) | (( (Nuplace) = (NuSW2_R2_FULL) )) )) ) &
+		( (NuPwrite3) <-> (( (( (( (Nuplace) = (NuSW2_R1) )) | (( (Nuplace) = (NuSW2_R0) )) )) | (( (Nuplace) = (NuSW2_R2) )) )) ) &
+		( (NuPwrite2) <-> (( (( (( (Nuplace) = (NuSW1_R1) )) | (( (Nuplace) = (NuSW1_R2) )) )) | (( (Nuplace) = (NuSW1_R0) )) )) );
+
+	TRANS
+		( (( (( (( (( (( (( (Nuplace) = (NuSR0_W0_EMPTY) )) & (( (next(Nuplace)) = (NuSW1_R0) )) )) & (( (active_interaction) = (NuI12) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSR0_W0_EMPTY) )) & (( (next(Nuplace)) = (NuSW1_R0) )) )) & (( (active_interaction) = (NuI15) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW0_R1) )) & (( (next(Nuplace)) = (NuSW1_R1_FULL) )) )) & (( (active_interaction) = (NuI12) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW0_R1) )) & (( (next(Nuplace)) = (NuSW1_R1_FULL) )) )) & (( (active_interaction) = (NuI15) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW0_R2) )) & (( (next(Nuplace)) = (NuSW1_R2) )) )) & (( (active_interaction) = (NuI12) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW0_R2) )) & (( (next(Nuplace)) = (NuSW1_R2) )) )) & (( (active_interaction) = (NuI15) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW1_R1) )) & (( (next(Nuplace)) = (NuSW2_R2) )) )) & (( (active_interaction) = (NuI13) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW1_R1) )) & (( (next(Nuplace)) = (NuSW2_R2) )) )) & (( (active_interaction) = (NuI16) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW1_R2) )) & (( (next(Nuplace)) = (NuSW2_R2_FULL) )) )) & (( (active_interaction) = (NuI13) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW1_R2) )) & (( (next(Nuplace)) = (NuSW2_R2_FULL) )) )) & (( (active_interaction) = (NuI16) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW1_R0) )) & (( (next(Nuplace)) = (NuSW2_R0) )) )) & (( (active_interaction) = (NuI13) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW1_R0) )) & (( (next(Nuplace)) = (NuSW2_R0) )) )) & (( (active_interaction) = (NuI16) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW2_R1) )) & (( (next(Nuplace)) = (NuSW0_R1) )) )) & (( (active_interaction) = (NuI14) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW2_R1) )) & (( (next(Nuplace)) = (NuSW0_R1) )) )) & (( (active_interaction) = (NuI17) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW2_R0) )) & (( (next(Nuplace)) = (NuSW0_R0_FULL) )) )) & (( (active_interaction) = (NuI14) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW2_R0) )) & (( (next(Nuplace)) = (NuSW0_R0_FULL) )) )) & (( (active_interaction) = (NuI17) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW2_R2) )) & (( (next(Nuplace)) = (NuSW0_R2) )) )) & (( (active_interaction) = (NuI14) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW2_R2) )) & (( (next(Nuplace)) = (NuSW0_R2) )) )) & (( (active_interaction) = (NuI17) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW2_R0) )) & (( (next(Nuplace)) = (NuSW2_R1) )) )) & (( (active_interaction) = (NuI18) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW0_R0_FULL) )) & (( (next(Nuplace)) = (NuSW0_R1) )) )) & (( (active_interaction) = (NuI18) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW1_R0) )) & (( (next(Nuplace)) = (NuSW1_R1) )) )) & (( (active_interaction) = (NuI18) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW2_R1) )) & (( (next(Nuplace)) = (NuSW2_R2) )) )) & (( (active_interaction) = (NuI19) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW0_R1) )) & (( (next(Nuplace)) = (NuSW0_R2) )) )) & (( (active_interaction) = (NuI19) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW1_R1_FULL) )) & (( (next(Nuplace)) = (NuSW1_R2) )) )) & (( (active_interaction) = (NuI19) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW0_R2) )) & (( (next(Nuplace)) = (NuSR0_W0_EMPTY) )) )) & (( (active_interaction) = (NuI20) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW1_R2) )) & (( (next(Nuplace)) = (NuSW1_R0) )) )) & (( (active_interaction) = (NuI20) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW2_R2_FULL) )) & (( (next(Nuplace)) = (NuSW2_R0) )) )) & (( (active_interaction) = (NuI20) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (active_interaction) != (NuI20) )) & (( (( (active_interaction) != (NuI19) )) & (( (( (active_interaction) != (NuI18) )) & (( (( (active_interaction) != (NuI17) )) & (( (( (active_interaction) != (NuI14) )) & (( (( (active_interaction) != (NuI16) )) & (( (( (active_interaction) != (NuI13) )) & (( (( (active_interaction) != (NuI15) )) & (( (( (active_interaction) != (NuI12) )) & (( (( (( (( (( (( (next(Nuplace)) = (Nuplace) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) )) )) )) )) )) )) )) )) )) );
+
+
+MODULE D2(active_interaction, NuDPid)
+
+	VAR
+		NuPdetection		:		boolean;
+		NuPsend_internal_detection		:		boolean;
+		NuPsend_external_detection		:		boolean;
+		NuVreplicaID		:		unsigned word[3];
+		NuVfaultyReplicaID		:		unsigned word[3];
+		NuVreplicaIDdestination		:		unsigned word[3];
+		Nuplace		:		{NuSSTART, NuSSENT_INTERNAL, NuSSENT_EXTERNAL};
+
+
+	INIT
+		( (Nuplace) = (NuSSTART) ) &
+		( (NuVreplicaID) = (NuDPid) );
+
+	INVAR
+		( (NuPsend_external_detection) <-> (( (( (Nuplace) = (NuSSTART) )) & (( (NuVreplicaID) != (NuVfaultyReplicaID) )) )) ) &
+		( (NuPsend_internal_detection) <-> (( (( (Nuplace) = (NuSSTART) )) & (( (NuVreplicaID) = (NuVfaultyReplicaID) )) )) ) &
+		( (NuPdetection) <-> (( (( (Nuplace) = (NuSSENT_INTERNAL) )) | (( (Nuplace) = (NuSSENT_EXTERNAL) )) )) ) &
+		( ( NuVfaultyReplicaID = 0ud3_1 ) | ( NuVfaultyReplicaID = 0ud3_2 ) );
+
+	TRANS
+		( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSSENT_INTERNAL) )) )) & (( (active_interaction) = (NuI12) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) ) |
+		( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSSENT_INTERNAL) )) )) & (( (active_interaction) = (NuI13) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) ) |
+		( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSSENT_INTERNAL) )) )) & (( (active_interaction) = (NuI14) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) ) |
+		( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSSENT_EXTERNAL) )) )) & (( (active_interaction) = (NuI15) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) ) |
+		( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSSENT_EXTERNAL) )) )) & (( (active_interaction) = (NuI16) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) ) |
+		( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSSENT_EXTERNAL) )) )) & (( (active_interaction) = (NuI17) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) ) |
+		( (( (( (( (( (( (Nuplace) = (NuSSENT_INTERNAL) )) & (( (next(Nuplace)) = (NuSSTART) )) )) & (( (active_interaction) = (NuI32) )) ))  )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) ) |
+		( (( (( (( (( (( (Nuplace) = (NuSSENT_EXTERNAL) )) & (( (next(Nuplace)) = (NuSSTART) )) )) & (( (active_interaction) = (NuI32) )) ))  )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) ) |
+		( (( (active_interaction) != (NuI32) )) & (( (( (active_interaction) != (NuI17) )) & (( (( (active_interaction) != (NuI16) )) & (( (( (active_interaction) != (NuI15) )) & (( (( (active_interaction) != (NuI14) )) & (( (( (active_interaction) != (NuI13) )) & (( (( (active_interaction) != (NuI12) )) & (( (( (( (( (next(Nuplace)) = (Nuplace) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) )) )) )) )) )) )) )) );
+
+
+MODULE R2(active_interaction, NuDPid)
+
+	VAR
+		NuPtransition1		:		boolean;
+		NuPreceive_internal_detection		:		boolean;
+		NuPsend_internal_recovery		:		boolean;
+		NuPreceive_external_detection		:		boolean;
+		NuPsend_external_recovery		:		boolean;
+		NuPreceive_ack		:		boolean;
+		NuPbackBeginningState		:		boolean;
+		NuPreceive_detection_message		:		boolean;
+		NuVreplicaID		:		unsigned word[3];
+		NuVfaultyReplicaID		:		unsigned word[3];
+		Nuplace		:		{NuSSTART, NuSRECEIVED_DETECTION_MESSAGE, NuSINT_REC_BEGIN, NuSEXT_REC_BEGIN, NuSEXT_REC_SENT, NuSFINISHED_REC, NuSSTART_REBOOT};
+
+
+	INIT
+		( (Nuplace) = (NuSSTART) ) &
+		( (NuVreplicaID) = (NuDPid) );
+
+	INVAR
+		( (NuPsend_internal_recovery) <-> (( (Nuplace) = (NuSINT_REC_BEGIN) )) ) &
+		( (NuPreceive_detection_message) <-> (( (Nuplace) = (NuSSTART) )) ) &
+		( (NuPreceive_internal_detection) <-> (( (( (Nuplace) = (NuSRECEIVED_DETECTION_MESSAGE) )) & (( (NuVreplicaID) = (NuVfaultyReplicaID) )) )) ) &
+		( (NuPreceive_ack) <-> (( (Nuplace) = (NuSEXT_REC_SENT) )) ) &
+		( (NuPreceive_external_detection) <-> (( (( (Nuplace) = (NuSRECEIVED_DETECTION_MESSAGE) )) & (( (NuVreplicaID) != (NuVfaultyReplicaID) )) )) ) &
+		( (NuPsend_external_recovery) <-> (( (Nuplace) = (NuSEXT_REC_BEGIN) )) ) &
+		( (NuPbackBeginningState) <-> (( (Nuplace) = (NuSFINISHED_REC) )) );
+
+	TRANS
+		( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSRECEIVED_DETECTION_MESSAGE) )) )) & (( (active_interaction) = (NuI18) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) ) |
+		( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSRECEIVED_DETECTION_MESSAGE) )) )) & (( (active_interaction) = (NuI19) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) ) |
+		( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSRECEIVED_DETECTION_MESSAGE) )) )) & (( (active_interaction) = (NuI20) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) ) |
+		( (( (( (( (( (Nuplace) = (NuSRECEIVED_DETECTION_MESSAGE) )) & (( (next(Nuplace)) = (NuSINT_REC_BEGIN) )) )) & (( (active_interaction) = (NuI21) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) ) |
+		( (( (( (( (( (Nuplace) = (NuSINT_REC_BEGIN) )) & (( (next(Nuplace)) = (NuSSTART) )) )) & (( (active_interaction) = (NuI24) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) ) |
+		( (( (( (( (( (Nuplace) = (NuSRECEIVED_DETECTION_MESSAGE) )) & (( (next(Nuplace)) = (NuSEXT_REC_BEGIN) )) )) & (( (active_interaction) = (NuI22) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) ) |
+		( (( (( (( (Nuplace) = (NuSEXT_REC_BEGIN) )) & (( (next(Nuplace)) = (NuSEXT_REC_SENT) )) )) & (( (active_interaction) = (NuI26) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) ) |
+		( (( (( (( (( (Nuplace) = (NuSEXT_REC_SENT) )) & (( (next(Nuplace)) = (NuSFINISHED_REC) )) )) & (( (active_interaction) = (NuI28) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) ) |
+		( (( (( (( (( (Nuplace) = (NuSFINISHED_REC) )) & (( (next(Nuplace)) = (NuSSTART) )) )) & (( (active_interaction) = (NuI30) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) ) |
+		( (( (active_interaction) != (NuI30) )) & (( (( (active_interaction) != (NuI28) )) & (( (( (active_interaction) != (NuI26) )) & (( (( (active_interaction) != (NuI22) )) & (( (( (active_interaction) != (NuI24) )) & (( (( (active_interaction) != (NuI21) )) & (( (( (active_interaction) != (NuI20) )) & (( (( (active_interaction) != (NuI19) )) & (( (( (active_interaction) != (NuI18) )) & (( (( (( (next(Nuplace)) = (Nuplace) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) )) )) )) )) )) )) )) )) );
+
+
+MODULE H1(active_interaction, NuDPid)
+
+	VAR
+		NuPdeliver		:		boolean;
+		NuPread		:		boolean;
+		NuVreplicaID		:		unsigned word[3];
+		NuVfaultyReplicaID		:		unsigned word[3];
+		Nuplace		:		{NuSSTART, NuSRECEIVED};
+
+
+	INIT
+		( (Nuplace) = (NuSSTART) ) &
+		( (NuVreplicaID) = (NuDPid) );
+
+	INVAR
+		( (NuPdeliver) <-> (( (Nuplace) = (NuSSTART) )) ) &
+		( (NuPread) <-> (( (Nuplace) = (NuSRECEIVED) )) );
+
+	TRANS
+		( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSRECEIVED) )) )) & (( (active_interaction) = (NuI26) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) ) |
+		( (( (( (( (( (Nuplace) = (NuSRECEIVED) )) & (( (next(Nuplace)) = (NuSSTART) )) )) & (( (active_interaction) = (NuI28) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) ) |
+		( (( (active_interaction) != (NuI28) )) & (( (( (active_interaction) != (NuI26) )) & (( (( (( (next(Nuplace)) = (Nuplace) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) )) );
+
+
+MODULE BUFFER1(active_interaction, NuDPid)
+
+	VAR
+		NuPwrite1		:		boolean;
+		NuPread1		:		boolean;
+		NuPwrite2		:		boolean;
+		NuPread2		:		boolean;
+		NuPwrite3		:		boolean;
+		NuPread3		:		boolean;
+		NuVreplicaID		:		unsigned word[3];
+		NuVfaultyReplicaID1		:		unsigned word[3];
+		NuVfaultyReplicaID2		:		unsigned word[3];
+		NuVfaultyReplicaID3		:		unsigned word[3];
+		NuVdelivered		:		unsigned word[3];
+		Nuplace		:		{NuSR0_W0_EMPTY, NuSW1_R0, NuSW1_R1, NuSW2_R1, NuSW2_R2, NuSW0_R1, NuSW0_R2, NuSW1_R2, NuSW1_R1_FULL, NuSW0_R0_FULL, NuSW2_R2_FULL, NuSW2_R0};
+
+
+	INIT
+		( (Nuplace) = (NuSR0_W0_EMPTY) ) &
+		( (NuVreplicaID) = (NuDPid) );
+
+	INVAR
+		( (NuPwrite3) <-> (( (( (( (Nuplace) = (NuSW2_R1) )) | (( (Nuplace) = (NuSW2_R0) )) )) | (( (Nuplace) = (NuSW2_R2) )) )) ) &
+		( (NuPread1) <-> (( (( (( (Nuplace) = (NuSW2_R0) )) | (( (Nuplace) = (NuSW0_R0_FULL) )) )) | (( (Nuplace) = (NuSW1_R0) )) )) ) &
+		( (NuPread3) <-> (( (( (( (Nuplace) = (NuSW0_R2) )) | (( (Nuplace) = (NuSW1_R2) )) )) | (( (Nuplace) = (NuSW2_R2_FULL) )) )) ) &
+		( (NuPwrite1) <-> (( (( (( (Nuplace) = (NuSR0_W0_EMPTY) )) | (( (Nuplace) = (NuSW0_R1) )) )) | (( (Nuplace) = (NuSW0_R2) )) )) ) &
+		( (NuPread2) <-> (( (( (( (Nuplace) = (NuSW2_R1) )) | (( (Nuplace) = (NuSW0_R1) )) )) | (( (Nuplace) = (NuSW1_R1_FULL) )) )) ) &
+		( (NuPwrite2) <-> (( (( (( (Nuplace) = (NuSW1_R1) )) | (( (Nuplace) = (NuSW1_R2) )) )) | (( (Nuplace) = (NuSW1_R0) )) )) );
+
+	TRANS
+		( (( (( (( (( (( (( (Nuplace) = (NuSR0_W0_EMPTY) )) & (( (next(Nuplace)) = (NuSW1_R0) )) )) & (( (active_interaction) = (NuI1) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSR0_W0_EMPTY) )) & (( (next(Nuplace)) = (NuSW1_R0) )) )) & (( (active_interaction) = (NuI4) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW0_R1) )) & (( (next(Nuplace)) = (NuSW1_R1_FULL) )) )) & (( (active_interaction) = (NuI1) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW0_R1) )) & (( (next(Nuplace)) = (NuSW1_R1_FULL) )) )) & (( (active_interaction) = (NuI4) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW0_R2) )) & (( (next(Nuplace)) = (NuSW1_R2) )) )) & (( (active_interaction) = (NuI1) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW0_R2) )) & (( (next(Nuplace)) = (NuSW1_R2) )) )) & (( (active_interaction) = (NuI4) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW1_R1) )) & (( (next(Nuplace)) = (NuSW2_R2) )) )) & (( (active_interaction) = (NuI2) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW1_R1) )) & (( (next(Nuplace)) = (NuSW2_R2) )) )) & (( (active_interaction) = (NuI5) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW1_R2) )) & (( (next(Nuplace)) = (NuSW2_R2_FULL) )) )) & (( (active_interaction) = (NuI2) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW1_R2) )) & (( (next(Nuplace)) = (NuSW2_R2_FULL) )) )) & (( (active_interaction) = (NuI5) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW1_R0) )) & (( (next(Nuplace)) = (NuSW2_R0) )) )) & (( (active_interaction) = (NuI2) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW1_R0) )) & (( (next(Nuplace)) = (NuSW2_R0) )) )) & (( (active_interaction) = (NuI5) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW2_R1) )) & (( (next(Nuplace)) = (NuSW0_R1) )) )) & (( (active_interaction) = (NuI3) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW2_R1) )) & (( (next(Nuplace)) = (NuSW0_R1) )) )) & (( (active_interaction) = (NuI6) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW2_R0) )) & (( (next(Nuplace)) = (NuSW0_R0_FULL) )) )) & (( (active_interaction) = (NuI3) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW2_R0) )) & (( (next(Nuplace)) = (NuSW0_R0_FULL) )) )) & (( (active_interaction) = (NuI6) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW2_R2) )) & (( (next(Nuplace)) = (NuSW0_R2) )) )) & (( (active_interaction) = (NuI3) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (Nuplace) = (NuSW2_R2) )) & (( (next(Nuplace)) = (NuSW0_R2) )) )) & (( (active_interaction) = (NuI6) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW2_R0) )) & (( (next(Nuplace)) = (NuSW2_R1) )) )) & (( (active_interaction) = (NuI7) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW0_R0_FULL) )) & (( (next(Nuplace)) = (NuSW0_R1) )) )) & (( (active_interaction) = (NuI7) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW1_R0) )) & (( (next(Nuplace)) = (NuSW1_R1) )) )) & (( (active_interaction) = (NuI7) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW2_R1) )) & (( (next(Nuplace)) = (NuSW2_R2) )) )) & (( (active_interaction) = (NuI8) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW0_R1) )) & (( (next(Nuplace)) = (NuSW0_R2) )) )) & (( (active_interaction) = (NuI8) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW1_R1_FULL) )) & (( (next(Nuplace)) = (NuSW1_R2) )) )) & (( (active_interaction) = (NuI8) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW0_R2) )) & (( (next(Nuplace)) = (NuSR0_W0_EMPTY) )) )) & (( (active_interaction) = (NuI9) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW1_R2) )) & (( (next(Nuplace)) = (NuSW1_R0) )) )) & (( (active_interaction) = (NuI9) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (( (( (( (( (( (( (Nuplace) = (NuSW2_R2_FULL) )) & (( (next(Nuplace)) = (NuSW2_R0) )) )) & (( (active_interaction) = (NuI9) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) ) |
+		( (( (active_interaction) != (NuI9) )) & (( (( (active_interaction) != (NuI8) )) & (( (( (active_interaction) != (NuI7) )) & (( (( (active_interaction) != (NuI6) )) & (( (( (active_interaction) != (NuI3) )) & (( (( (active_interaction) != (NuI5) )) & (( (( (active_interaction) != (NuI2) )) & (( (( (active_interaction) != (NuI4) )) & (( (( (active_interaction) != (NuI1) )) & (( (( (( (( (( (( (next(Nuplace)) = (Nuplace) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID1)) = (NuVfaultyReplicaID1) )) )) & (( (next(NuVfaultyReplicaID2)) = (NuVfaultyReplicaID2) )) )) & (( (next(NuVfaultyReplicaID3)) = (NuVfaultyReplicaID3) )) )) & (( (next(NuVdelivered)) = (NuVdelivered) )) )) )) )) )) )) )) )) )) )) );
+
+
+MODULE D1(active_interaction, NuDPid)
+
+	VAR
+		NuPdetection		:		boolean;
+		NuPsend_internal_detection		:		boolean;
+		NuPsend_external_detection		:		boolean;
+		NuVreplicaID		:		unsigned word[3];
+		NuVfaultyReplicaID		:		unsigned word[3];
+		NuVreplicaIDdestination		:		unsigned word[3];
+		Nuplace		:		{NuSSTART, NuSSENT_INTERNAL, NuSSENT_EXTERNAL};
+
+
+	INIT
+		( (Nuplace) = (NuSSTART) ) &
+		( (NuVreplicaID) = (NuDPid) );
+
+	INVAR
+		( (NuPsend_internal_detection) <-> (( (( (Nuplace) = (NuSSTART) )) & (( (NuVreplicaID) = (NuVfaultyReplicaID) )) )) ) &
+		( (NuPsend_external_detection) <-> (( (( (Nuplace) = (NuSSTART) )) & (( (NuVreplicaID) != (NuVfaultyReplicaID) )) )) ) &
+		( (NuPdetection) <-> (( (( (Nuplace) = (NuSSENT_INTERNAL) )) | (( (Nuplace) = (NuSSENT_EXTERNAL) )) )) ) &
+		( ( NuVfaultyReplicaID = 0ud3_1 ) | ( NuVfaultyReplicaID = 0ud3_2 ) );
+
+	TRANS
+		( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSSENT_INTERNAL) )) )) & (( (active_interaction) = (NuI1) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) ) |
+		( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSSENT_INTERNAL) )) )) & (( (active_interaction) = (NuI2) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) ) |
+		( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSSENT_INTERNAL) )) )) & (( (active_interaction) = (NuI3) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) ) |
+		( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSSENT_EXTERNAL) )) )) & (( (active_interaction) = (NuI4) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) ) |
+		( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSSENT_EXTERNAL) )) )) & (( (active_interaction) = (NuI5) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) ) |
+		( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSSENT_EXTERNAL) )) )) & (( (active_interaction) = (NuI6) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) ) |
+		( (( (( (( (( (( (Nuplace) = (NuSSENT_INTERNAL) )) & (( (next(Nuplace)) = (NuSSTART) )) )) & (( (active_interaction) = (NuI31) )) ))  )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) ) |
+		( (( (( (( (( (( (Nuplace) = (NuSSENT_EXTERNAL) )) & (( (next(Nuplace)) = (NuSSTART) )) )) & (( (active_interaction) = (NuI31) )) ))  )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) ) |
+		( (( (active_interaction) != (NuI31) )) & (( (( (active_interaction) != (NuI6) )) & (( (( (active_interaction) != (NuI5) )) & (( (( (active_interaction) != (NuI4) )) & (( (( (active_interaction) != (NuI3) )) & (( (( (active_interaction) != (NuI2) )) & (( (( (active_interaction) != (NuI1) )) & (( (( (( (( (next(Nuplace)) = (Nuplace) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) & (( (next(NuVreplicaIDdestination)) = (NuVreplicaIDdestination) )) )) )) )) )) )) )) )) );
+
+
+MODULE R1(active_interaction, NuDPid)
+
+	VAR
+		NuPtransition1		:		boolean;
+		NuPreceive_internal_detection		:		boolean;
+		NuPsend_internal_recovery		:		boolean;
+		NuPreceive_external_detection		:		boolean;
+		NuPsend_external_recovery		:		boolean;
+		NuPreceive_ack		:		boolean;
+		NuPbackBeginningState		:		boolean;
+		NuPreceive_detection_message		:		boolean;
+		NuVreplicaID		:		unsigned word[3];
+		NuVfaultyReplicaID		:		unsigned word[3];
+		Nuplace		:		{NuSSTART, NuSRECEIVED_DETECTION_MESSAGE, NuSINT_REC_BEGIN, NuSEXT_REC_BEGIN, NuSEXT_REC_SENT, NuSFINISHED_REC, NuSSTART_REBOOT};
+
+
+	INIT
+		( (Nuplace) = (NuSSTART) ) &
+		( (NuVreplicaID) = (NuDPid) );
+
+	INVAR
+		( (NuPreceive_ack) <-> (( (Nuplace) = (NuSEXT_REC_SENT) )) ) &
+		( (NuPsend_external_recovery) <-> (( (Nuplace) = (NuSEXT_REC_BEGIN) )) ) &
+		( (NuPreceive_internal_detection) <-> (( (( (Nuplace) = (NuSRECEIVED_DETECTION_MESSAGE) )) & (( (NuVreplicaID) = (NuVfaultyReplicaID) )) )) ) &
+		( (NuPreceive_detection_message) <-> (( (Nuplace) = (NuSSTART) )) ) &
+		( (NuPbackBeginningState) <-> (( (Nuplace) = (NuSFINISHED_REC) )) ) &
+		( (NuPreceive_external_detection) <-> (( (( (Nuplace) = (NuSRECEIVED_DETECTION_MESSAGE) )) & (( (NuVreplicaID) != (NuVfaultyReplicaID) )) )) ) &
+		( (NuPsend_internal_recovery) <-> (( (Nuplace) = (NuSINT_REC_BEGIN) )) );
+
+	TRANS
+		( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSRECEIVED_DETECTION_MESSAGE) )) )) & (( (active_interaction) = (NuI7) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) ) |
+		( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSRECEIVED_DETECTION_MESSAGE) )) )) & (( (active_interaction) = (NuI8) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) ) |
+		( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSRECEIVED_DETECTION_MESSAGE) )) )) & (( (active_interaction) = (NuI9) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) ) |
+		( (( (( (( (( (Nuplace) = (NuSRECEIVED_DETECTION_MESSAGE) )) & (( (next(Nuplace)) = (NuSINT_REC_BEGIN) )) )) & (( (active_interaction) = (NuI10) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) ) |
+		( (( (( (( (( (Nuplace) = (NuSINT_REC_BEGIN) )) & (( (next(Nuplace)) = (NuSSTART) )) )) & (( (active_interaction) = (NuI23) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) ) |
+		( (( (( (( (( (Nuplace) = (NuSRECEIVED_DETECTION_MESSAGE) )) & (( (next(Nuplace)) = (NuSEXT_REC_BEGIN) )) )) & (( (active_interaction) = (NuI11) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) ) |
+		( (( (( (( (Nuplace) = (NuSEXT_REC_BEGIN) )) & (( (next(Nuplace)) = (NuSEXT_REC_SENT) )) )) & (( (active_interaction) = (NuI25) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) ) |
+		( (( (( (( (( (Nuplace) = (NuSEXT_REC_SENT) )) & (( (next(Nuplace)) = (NuSFINISHED_REC) )) )) & (( (active_interaction) = (NuI27) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) ) |
+		( (( (( (( (( (Nuplace) = (NuSFINISHED_REC) )) & (( (next(Nuplace)) = (NuSSTART) )) )) & (( (active_interaction) = (NuI29) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) ) |
+		( (( (active_interaction) != (NuI29) )) & (( (( (active_interaction) != (NuI27) )) & (( (( (active_interaction) != (NuI25) )) & (( (( (active_interaction) != (NuI11) )) & (( (( (active_interaction) != (NuI23) )) & (( (( (active_interaction) != (NuI10) )) & (( (( (active_interaction) != (NuI9) )) & (( (( (active_interaction) != (NuI8) )) & (( (( (active_interaction) != (NuI7) )) & (( (( (( (next(Nuplace)) = (Nuplace) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) )) )) )) )) )) )) )) )) );
+
+
+MODULE H2(active_interaction, NuDPid)
+
+	VAR
+		NuPdeliver		:		boolean;
+		NuPread		:		boolean;
+		NuVreplicaID		:		unsigned word[3];
+		NuVfaultyReplicaID		:		unsigned word[3];
+		Nuplace		:		{NuSSTART, NuSRECEIVED};
+
+
+	INIT
+		( (Nuplace) = (NuSSTART) ) &
+		( (NuVreplicaID) = (NuDPid) );
+
+	INVAR
+		( (NuPread) <-> (( (Nuplace) = (NuSRECEIVED) )) ) &
+		( (NuPdeliver) <-> (( (Nuplace) = (NuSSTART) )) );
+
+	TRANS
+		( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSRECEIVED) )) )) & (( (active_interaction) = (NuI25) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) ) |
+		( (( (( (( (( (Nuplace) = (NuSRECEIVED) )) & (( (next(Nuplace)) = (NuSSTART) )) )) & (( (active_interaction) = (NuI27) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) ) |
+		( (( (active_interaction) != (NuI27) )) & (( (( (active_interaction) != (NuI25) )) & (( (( (( (next(Nuplace)) = (Nuplace) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVfaultyReplicaID)) = (NuVfaultyReplicaID) )) )) )) );
+
+
+MODULE main
+
+	VAR
+		NuInteraction		:		{NuI1, NuI2, NuI3, NuI4, NuI5, NuI6, NuI7, NuI8, NuI9, NuI10, NuI11, NuI12, NuI13, NuI14, NuI15, NuI16, NuI17, NuI18, NuI19, NuI20, NuI21, NuI22, NuI23, NuI24, NuI25, NuI26, NuI27, NuI28, NuI29, NuI30, NuI31, NuI32};
+		buffer2	:	BUFFER2(NuInteraction, 0ud3_2);
+		d2	:	D2(NuInteraction, 0ud3_2);
+		r2	:	R2(NuInteraction, 0ud3_2);
+		h1	:	H1(NuInteraction, 0ud3_1);
+		buffer1	:	BUFFER1(NuInteraction, 0ud3_1);
+		d1	:	D1(NuInteraction, 0ud3_1);
+		r1	:	R1(NuInteraction, 0ud3_1);
+		h2	:	H2(NuInteraction, 0ud3_2);
+
+	DEFINE
+		readFromBuffer21		:=		( (buffer2.NuPread1) & (r2.NuPreceive_detection_message) );
+		detectorToRebooterInternal2		:=		r2.NuPreceive_internal_detection;
+		readFromBuffer12		:=		( (buffer1.NuPread2) & (r1.NuPreceive_detection_message) );
+		rebooterSendEXT_REC2		:=		( (r2.NuPsend_external_recovery) & (h1.NuPdeliver) );
+		detectorToRebooterInternal1		:=		r1.NuPreceive_internal_detection;
+		detectorToBufferExternal23		:=		( (d2.NuPsend_external_detection) & (buffer2.NuPwrite3) );
+		readFromBuffer22		:=		( (buffer2.NuPread2) & (r2.NuPreceive_detection_message) );
+		readFromBuffer23		:=		( (buffer2.NuPread3) & (r2.NuPreceive_detection_message) );
+		rebooterSendEXT_REC1		:=		( (r1.NuPsend_external_recovery) & (h2.NuPdeliver) );
+		rebooterRead_EXT_REC2		:=		( (r2.NuPreceive_ack) & (h1.NuPread) );
+		backBeginningDetector1		:=		d1.NuPdetection;
+		rebooterSendINT_REC1		:=		r1.NuPsend_internal_recovery;
+		detectorToRebooterExternal2		:=		r2.NuPreceive_external_detection;
+		backBeginningRebooter1		:=		r1.NuPbackBeginningState;
+		detectorToBufferInternal11		:=		( (d1.NuPsend_internal_detection) & (buffer1.NuPwrite1) );
+		detectorToBufferInternal12		:=		( (d1.NuPsend_internal_detection) & (buffer1.NuPwrite2) );
+		detectorToBufferInternal21		:=		( (d2.NuPsend_internal_detection) & (buffer2.NuPwrite1) );
+		detectorToBufferInternal23		:=		( (d2.NuPsend_internal_detection) & (buffer2.NuPwrite3) );
+		detectorToBufferExternal13		:=		( (d1.NuPsend_external_detection) & (buffer1.NuPwrite3) );
+		detectorToBufferExternal11		:=		( (d1.NuPsend_external_detection) & (buffer1.NuPwrite1) );
+		backBeginningRebooter2		:=		r2.NuPbackBeginningState;
+		detectorToBufferExternal22		:=		( (d2.NuPsend_external_detection) & (buffer2.NuPwrite2) );
+		detectorToBufferInternal13		:=		( (d1.NuPsend_internal_detection) & (buffer1.NuPwrite3) );
+		backBeginningDetector2		:=		d2.NuPdetection;
+		detectorToBufferExternal12		:=		( (d1.NuPsend_external_detection) & (buffer1.NuPwrite2) );
+		rebooterRead_EXT_REC1		:=		( (r1.NuPreceive_ack) & (h2.NuPread) );
+		detectorToBufferExternal21		:=		( (d2.NuPsend_external_detection) & (buffer2.NuPwrite1) );
+		rebooterSendINT_REC2		:=		r2.NuPsend_internal_recovery;
+		readFromBuffer11		:=		( (buffer1.NuPread1) & (r1.NuPreceive_detection_message) );
+		detectorToBufferInternal22		:=		( (d2.NuPsend_internal_detection) & (buffer2.NuPwrite2) );
+		detectorToRebooterExternal1		:=		r1.NuPreceive_external_detection;
+		readFromBuffer13		:=		( (buffer1.NuPread3) & (r1.NuPreceive_detection_message) );
+
+
+	INVAR
+		( (( (NuInteraction) = (NuI18) )) -> (readFromBuffer21) ) &
+		( (( (NuInteraction) = (NuI21) )) -> (detectorToRebooterInternal2) ) &
+		( (( (NuInteraction) = (NuI8) )) -> (readFromBuffer12) ) &
+		( (( (NuInteraction) = (NuI26) )) -> (rebooterSendEXT_REC2) ) &
+		( (( (NuInteraction) = (NuI10) )) -> (detectorToRebooterInternal1) ) &
+		( (( (NuInteraction) = (NuI17) )) -> (detectorToBufferExternal23) ) &
+		( (( (NuInteraction) = (NuI19) )) -> (readFromBuffer22) ) &
+		( (( (NuInteraction) = (NuI20) )) -> (readFromBuffer23) ) &
+		( (( (NuInteraction) = (NuI25) )) -> (rebooterSendEXT_REC1) ) &
+		( (( (NuInteraction) = (NuI28) )) -> (rebooterRead_EXT_REC2) ) &
+		( (( (NuInteraction) = (NuI31) )) -> (backBeginningDetector1) ) &
+		( (( (NuInteraction) = (NuI23) )) -> (rebooterSendINT_REC1) ) &
+		( (( (NuInteraction) = (NuI22) )) -> (detectorToRebooterExternal2) ) &
+		( (( (NuInteraction) = (NuI29) )) -> (backBeginningRebooter1) ) &
+		( (( (NuInteraction) = (NuI1) )) -> (detectorToBufferInternal11) ) &
+		( (( (NuInteraction) = (NuI2) )) -> (detectorToBufferInternal12) ) &
+		( (( (NuInteraction) = (NuI12) )) -> (detectorToBufferInternal21) ) &
+		( (( (NuInteraction) = (NuI14) )) -> (detectorToBufferInternal23) ) &
+		( (( (NuInteraction) = (NuI6) )) -> (detectorToBufferExternal13) ) &
+		( (( (NuInteraction) = (NuI4) )) -> (detectorToBufferExternal11) ) &
+		( (( (NuInteraction) = (NuI30) )) -> (backBeginningRebooter2) ) &
+		( (( (NuInteraction) = (NuI16) )) -> (detectorToBufferExternal22) ) &
+		( (( (NuInteraction) = (NuI3) )) -> (detectorToBufferInternal13) ) &
+		( (( (NuInteraction) = (NuI32) )) -> (backBeginningDetector2) ) &
+		( (( (NuInteraction) = (NuI5) )) -> (detectorToBufferExternal12) ) &
+		( (( (NuInteraction) = (NuI27) )) -> (rebooterRead_EXT_REC1) ) &
+		( (( (NuInteraction) = (NuI15) )) -> (detectorToBufferExternal21) ) &
+		( (( (NuInteraction) = (NuI24) )) -> (rebooterSendINT_REC2) ) &
+		( (( (NuInteraction) = (NuI7) )) -> (readFromBuffer11) ) &
+		( (( (NuInteraction) = (NuI13) )) -> (detectorToBufferInternal22) ) &
+		( (( (NuInteraction) = (NuI11) )) -> (detectorToRebooterExternal1) ) &
+		( (( (NuInteraction) = (NuI9) )) -> (readFromBuffer13) );
+
+	TRANS
+		( (( (NuInteraction) = (NuI18) )) -> (( (next(r2.NuVfaultyReplicaID)) = (buffer2.NuVfaultyReplicaID1) )) ) &
+		( (( (NuInteraction) = (NuI8) )) -> (( (next(r1.NuVfaultyReplicaID)) = (buffer1.NuVfaultyReplicaID2) )) ) &
+		( (( (NuInteraction) = (NuI26) )) -> (( (next(r2.NuVfaultyReplicaID)) = (h1.NuVfaultyReplicaID) )) ) &
+		( (( (NuInteraction) = (NuI17) )) -> (( (next(buffer2.NuVfaultyReplicaID3)) = (d2.NuVfaultyReplicaID) )) ) &
+		( (( (NuInteraction) = (NuI19) )) -> (( (next(r2.NuVfaultyReplicaID)) = (buffer2.NuVfaultyReplicaID2) )) ) &
+		( (( (NuInteraction) = (NuI20) )) -> (( (next(r2.NuVfaultyReplicaID)) = (buffer2.NuVfaultyReplicaID3) )) ) &
+		( (( (NuInteraction) = (NuI25) )) -> (( (next(r1.NuVfaultyReplicaID)) = (h2.NuVfaultyReplicaID) )) ) &
+		( (( (NuInteraction) = (NuI1) )) -> (( (next(buffer1.NuVfaultyReplicaID1)) = (d1.NuVfaultyReplicaID) )) ) &
+		( (( (NuInteraction) = (NuI2) )) -> (( (next(buffer1.NuVfaultyReplicaID2)) = (d1.NuVfaultyReplicaID) )) ) &
+		( (( (NuInteraction) = (NuI12) )) -> (( (next(buffer2.NuVfaultyReplicaID1)) = (d2.NuVfaultyReplicaID) )) ) &
+		( (( (NuInteraction) = (NuI14) )) -> (( (next(buffer2.NuVfaultyReplicaID3)) = (d2.NuVfaultyReplicaID) )) ) &
+		( (( (NuInteraction) = (NuI6) )) -> (( (next(buffer1.NuVfaultyReplicaID3)) = (d1.NuVfaultyReplicaID) )) ) &
+		( (( (NuInteraction) = (NuI4) )) -> (( (next(buffer1.NuVfaultyReplicaID1)) = (d1.NuVfaultyReplicaID) )) ) &
+		( (( (NuInteraction) = (NuI16) )) -> (( (next(buffer2.NuVfaultyReplicaID2)) = (d2.NuVfaultyReplicaID) )) ) &
+		( (( (NuInteraction) = (NuI3) )) -> (( (next(buffer1.NuVfaultyReplicaID3)) = (d1.NuVfaultyReplicaID) )) ) &
+		( (( (NuInteraction) = (NuI5) )) -> (( (next(buffer1.NuVfaultyReplicaID2)) = (d1.NuVfaultyReplicaID) )) ) &
+		( (( (NuInteraction) = (NuI15) )) -> (( (next(buffer2.NuVfaultyReplicaID1)) = (d2.NuVfaultyReplicaID) )) ) &
+		( (( (NuInteraction) = (NuI7) )) -> (( (next(r1.NuVfaultyReplicaID)) = (buffer1.NuVfaultyReplicaID1) )) ) &
+		( (( (NuInteraction) = (NuI13) )) -> (( (next(buffer2.NuVfaultyReplicaID2)) = (d2.NuVfaultyReplicaID) )) ) &
+		( (( (NuInteraction) = (NuI9) )) -> (( (next(r1.NuVfaultyReplicaID)) = (buffer1.NuVfaultyReplicaID3) )) );
+
+
+SPEC AG (  r1.Nuplace = NuSEXT_REC_SENT ->   h2.Nuplace = NuSRECEIVED)
+SPEC AG (  r2.Nuplace = NuSEXT_REC_SENT ->   h1.Nuplace = NuSRECEIVED)
+
+SPEC AG ( h1.Nuplace = NuSRECEIVED -> EF h1.Nuplace = NuSSTART ) 
+SPEC AG ( h1.Nuplace = NuSRECEIVED -> EF h1.Nuplace = NuSSTART ) 
+
+
+SPEC AG ( r1.Nuplace = NuSINT_REC_BEGIN -> r1.NuVfaultyReplicaID = 0ud3_1)
+SPEC AG ( r1.Nuplace = NuSEXT_REC_BEGIN -> r1.NuVfaultyReplicaID = 0ud3_2)
+
+SPEC AG ( r2.Nuplace = NuSINT_REC_BEGIN -> r2.NuVfaultyReplicaID = 0ud3_2)
+SPEC AG ( r2.Nuplace = NuSEXT_REC_BEGIN -> r2.NuVfaultyReplicaID = 0ud3_1)
+
+
+SPEC AG ( r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE &  r1.NuVfaultyReplicaID = 0ud3_1 -> ( AX r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | AX r1.Nuplace = NuSINT_REC_BEGIN) )
+SPEC AG ( r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE &  r1.NuVfaultyReplicaID = 0ud3_2 -> ( AX r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | AX r1.Nuplace = NuSEXT_REC_BEGIN) )
+
+SPEC AG ( r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE &  r2.NuVfaultyReplicaID = 0ud3_2 -> ( AX r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | AX r2.Nuplace = NuSINT_REC_BEGIN) )
+SPEC AG ( r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE &  r2.NuVfaultyReplicaID = 0ud3_1 -> ( AX r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | AX r2.Nuplace = NuSEXT_REC_BEGIN) )
+
+SPEC AG ( d1.Nuplace = NuSSTART -> EF r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE)
+
+SPEC AG ( buffer1.Nuplace = NuSW2_R0 -> ( AX (buffer1.Nuplace = NuSW2_R0) | AX (buffer1.Nuplace = NuSW2_R1)) | AX (buffer1.Nuplace = NuSW0_R0_FULL)   ) 
+SPEC AG ( buffer1.Nuplace = NuSW2_R0 & buffer1.NuVfaultyReplicaID1 = 0ud3_1 & AX (buffer1.Nuplace = NuSW2_R1) -> ( AX (r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE & r1.NuVfaultyReplicaID = 0ud3_1 ) )   )
+SPEC AG ( buffer1.Nuplace = NuSW2_R0 & buffer1.NuVfaultyReplicaID1 = 0ud3_1 & AX (buffer1.Nuplace = NuSW2_R1) -> ( AX (r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE & AX  ( r1.Nuplace = NuSINT_REC_BEGIN |  r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE ) ) )   )
+SPEC AG ( buffer1.NuPread1 = TRUE & r1.Nuplace = NuSSTART -> AX ( r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE   )  | AX (r1.Nuplace = NuSSTART)   )
+
+
+SPEC AG ( ((buffer1.NuPread1 = TRUE & buffer1.NuVfaultyReplicaID1 = 0ud3_1) | (buffer1.NuPread2 = TRUE & buffer1.NuVfaultyReplicaID2 = 0ud3_1) | (buffer1.NuPread3 = TRUE & buffer1.NuVfaultyReplicaID3 = 0ud3_1)) & r1.Nuplace = NuSSTART -> AX ( AX (r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | r1.Nuplace = NuSSTART  | r1.Nuplace = NuSINT_REC_BEGIN  )    ) )
+SPEC AG ( ((buffer1.NuPread1 = TRUE & buffer1.NuVfaultyReplicaID1 = 0ud3_2) | (buffer1.NuPread2 = TRUE & buffer1.NuVfaultyReplicaID2 = 0ud3_2) | (buffer1.NuPread3 = TRUE & buffer1.NuVfaultyReplicaID3 = 0ud3_2)) & r1.Nuplace = NuSSTART -> AX ( AX (r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | r1.Nuplace = NuSSTART  | r1.Nuplace = NuSEXT_REC_BEGIN  )    ) )
+SPEC AG ( ((buffer2.NuPread1 = TRUE & buffer2.NuVfaultyReplicaID1 = 0ud3_1) | (buffer2.NuPread2 = TRUE & buffer2.NuVfaultyReplicaID2 = 0ud3_1) | (buffer2.NuPread3 = TRUE & buffer2.NuVfaultyReplicaID3 = 0ud3_1)) & r2.Nuplace = NuSSTART -> AX ( AX (r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | r2.Nuplace = NuSSTART  | r2.Nuplace = NuSEXT_REC_BEGIN  )    ) )
+SPEC AG ( ((buffer2.NuPread1 = TRUE & buffer2.NuVfaultyReplicaID1 = 0ud3_2) | (buffer2.NuPread2 = TRUE & buffer2.NuVfaultyReplicaID2 = 0ud3_2) | (buffer2.NuPread3 = TRUE & buffer2.NuVfaultyReplicaID3 = 0ud3_2)) & r2.Nuplace = NuSSTART -> AX ( AX (r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | r2.Nuplace = NuSSTART  | r2.Nuplace = NuSINT_REC_BEGIN  )    ) )
+
+
+SPEC AG ( r1.Nuplace = NuSEXT_REC_BEGIN -> ( AX (r1.Nuplace = NuSEXT_REC_BEGIN) | AX (r1.Nuplace = NuSEXT_REC_SENT) )  )
+SPEC AG ( r1.Nuplace = NuSEXT_REC_BEGIN -> ( AX (r1.Nuplace = NuSEXT_REC_BEGIN) | AX (r1.Nuplace = NuSEXT_REC_SENT & h2.Nuplace = NuSRECEIVED) )  )
+SPEC AG ( h2.Nuplace = NuSRECEIVED -> (AX (r1.Nuplace = NuSFINISHED_REC) | AX (r1.Nuplace = NuSEXT_REC_SENT) )  )
+
+SPEC AG ( r2.Nuplace = NuSEXT_REC_BEGIN -> ( AX (r2.Nuplace = NuSEXT_REC_BEGIN) | AX (r2.Nuplace = NuSEXT_REC_SENT) )  )
+SPEC AG ( r2.Nuplace = NuSEXT_REC_BEGIN -> ( AX (r2.Nuplace = NuSEXT_REC_BEGIN) | AX (r2.Nuplace = NuSEXT_REC_SENT & h1.Nuplace = NuSRECEIVED) )  )
+SPEC AG ( h1.Nuplace = NuSRECEIVED -> (AX (r2.Nuplace = NuSFINISHED_REC) | AX (r2.Nuplace = NuSEXT_REC_SENT) )  )
+

@@ -1,0 +1,89 @@
+the following should still hold (it takes very very long): 
+check_ctlspec -p "AG (dr1.Nuplace = NuSUPDATED ->  dr1.NuVcontrollerTimestampValidityReport != m1.NuVzero)"
+	-> true
+check_ctlspec -p "AG (dr1.Nuplace = NuSUPDATED ->  dr1.NuVcontrollerTimestampValidityReport != m1.NuVone)"
+	-> false
+check_ctlspec -p "AG (dr1.Nuplace = NuSUPDATED ->  dr1.NuVcontrollerTimestampValidityReport = m1.NuVone)"
+	-> true
+check_ctlspec -p "AG (dr1.Nuplace = NuSUPDATED ->  dr1.NuVcontrollerTimestampValidityReport = m1.NuVzero)"
+	-> false
+faster:
+check_ltlspec_klive -p "G (dr1.Nuplace = NuSUPDATED ->  dr1.NuVcontrollerTimestampValidityReport = 0ud3_1)" -k 200
+check_ltlspec_klive -p "G (dr1.Nuplace = NuSNOUPDATED ->  dr1.NuVcontrollerTimestampValidityReport = 0ud3_0)" -k 200
+	
+
+DELAY FAULTS
+ACCURACY
+check_ltlspec_klive -p "G (db1.Nuplace = NuSDELAY_FAULTY1 -> db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports)" -k 200
+check_ltlspec_klive -p "G (db1.Nuplace = NuSDELAY_FAULTY2 -> db1.NuVconsecutiveFaultyReports2 = m1.NuVmaxConsecutiveFaultyReports)" -k 200
+check_ltlspec_klive -p "G (db1.Nuplace = NuSDELAY_FAULTY3 -> db1.NuVconsecutiveFaultyReports3 = m1.NuVmaxConsecutiveFaultyReports)" -k 200
+
+COMPLETENESS
+check_ltlspec_klive -p "G (   (db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports & db1.Nuplace = NuSCHECKING_DELAY1) -> (X db1.Nuplace = NuSDELAY_FAULTY1 | X db1.Nuplace = NuSCHECKING_DELAY1  ) )" -k 200
+check_ltlspec_klive -p "G (   (db1.NuVconsecutiveFaultyReports2 = m1.NuVmaxConsecutiveFaultyReports & db1.Nuplace = NuSCHECKING_DELAY2) -> (X db1.Nuplace = NuSDELAY_FAULTY2 | X db1.Nuplace = NuSCHECKING_DELAY2  ) )" -k 200
+check_ltlspec_klive -p "G (   (db1.NuVconsecutiveFaultyReports3 = m1.NuVmaxConsecutiveFaultyReports & db1.Nuplace = NuSCHECKING_DELAY3) -> (X db1.Nuplace = NuSDELAY_FAULTY3 | X db1.Nuplace = NuSCHECKING_DELAY3  ) )" -k 200
+
+check_ltlspec_klive -p "G ((db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports  -> (F db1.Nuplace = NuSDELAY_FAULTY1 ) )   )" -k 200
+check_ltlspec_klive -p "G ((db1.NuVconsecutiveFaultyReports2 = m1.NuVmaxConsecutiveFaultyReports  -> (F db1.Nuplace = NuSDELAY_FAULTY2 ) )   )" -k 200
+check_ltlspec_klive -p "G ((db1.NuVconsecutiveFaultyReports3 = m1.NuVmaxConsecutiveFaultyReports  -> (F db1.Nuplace = NuSDELAY_FAULTY3 ) )   )" -k 200
+
+	
+CRASH FAULTS
+ACCURACY:
+check_ltlspec_klive -p "G (db1.Nuplace = NuSCRASH_FAULTY1 -> db1.NuVmaxControllerTS = 0ud3_1)" -k 200
+-- specification AG (db1.Nuplace = NuSCRASH_FAULTY1 -> db1.NuVmaxControllerTS = m1.NuVone)  is true
+check_ltlspec_klive -p "G (db1.Nuplace = NuSCRASH_FAULTY2 -> db1.NuVmaxControllerTS = 0ud3_2)" -k 200
+	-> true
+check_ltlspec_klive -p "G (db1.Nuplace = NuSCRASH_FAULTY3 -> db1.NuVmaxControllerTS = 0ud3_3)" -k 200
+	-> true	
+COMPLETENESS:
+check_ltlspec_klive -p "G (db1.NuVmaxControllerTS = 0ud3_1 & db1.Nuplace = NuSCHECKING_CRASH1 -> (X db1.Nuplace = NuSCRASH_FAULTY1 | X db1.Nuplace = NuSCHECKING_CRASH1 ) )" -k 200
+check_ltlspec_klive -p "G (db1.NuVmaxControllerTS = 0ud3_2 & db1.Nuplace = NuSCHECKING_CRASH2 -> (X db1.Nuplace = NuSCRASH_FAULTY2 | X db1.Nuplace = NuSCHECKING_CRASH2 ) )" -k 200
+check_ltlspec_klive -p "G (db1.NuVmaxControllerTS = 0ud3_3 & db1.Nuplace = NuSCHECKING_CRASH3 -> (X db1.Nuplace = NuSCRASH_FAULTY3 | X db1.Nuplace = NuSCHECKING_CRASH3 ) )" -k 200
+
+	
+check_ltlspec_klive -p "G (   (db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports & db1.Nuplace = NuSCHECKING_DELAY1) -> (X db1.Nuplace = NuSDELAY_FAULTY1 | X db1.Nuplace = NuSCHECKING_DELAY1  ) )" -k 200
+check_ltlspec_klive -p "G (   (db1.NuVconsecutiveFaultyReports2 = m1.NuVmaxConsecutiveFaultyReports & db1.Nuplace = NuSCHECKING_DELAY2) -> (X db1.Nuplace = NuSDELAY_FAULTY2 | X db1.Nuplace = NuSCHECKING_DELAY2  ) )" -k 200
+check_ltlspec_klive -p "G (   (db1.NuVconsecutiveFaultyReports3 = m1.NuVmaxConsecutiveFaultyReports & db1.Nuplace = NuSCHECKING_DELAY3) -> (X db1.Nuplace = NuSDELAY_FAULTY3 | X db1.Nuplace = NuSCHECKING_DELAY3  ) )" -k 200
+
+probably takes too long:
+check_ltlspec_klive -p "G ((db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports  -> (F db1.Nuplace = NuSDELAY_FAULTY1 ) )   )" -k 200
+	-> it takes long (146 iterations..), but it is satisfied
+check_ltlspec_klive -p "G ((db1.NuVconsecutiveFaultyReports2 = m1.NuVmaxConsecutiveFaultyReports  -> (F db1.Nuplace = NuSDELAY_FAULTY2 ) )   )" -k 200
+check_ltlspec_klive -p "G ((db1.NuVconsecutiveFaultyReports3 = m1.NuVmaxConsecutiveFaultyReports  -> (F db1.Nuplace = NuSDELAY_FAULTY3 ) )   )" -k 200
+
+check_ltlspec_klive -p "G (dr1.Nuplace = NuSCHOSEN_RECORD & dr1.NuVcontrollerTimestampValidityReport = 0ud3_1 -> ( X (dr1.Nuplace = NuSCHOSEN_RECORD) | X (dr1.Nuplace = NuSUPDATE) )  )" -k 200
+check_ltlspec_klive -p "G (dr1.Nuplace = NuSCHOSEN_RECORD & dr1.NuVcontrollerTimestampValidityReport = 0ud4_0 -> ( X (dr1.Nuplace = NuSCHOSEN_RECORD) | X (dr1.Nuplace = NuSNOUPDATED) )  )" -k 200
+check_ltlspec_klive -p "G (dr1.Nuplace = NuSNOUPDATED -> dr1.NuVcontrollerTimestampValidityReport = 0ud3_0)" -k 200
+check_ltlspec_klive -p "G (dr1.Nuplace = NuSUPDATED -> dr1.NuVcontrollerTimestampValidityReport = 0ud3_1)" -k 200
+
+
+**************************
+
+check_ltlspec_klive -p "G (dr1.Nuplace = NuSREADY_TO_RECEIVE_REPORT -> ( X (dr1.Nuplace = NuSREADY_TO_RECEIVE_REPORT) | X(dr1.Nuplace = NuSREPORT_RECEIVED)  ))" -k 200
+check_ltlspec_klive -p "G (dr1.Nuplace = NuSREPORT_RECEIVED -> ( X (dr1.Nuplace = NuSCHOSEN_RECORD) | X(dr1.Nuplace = NuSREPORT_RECEIVED)  ))" -k 200
+check_ltlspec_klive -p "G (dr1.Nuplace = NuSCHOSEN_RECORD -> (  (X (dr1.Nuplace = NuSCHOSEN_RECORD)) | (X (dr1.Nuplace = NuSUPDATE)) | ( X(dr1.Nuplace = NuSNOUPDATED)  ) ) )" -k 200
+check_ltlspec_klive -p "G (dr1.Nuplace = NuSUPDATED -> ( X (dr1.Nuplace = NuSUPDATED) | X(dr1.Nuplace = NuSCHECKING_DELAY)  ))" -k 200
+check_ltlspec_klive -p "G (dr1.Nuplace = NuSNOUPDATED -> ( X (dr1.Nuplace = NuSNOUPDATED) | X(dr1.Nuplace = NuSCHECKING_DELAY)  ))" -k 200
+check_ltlspec_klive -p "G (dr1.Nuplace = NuSCHECKING_DELAY -> ( X (dr1.Nuplace = NuSCHECKING_CRASH) | X(dr1.Nuplace = NuSCHECKING_DELAY)  ))" -k 200
+check_ltlspec_klive -p "G (dr1.Nuplace = NuSCHECKING_CRASH -> ( X (dr1.Nuplace = NuSCHECKING_CRASH) | X(dr1.Nuplace = NuSCHECKING_DETECTORS)  ))" -k 200
+check_ltlspec_klive -p "G (dr1.Nuplace = NuSCHECKING_DETECTORS -> ( X (dr1.Nuplace = NuSREADY_TO_RECEIVE_REPORT) | X(dr1.Nuplace = NuSCHECKING_DETECTORS)  ))" -k 200
+ 
+
+
+
+
+there are non-relevant tests
+
+check_ctlspec -p "AG (db1.Nuplace = NuSCRASH_FAULTY1 -> db1.NuVmaxControllerTS = m1.NuVone)"
+-- specification AG (db1.Nuplace = NuSCRASH_FAULTY1 -> db1.NuVmaxControllerTS = m1.NuVone)  is true
+(should be converted with 0ud3_x)
+check_ctlspec -p "AG (db1.NuVmaxControllerTS = m1.NuVone -> db1.Nuplace = NuSCRASH_FAULTY1 | AX db1.Nuplace = db1.Nuplace)"
+	-> true
+check_ctlspec -p "AG (db1.NuVmaxControllerTS != m1.NuVone -> db1.Nuplace != NuSCRASH_FAULTY1 | AX db1.Nuplace = db1.Nuplace)"
+	-> true
+
+check_ltlspec -p "G (db1.NuVmaxControllerTS != 0ud4_3 & db1.Nuplace = NuSCHECKING_CRASH3 -> (X db1.Nuplace != NuSCRASH_FAULTY3) )"
+
+check_ltlspec_bmc -p "G (db1.NuVmaxControllerTS != 0ud3_3 & db1.Nuplace = NuSCHECKING_CRASH3 -> (X db1.Nuplace != NuSCRASH_FAULTY3) )" -k 100
+check_ctlspec -p "AG (db1.NuVmaxControllerTS != 0ud3_3 & db1.Nuplace = NuSCHECKING_CRASH3 -> (AX db1.Nuplace != NuSCRASH_FAULTY3) )"

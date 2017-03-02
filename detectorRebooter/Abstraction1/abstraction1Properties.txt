@@ -1,0 +1,45 @@
+DETECTOR + REBOOTER
+check_ctlspec -p "AF ( r1.NuVfaultyReplicaID = 0ud3_1 )"
+	-> true
+	takes around 4 minutes to check
+	
+check_ctlspec -p "AG(  r1.Nuplace = NuSEXT_REC_BEGIN -> (AX r1.Nuplace = NuSEXT_REC_SENT | AX r1.Nuplace = NuSEXT_REC_BEGIN )    )"
+	-> true
+	
+To verify properties: this abstraction does not perform the check itself
+values to randomize:
+	-> faultyReplicaID for the detector
+		- 0: ok
+		- 1/2 : internal or external detection message
+		
+on the masker: NuVreplicaIDValidityReport, NuVvalidValidityReport, NuVcontrollerTimestampValidityReport and NuVdetectorTimestampValidityReport
+since the crash are assumed to be working well, the faultyReplicaID value is randomized at each round (just before being checked, a new value is picked)
+		-> for simplicity: the value is randomized when the check on detectors is performed
+For now, it makes sense to check rebooter properties
+For detector, only simple ones (the ones in abstraction2, for checking that the detector would perform the right operations)
+
+The buffer causes troubles with these properties!
+check_ctlspec -p "AG (db1.NuVfaultyReplicaID = 0ud3_1 -> (  AX (r1.NuVfaultyReplicaID = 0ud3_1 & r1.Nuplace = NuSINT_REC_BEGIN)   | AX  r1.Nuplace != NuSINT_REC_BEGIN ))"
+check_ctlspec -p "AG (db1.NuVfaultyReplicaID = 0ud3_2 -> (  AX (r1.NuVfaultyReplicaID = 0ud3_1 & r1.Nuplace = NuSINT_REC_BEGIN)   | AX  r1.Nuplace != NuSINT_REC_BEGIN ))"
+check_ltlspec_klive -p "G (db1.NuVfaultyReplicaID = 0ud3_1 -> (  X (r1.NuVfaultyReplicaID = 0ud3_1 & r1.Nuplace = NuSINT_REC_BEGIN)   | X  r1.Nuplace != NuSINT_REC_BEGIN ))" -k 100
+	-> this one is working!
+check_ltlspec_klive -p "G (db1.NuVfaultyReplicaID = 0ud3_2 -> (  X (r1.NuVfaultyReplicaID = 0ud3_1 & r1.Nuplace = NuSINT_REC_BEGIN)   | X  r1.Nuplace != NuSINT_REC_BEGIN ))" -k 100
+
+
+check_ctlspec -p "AG ( r1.Nuplace = NuSINT_REC_BEGIN -> r1.NuVfaultyReplicaID = 0ud3_1      ) "
+check_ctlspec -p "AG ( r1.Nuplace = NuSEXT_REC_BEGIN -> r1.NuVfaultyReplicaID = 0ud3_2      ) "
+
+
+
+check_ctlspec -p "  AG(   db1.NuVfaultyReplicaID = 0ud3_1 ->   AF (r1.NuVfaultyReplicaID = 0ud3_1 & r1.Nuplace = NuSINT_REC_BEGIN)  )    "
+	-> takes too long to be checked
+check_ltlspec_klive -p "  G(   db1.NuVfaultyReplicaID = 0ud3_1 ->   F (r1.NuVfaultyReplicaID = 0ud3_1 & r1.Nuplace = NuSINT_REC_BEGIN)  )    " -k 100
+	-> if following states only involve d2 and r2, this property will not be satisfied
+
+
+check_ltlspec_klive -p "G (db1.Nuplace = NuSCHECKED_DETECTORS & db1.NuVfaultyReplicaID = 0ud3_1 -> ( (X db1.Nuplace = NuSCHECKED_DETECTORS ) | (X buffer1.NuVfaultyReplicaID1 = 0ud3_1 ) | (X buffer1.NuVfaultyReplicaID2 = 0ud3_1 ) | (X buffer1.NuVfaultyReplicaID3 = 0ud3_1 ) ) )" -k 100
+
+check_ltlspec_klive -p "G (db1.Nuplace = NuSCHECKED_DETECTORS & db1.NuVfaultyReplicaID = 0ud3_1 & (buffer1.Nuplace = NuSR0_W0_EMPTY ) -> ( (X db1.Nuplace = NuSCHECKED_DETECTORS ) | (X buffer1.NuVfaultyReplicaID1 = 0ud3_1 )  ) )" -k 100
+check_ltlspec_klive -p "G (db1.Nuplace = NuSCHECKED_DETECTORS & db1.NuVfaultyReplicaID = 0ud3_1 -> ( (X db1.Nuplace = NuSCHECKED_DETECTORS ) | (X buffer1.NuVfaultyReplicaID1 = 0ud3_1 ) | (X buffer1.NuVfaultyReplicaID2 = 0ud3_1 ) | (X buffer1.NuVfaultyReplicaID3 = 0ud3_1 ) ) )" -k 100
+check_ltlspec_klive -p "G (db1.Nuplace = NuSCHECKED_DETECTORS & db1.NuVfaultyReplicaID = 0ud3_1 -> ( (X db1.Nuplace = NuSCHECKED_DETECTORS ) | (X buffer1.NuVfaultyReplicaID1 = 0ud3_1 ) | (X buffer1.NuVfaultyReplicaID2 = 0ud3_1 ) | (X buffer1.NuVfaultyReplicaID3 = 0ud3_1 ) ) )" -k 100
+

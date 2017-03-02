@@ -1,0 +1,91 @@
+check_ctlspec -p "EF d1.NuVfaultyReplicaID = 0ud3_0"
+check_ctlspec -p "EF d1.NuVfaultyReplicaID = 0ud3_1"
+check_ctlspec -p "EF d1.NuVfaultyReplicaID = 0ud3_2"
+check_ctlspec -p "EF d1.NuVfaultyReplicaID = 0ud3_3"
+
+check_ctlspec -p "EF r1.NuVfaultyReplicaID = 0ud3_0"
+check_ctlspec -p "EF r1.NuVfaultyReplicaID = 0ud3_1"
+check_ctlspec -p "EF r1.NuVfaultyReplicaID = 0ud3_2"
+check_ctlspec -p "EF r1.NuVfaultyReplicaID = 0ud3_3"
+this is a value that should be random. 
+
+
+an invariant that has been added on the detectors:		( ( NuVfaultyReplicaID = 0ud3_1 ) | ( NuVfaultyReplicaID = 0ud3_2 ) )
+
+the following must hold
+
+check_ctlspec -p "AG (d1.Nuplace = NuSSENT_INTERNAL -> (AX r1.Nuplace = NuSSTART | AX r1.Nuplace = NuSINT_REC_BEGIN ))"
+	-> true
+
+check_ctlspec -p "AG (d1.Nuplace = NuSSENT_INTERNAL -> ( AX r1.NuVfaultyReplicaID = 0ud3_1 ))"
+	-> true
+check_ctlspec -p "AG (d1.Nuplace = NuSSENT_INTERNAL -> ( AX r1.NuVfaultyReplicaID = 0ud3_2 ))"
+	-> false
+
+
+check_ctlspec -p "AG (d1.Nuplace = NuSSENT_EXTERNAL -> ( AX r1.NuVfaultyReplicaID = 0ud3_2 ))"
+	-> true
+check_ctlspec -p "AG (d1.Nuplace = NuSSENT_EXTERNAL -> ( AX r1.NuVfaultyReplicaID = 0ud3_1 ))"
+	-> false
+	
+
+check_ctlspec -p "AG (d1.NuVfaultyReplicaID = 0ud3_1 -> (EF d1.Nuplace = NuSSENT_INTERNAL) )"
+	-> true
+
+SPEC AG (d1.Nuplace = NuSSENT_EXTERNAL -> (AX r1.Nuplace = NuSEXT_REC_SENT | AX r1.Nuplace = NuSEXT_REC_BEGIN ))
+	-> false
+
+although it has been put on the detector, this is very important for the rest of the rebooter properties
+in fact, it was giving issues because the values were not correctly randomized	
+check_ctlspec -p "AG (d1.NuVfaultyReplicaID = 0ud3_1 -> (  d1.Nuplace = NuSSENT_INTERNAL |  d1.Nuplace = NuSSTART ) )"
+	-> true
+
+check_ctlspec -p "AG (d1.NuVfaultyReplicaID = 0ud3_2 -> (  d1.Nuplace = NuSSENT_EXTERNAL |  d1.Nuplace = NuSSTART ) )"
+	-> true
+	
+now I can use this in order to verify similar statements on the rebooter
+the following properties check that when a detector detects some fault, it sends the right detection message to its local rebooter
+
+check_ctlspec -p "AG (d1.NuVfaultyReplicaID = 0ud3_1 -> (  AX r1.NuVfaultyReplicaID = 0ud3_1   | AX  r1.Nuplace != NuSINT_REC_BEGIN ))"
+	-> true
+check_ctlspec -p "AG (d1.NuVfaultyReplicaID = 0ud3_1 -> (  AX r1.NuVfaultyReplicaID = 0ud3_2   | AX  r1.Nuplace != NuSINT_REC_BEGIN ))"
+	-> false
+the first would be equivalent to:
+check_ctlspec -p "AG (d1.NuVfaultyReplicaID = 0ud3_1 -> (  AX (r1.NuVfaultyReplicaID = 0ud3_1 & r1.Nuplace = NuSINT_REC_BEGIN)   | AX  r1.Nuplace != NuSINT_REC_BEGIN ))"
+analogously, the second one:
+check_ctlspec -p "AG (d1.NuVfaultyReplicaID = 0ud3_2 -> (  AX (r1.NuVfaultyReplicaID = 0ud3_1 & r1.Nuplace = NuSINT_REC_BEGIN)   | AX  r1.Nuplace != NuSINT_REC_BEGIN ))"
+
+
+(in the following,as the 2 previous ones, we could put the state of r1 in the first part of the implied statement)
+check_ctlspec -p "AG (d1.NuVfaultyReplicaID = 0ud3_2 -> (  AX r1.NuVfaultyReplicaID = 0ud3_2   | AX  r1.Nuplace != NuSEXT_REC_BEGIN ))"
+	-> true
+check_ctlspec -p "AG (d1.NuVfaultyReplicaID = 0ud3_2 -> (  AX r1.NuVfaultyReplicaID = 0ud3_1   | AX  r1.Nuplace != NuSEXT_REC_BEGIN ))"
+	-> false
+
+the 2 following statements are now obvious:
+check_ctlspec -p "AG ( r1.Nuplace = NuSINT_REC_BEGIN -> r1.NuVfaultyReplicaID = 0ud3_1      ) "
+check_ctlspec -p "AG ( r1.Nuplace = NuSEXT_REC_BEGIN -> r1.NuVfaultyReplicaID = 0ud3_2      ) "
+
+
+now we check that a given detection message triggers the right recovery process (should be easy, given the previous properties)
+- for the internal detection it is automatically checked with the previous statements (the current abstraction is simple)
+check_ctlspec -p "AG(  r1.Nuplace = NuSEXT_REC_BEGIN -> (AX r1.Nuplace = NuSEXT_REC_SENT | AX r1.Nuplace = NuSEXT_REC_BEGIN )    )"
+	-> true
+
+check_ctlspec -p "AG(  r1.Nuplace = NuSEXT_REC_SENT -> (AX r1.Nuplace = NuSEXT_REC_SENT | AX r1.Nuplace = NuSFINISHED_REC )    )"
+	-> true
+
+
+
+
+check_ctlspec -p " AG  ( r1.Nuplace = NuSSTART & d1.NuVfaultyReplicaID = r1.NuVreplicaID -> ( (AX r1.Nuplace = NuSSTART ) | (AX  r1.Nuplace = NuSINT_REC_BEGIN) )     ) "
+	-> true
+check_ctlspec -p " AG  ( r1.Nuplace = NuSSTART & d1.NuVfaultyReplicaID = r2.NuVreplicaID -> ( (AX r1.Nuplace = NuSSTART ) | (AX  r1.Nuplace = NuSEXT_REC_BEGIN) )     ) "
+
+
+check_ctlspec -p " AG ( r1.Nuplace = NuSINT_REC_BEGIN  -> ( AX (r1.Nuplace = NuSINT_REC_BEGIN) | AX (r1.Nuplace = NuSSTART)  )    )  "
+
+
+check_ctlspec -p " AG ( r1.Nuplace = NuSEXT_REC_BEGIN  -> ( AX (r1.Nuplace = NuSEXT_REC_BEGIN) | AX (r1.Nuplace = NuSEXT_REC_SENT)  )    )  "
+check_ctlspec -p " AG ( r1.Nuplace = NuSEXT_REC_SENT  -> ( AX (r1.Nuplace = NuSEXT_REC_SENT) | AX (r1.Nuplace = NuSFINISHED_REC)  )    )  "
+check_ctlspec -p " AG ( r1.Nuplace = NuSFINISHED_REC  -> ( AX (r1.Nuplace = NuSSTART) | AX (r1.Nuplace = NuSFINISHED_REC)  )    )  "

@@ -1,0 +1,105 @@
+REBOOTER
+same as abstraction1.. only the buffer was added
+The properties should still hold, but the buffer changes the statements regarding the detector, since it 
+may sends messages and the rebooter may not receive them instantly.
+Generally speaking, we should pay attention to the statements that included the detector doing something
+
+For instance:
+the statement
+	check_ctlspec -p "AG (d1.Nuplace = NuSSENT_INTERNAL -> ( AX r1.NuVfaultyReplicaID = 0ud3_1 ))"
+would become:
+	check_ctlspec -p "AG (d1.Nuplace = NuSSENT_INTERNAL -> ( EF r1.NuVfaultyReplicaID = 0ud3_1 ))"
+	
+	check_ctlspec -p "AG (d1.Nuplace = NuSSENT_EXTERNAL -> ( EF r1.NuVfaultyReplicaID = 0ud3_2 ))"
+
+
+However, it seems to be problematic the opposite: given that a rebooter has received NuVfaultyReplicaID = 0ud3_1, how
+can we verify that d1 has detected an internal fault? Same for external..
+
+The other properties, not involving the detector (and therefore the buffer), remain unchanged
+
+Some new property, involving the external recovery message handler
+
+check_ctlspec -p "AG (  r1.Nuplace = NuSEXT_REC_SENT ->   h2.Nuplace = NuSRECEIVED)"
+	-> true
+	-> verifies that if an external recovery message is sent, the buffer of the other rebooter receives it
+	-> with other properties we verified that if a detector sends an external detection messages, then an
+		external recovery message is eventually sent
+		
+check_ctlspec -p " AG ( h1.Nuplace = NuSRECEIVED -> EF h1.Nuplace = NuSSTART )  "
+	-> true
+	-> checks that if an external recovery message is received, then the replica is eventually rebooted
+
+check_ctlspec -p " AG ( h1.Nuplace = NuSRECEIVED -> AF h1.Nuplace = NuSSTART )  "
+check_ltlspec -p " G ( h1.Nuplace = NuSRECEIVED -> F h1.Nuplace = NuSSTART )  "
+	--> false, since a FSM may be looping only through d2 and r2!
+this makes more sense:
+check_ltlspec_klive -p "G ( h1.Nuplace = NuSRECEIVED -> F h1.Nuplace = NuSSTART | F h2.Nuplace = NuSSTART )" -k 100
+check_ctlspec -p "AG ( h1.Nuplace = NuSRECEIVED -> AF h1.Nuplace = NuSSTART | AF h2.Nuplace = NuSSTART )"
+
+check_ctlspec -p "AG (d1.NuVfaultyReplicaID = 0ud3_2 -> (  AX r1.NuVfaultyReplicaID = 0ud3_2   | AX  r1.Nuplace != NuSEXT_REC_BEGIN ))"
+	-> should give true
+	
+check_ctlspec -p "AG (d1.NuVfaultyReplicaID = 0ud3_2 & d1.Nuplace = NuSSTART -> (  AX r1.NuVfaultyReplicaID = 0ud3_2   | AX  r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE ))"
+	-> not true... having the buffer make these things more complicated
+	
+	
+check_ctlspec -p "AG (d1.NuVfaultyReplicaID = 0ud3_1 & d1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE -> (  AX r1.NuVfaultyReplicaID = 0ud3_1   | AX  r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE ))"
+
+	
+check_ctlspec -p "AG (db1.NuVfaultyReplicaID = 0ud3_2 -> (  AX r1.NuVfaultyReplicaID = 0ud3_1   | AX  r1.Nuplace != NuSEXT_REC_BEGIN ))"
+	-> should give false
+
+
+check_ctlspec -p "AG ( r1.Nuplace = NuSINT_REC_BEGIN -> r1.NuVfaultyReplicaID = 0ud3_1      ) "
+check_ctlspec -p "AG ( r1.Nuplace = NuSEXT_REC_BEGIN -> r1.NuVfaultyReplicaID = 0ud3_2      ) "
+both true
+
+
+
+check_ctlspec -p "AG ( r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE &  r1.NuVfaultyReplicaID = 0ud3_1 -> ( AX r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | AX r1.Nuplace = NuSINT_REC_BEGIN)  )"
+	-> true
+check_ctlspec -p "AG ( r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE &  r1.NuVfaultyReplicaID = 0ud3_2 -> ( AX r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | AX r1.Nuplace = NuSEXT_REC_BEGIN)  )"
+	-> true
+
+check_ctlspec -p "AG ( r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE &  r2.NuVfaultyReplicaID = 0ud3_2 -> ( AX r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | AX r2.Nuplace = NuSINT_REC_BEGIN)  )"
+	-> true
+check_ctlspec -p "AG ( r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE &  r2.NuVfaultyReplicaID = 0ud3_1 -> ( AX r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | AX r2.Nuplace = NuSEXT_REC_BEGIN)  )"
+	-> true
+
+
+
+check_ctlspec -p "AG ( d1.Nuplace = NuSSTART -> EF r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE)"
+--> sure about this? LTL?
+
+
+
+properties with the buffer, to check whether the detection messages are correctly processed
+check_ctlspec -p "AG  ( buffer1.Nuplace = NuSW2_R0 -> ( AX (buffer1.Nuplace = NuSW2_R0) | AX (buffer1.Nuplace = NuSW2_R1)) | AX (buffer1.Nuplace = NuSW0_R0_FULL)   )    "
+
+check_ctlspec -p "AG  ( buffer1.Nuplace = NuSW2_R0 & buffer1.NuVfaultyReplicaID1 = 0ud3_1 & AX (buffer1.Nuplace = NuSW2_R1) -> ( AX (r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE & r1.NuVfaultyReplicaID = 0ud3_1 ) )   )    "
+	-> true
+check_ctlspec -p "AG  ( buffer1.Nuplace = NuSW2_R0 & buffer1.NuVfaultyReplicaID1 = 0ud3_1 & AX (buffer1.Nuplace = NuSW2_R1) -> ( AX (r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE & AX  ( r1.Nuplace = NuSINT_REC_BEGIN |  r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE ) ) )   )    "
+	-> true
+
+check_ctlspec -p "AG ( buffer1.NuPread1 = TRUE & r1.Nuplace = NuSSTART -> AX ( r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE   )  | AX (r1.Nuplace = NuSSTART)   ) "
+	-> true
+	
+check_ctlspec -p "AG ( (   (buffer1.NuPread1 = TRUE & buffer1.NuVfaultyReplicaID1 = 0ud3_1) | (buffer1.NuPread2 = TRUE & buffer1.NuVfaultyReplicaID2 = 0ud3_1) | (buffer1.NuPread3 = TRUE & buffer1.NuVfaultyReplicaID3 = 0ud3_1)) & r1.Nuplace = NuSSTART -> AX ( AX (r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | r1.Nuplace = NuSSTART  | r1.Nuplace = NuSINT_REC_BEGIN  )    ) ) "
+	-> true
+check_ctlspec -p "AG ( (   (buffer1.NuPread1 = TRUE & buffer1.NuVfaultyReplicaID1 = 0ud3_2) | (buffer1.NuPread2 = TRUE & buffer1.NuVfaultyReplicaID2 = 0ud3_2) | (buffer1.NuPread3 = TRUE & buffer1.NuVfaultyReplicaID3 = 0ud3_2)) & r1.Nuplace = NuSSTART -> AX ( AX (r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | r1.Nuplace = NuSSTART  | r1.Nuplace = NuSEXT_REC_BEGIN  )    ) ) "
+	-> true
+	
+	
+check_ctlspec -p "AG ( (   (buffer2.NuPread1 = TRUE & buffer2.NuVfaultyReplicaID1 = 0ud3_1) | (buffer2.NuPread2 = TRUE & buffer2.NuVfaultyReplicaID2 = 0ud3_1) | (buffer2.NuPread3 = TRUE & buffer2.NuVfaultyReplicaID3 = 0ud3_1)) & r2.Nuplace = NuSSTART -> AX ( AX (r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | r2.Nuplace = NuSSTART  | r2.Nuplace = NuSEXT_REC_BEGIN  )    ) ) "
+	-> true
+check_ctlspec -p "AG ( (   (buffer2.NuPread1 = TRUE & buffer2.NuVfaultyReplicaID1 = 0ud3_2) | (buffer2.NuPread2 = TRUE & buffer2.NuVfaultyReplicaID2 = 0ud3_2) | (buffer2.NuPread3 = TRUE & buffer2.NuVfaultyReplicaID3 = 0ud3_2)) & r2.Nuplace = NuSSTART -> AX ( AX (r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | r2.Nuplace = NuSSTART  | r2.Nuplace = NuSINT_REC_BEGIN  )    ) ) "
+	-> true
+
+
+
+
+checking wheher external recoveries are handled well
+check_ctlspec -p " AG ( r1.Nuplace = NuSEXT_REC_BEGIN -> ( AX (r1.Nuplace = NuSEXT_REC_BEGIN) | AX (r1.Nuplace = NuSEXT_REC_SENT) )  )     "
+check_ctlspec -p " AG ( r1.Nuplace = NuSEXT_REC_BEGIN -> ( AX (r1.Nuplace = NuSEXT_REC_BEGIN) | AX (r1.Nuplace = NuSEXT_REC_SENT & h2.Nuplace = NuSRECEIVED) )  )     "
+check_ctlspec -p " AG ( h2.Nuplace = NuSRECEIVED    ->    (AX (r1.Nuplace = NuSFINISHED_REC) | AX (r1.Nuplace = NuSEXT_REC_SENT) )  )  "

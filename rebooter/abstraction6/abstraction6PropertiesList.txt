@@ -1,0 +1,114 @@
+check_ctlspec -p " AG ( ((buffer1.NuPread1 = TRUE & buffer1.NuVfaultyReplicaID1 = 0ud3_1) | (buffer1.NuPread2 = TRUE & buffer1.NuVfaultyReplicaID2 = 0ud3_1) | (buffer1.NuPread3 = TRUE & buffer1.NuVfaultyReplicaID3 = 0ud3_1)) & r1.Nuplace = NuSSTART -> AX ( AX (r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | r1.Nuplace = NuSSTART  | r1.Nuplace = NuSINT_REC_BEGIN  )    ) )"
+becomes:
+check_ltlspec_klive -p " G ( ((buffer1.NuPread1 = TRUE & buffer1.NuVfaultyReplicaID1 = 0ud3_1) | (buffer1.NuPread2 = TRUE & buffer1.NuVfaultyReplicaID2 = 0ud3_1) | (buffer1.NuPread3 = TRUE & buffer1.NuVfaultyReplicaID3 = 0ud3_1)) & r1.Nuplace = NuSSTART -> X (X (r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | r1.Nuplace = NuSSTART  | r1.Nuplace = NuSINT_REC_BEGIN  )    ) )" -k 100
+
+
+check_ltlspec_klive -p "G ( h1.Nuplace = NuSRECEIVED -> F h1.Nuplace = NuSSTART | F h2.Nuplace = NuSSTART )" -k 100
+	-> takes very long (too long)
+
+check_ltlspec_klive -p " G ( buffer1.Nuplace = NuSW2_R0 -> ( X (buffer1.Nuplace = NuSW2_R0) | X (buffer1.Nuplace = NuSW2_R1)) | X (buffer1.Nuplace = NuSW0_R0_FULL)   )  " -k 100
+	-> true
+check_ltlspec_klive -p " G ( buffer1.Nuplace = NuSW2_R0 & buffer1.NuVfaultyReplicaID1 = 0ud3_1 & X (buffer1.Nuplace = NuSW2_R1) -> ( X (r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE & r1.NuVfaultyReplicaID = 0ud3_1 ) )   ) " -k 100
+	-> true
+check_ltlspec_klive -p " G ( buffer1.Nuplace = NuSW2_R0 & buffer1.NuVfaultyReplicaID1 = 0ud3_1 & X (buffer1.Nuplace = NuSW2_R1) -> ( X (r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE & X  ( r1.Nuplace = NuSINT_REC_BEGIN |  r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE ) ) )   ) " -k 100
+	-> true
+check_ltlspec_klive -p " G ( buffer1.NuPread1 = TRUE & r1.Nuplace = NuSSTART -> X ( r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE   )  | X (r1.Nuplace = NuSSTART)   ) " -k 100
+	-> true
+	
+check_ltlspec_klive -p "G ( (   (buffer1.NuPread1 = TRUE & buffer1.NuVfaultyReplicaID1 = 0ud3_1) | (buffer1.NuPread2 = TRUE & buffer1.NuVfaultyReplicaID2 = 0ud3_1) | (buffer1.NuPread3 = TRUE & buffer1.NuVfaultyReplicaID3 = 0ud3_1)) & r1.Nuplace = NuSSTART -> X ( X (r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | r1.Nuplace = NuSSTART  | r1.Nuplace = NuSINT_REC_BEGIN  )    ) ) " -k 100
+	-> true
+check_ltlspec_klive -p "G ( (   (buffer1.NuPread1 = TRUE & buffer1.NuVfaultyReplicaID1 = 0ud3_2) | (buffer1.NuPread2 = TRUE & buffer1.NuVfaultyReplicaID2 = 0ud3_2) | (buffer1.NuPread3 = TRUE & buffer1.NuVfaultyReplicaID3 = 0ud3_2)) & r1.Nuplace = NuSSTART -> X ( X (r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | r1.Nuplace = NuSSTART  | r1.Nuplace = NuSEXT_REC_BEGIN  )    ) ) " -k 100
+	-> true	
+	
+	
+check_ltlspec_klive -p "G ( (   (buffer2.NuPread1 = TRUE & buffer2.NuVfaultyReplicaID1 = 0ud3_1) | (buffer2.NuPread2 = TRUE & buffer2.NuVfaultyReplicaID2 = 0ud3_1) | (buffer2.NuPread3 = TRUE & buffer2.NuVfaultyReplicaID3 = 0ud3_1)) & r2.Nuplace = NuSSTART -> X ( X (r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | r2.Nuplace = NuSSTART  | r2.Nuplace = NuSEXT_REC_BEGIN  )    ) ) "
+	-> true
+check_ltlspec_klive -p "G ( (   (buffer2.NuPread1 = TRUE & buffer2.NuVfaultyReplicaID1 = 0ud3_2) | (buffer2.NuPread2 = TRUE & buffer2.NuVfaultyReplicaID2 = 0ud3_2) | (buffer2.NuPread3 = TRUE & buffer2.NuVfaultyReplicaID3 = 0ud3_2)) & r2.Nuplace = NuSSTART -> X ( X (r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | r2.Nuplace = NuSSTART  | r2.Nuplace = NuSINT_REC_BEGIN  )    ) ) "
+	--> true
+	
+check_ltlspec_klive -p "G ( r1.Nuplace = NuSINT_REC_BEGIN -> r1.NuVfaultyReplicaID = 0ud3_1      ) "
+	--> true
+check_ltlspec_klive -p "G ( r1.Nuplace = NuSEXT_REC_BEGIN -> r1.NuVfaultyReplicaID = 0ud3_2      ) "
+	--> true
+
+check_ltlspec_klive -p "G ( r2.Nuplace = NuSINT_REC_BEGIN -> r2.NuVfaultyReplicaID = 0ud3_2      ) "
+	--> true
+check_ltlspec_klive -p "G ( r2.Nuplace = NuSEXT_REC_BEGIN -> r2.NuVfaultyReplicaID = 0ud3_1      ) "
+	--> true
+
+
+
+check_ltlspec_klive -p "G ( r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE &  r1.NuVfaultyReplicaID = 0ud3_1 -> ( X r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | X r1.Nuplace = NuSINT_REC_BEGIN)  )" -k 100
+check_ltlspec_klive -p "G ( r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE &  r1.NuVfaultyReplicaID = 0ud3_2 -> ( X r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | X r1.Nuplace = NuSEXT_REC_BEGIN)  )" -k 100
+check_ltlspec_klive -p "G ( r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE &  r2.NuVfaultyReplicaID = 0ud3_2 -> ( X r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | X r2.Nuplace = NuSINT_REC_BEGIN)  )" -k 100
+check_ltlspec_klive -p "G ( r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE &  r2.NuVfaultyReplicaID = 0ud3_1 -> ( X r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE | X r2.Nuplace = NuSEXT_REC_BEGIN)  )" -k 100
+
+
+check_ltlspec_klive -p "G ( h1.Nuplace = NuSREBOOTED -> ( X h1.Nuplace = NuSREBOOTED | X h1.NuVtimestampDetection = 0ud3_0 )) " -k 100
+	-> true
+check_ltlspec_klive -p "G ( h1.Nuplace = NuSREBOOTED -> (   h1.NuVtimestampDetection = 0ud3_0 )) " -k 100
+	-> true
+check_ltlspec_klive -p "G ( h1.Nuplace = NuSNOT_REBOOTED -> (   h1.NuVtimestampDetection = 0ud3_1 )) " -k 100
+	-> true
+check_ltlspec_klive -p "G ( h1.Nuplace = NuSREBOOTED -> (  (X h1.Nuplace = NuSREBOOTED) | (X h1.Nuplace = NuSACK_TO_SEND) )) " -k 100
+check_ltlspec_klive -p "G ( h1.Nuplace = NuSACK_TO_SEND -> (  (X h1.Nuplace = NuSACK_TO_SEND) | (X h1.Nuplace = NuSSTART) )) " -k 100
+check_ltlspec_klive -p "G ( h1.Nuplace = NuSSTART -> (  (X h1.Nuplace = NuSSTART) | (X h1.Nuplace = NuSRECEIVED) )) " -k 100
+check_ltlspec_klive -p "G ( h1.Nuplace = NuSRECEIVED -> (  (X h1.Nuplace = NuSREBOOTED) | (X h1.Nuplace = NuSNOT_REBOOTED) | (X h1.Nuplace = NuSRECEIVED) )) " -k 100
+check_ltlspec_klive -p "G ( h1.Nuplace = NuSRECEIVED & h1.NuVtimestampDetection = 0ud3_0 -> (  (X h1.Nuplace = NuSREBOOTED) | (X h1.Nuplace = NuSRECEIVED) )) " -k 100
+check_ltlspec_klive -p "G ( h1.Nuplace = NuSRECEIVED & h1.NuVtimestampDetection = 0ud3_1 -> (  (X h1.Nuplace = NuSRECEIVED) | (X h1.Nuplace = NuSNOT_REBOOTED) )) " -k 100
+
+
+
+check_ltlspec_klive -p "G ( h2.Nuplace = NuSREBOOTED -> ( X h2.Nuplace = NuSREBOOTED | X h2.NuVtimestampDetection = 0ud3_0 )) " -k 100
+	-> true
+check_ltlspec_klive -p "G ( h2.Nuplace = NuSREBOOTED -> (   h2.NuVtimestampDetection = 0ud3_0 )) " -k 100
+	-> true
+check_ltlspec_klive -p "G ( h2.Nuplace = NuSNOT_REBOOTED -> (   h2.NuVtimestampDetection = 0ud3_1 )) " -k 100
+	-> true
+check_ltlspec_klive -p "G ( h2.Nuplace = NuSREBOOTED -> (  (X h2.Nuplace = NuSREBOOTED) | (X h2.Nuplace = NuSACK_TO_SEND) )) " -k 100
+check_ltlspec_klive -p "G ( h2.Nuplace = NuSACK_TO_SEND -> (  (X h2.Nuplace = NuSACK_TO_SEND) | (X h2.Nuplace = NuSSTART) )) " -k 100
+check_ltlspec_klive -p "G ( h2.Nuplace = NuSSTART -> (  (X h2.Nuplace = NuSSTART) | (X h2.Nuplace = NuSRECEIVED) )) " -k 100
+check_ltlspec_klive -p "G ( h2.Nuplace = NuSRECEIVED -> (  (X h2.Nuplace = NuSREBOOTED) | (X h2.Nuplace = NuSNOT_REBOOTED) | (X h2.Nuplace = NuSRECEIVED) )) " -k 100
+check_ltlspec_klive -p "G ( h2.Nuplace = NuSRECEIVED & h2.NuVtimestampDetection = 0ud3_0 -> (  (X h2.Nuplace = NuSREBOOTED) | (X h2.Nuplace = NuSRECEIVED) )) " -k 100
+check_ltlspec_klive -p "G ( h2.Nuplace = NuSRECEIVED & h2.NuVtimestampDetection = 0ud3_1 -> (  (X h2.Nuplace = NuSRECEIVED) | (X h2.Nuplace = NuSNOT_REBOOTED) )) " -k 100
+
+
+
+check_ltlspec_klive -p "G ( r1.Nuplace = NuSSTART -> ( (X r1.Nuplace = NuSSTART) | (X r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE) )) " -k 100
+	-> true
+check_ltlspec_klive -p "G ( r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE -> (  (  X r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE ) | (X r1.Nuplace = NuSINT_REC_BEGIN) | (X r1.Nuplace = NuSEXT_REC_BEGIN) ) ) " -k 100
+check_ltlspec_klive -p "G ( r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE & r1.NuVfaultyReplicaID = 0ud3_1 -> (  (  X r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE ) | (X r1.Nuplace = NuSINT_REC_BEGIN)  ) ) " -k 100
+check_ltlspec_klive -p "G ( r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE & r1.NuVfaultyReplicaID = 0ud3_2 -> (  (  X r1.Nuplace = NuSRECEIVED_DETECTION_MESSAGE ) |  (X r1.Nuplace = NuSEXT_REC_BEGIN) ) ) " -k 100
+
+check_ltlspec_klive -p "G ( r1.Nuplace = NuSINT_REC_BEGIN -> (  (  X r1.Nuplace = NuSINT_REC_BEGIN ) |  (X r1.Nuplace = NuSSTART_REBOOT) ) ) " -k 100
+check_ltlspec_klive -p "G ( r1.Nuplace = NuSSTART_REBOOT & r1.NuVtimestampDetection = 0ud3_0 -> (  (  X r1.Nuplace = NuSREBOOTED ) |  (X r1.Nuplace = NuSSTART_REBOOT) ) ) " -k 100
+check_ltlspec_klive -p "G ( r1.Nuplace = NuSSTART_REBOOT & r1.NuVtimestampDetection = 0ud3_1 -> (  (  X r1.Nuplace = NuSNOT_REBOOTED ) |  (X r1.Nuplace = NuSSTART_REBOOT) ) ) " -k 100
+check_ltlspec_klive -p "G ( r1.Nuplace = NuSREBOOTED -> (  (  X r1.Nuplace = NuSREBOOTED ) |  (X r1.Nuplace = NuSSTART) ) ) " -k 100
+check_ltlspec_klive -p "G ( r1.Nuplace = NuSNOT_REBOOTED -> (  (  X r1.Nuplace = NuSNOT_REBOOTED ) |  (X r1.Nuplace = NuSSTART) ) ) " -k 100
+
+check_ltlspec_klive -p "G ( r1.Nuplace = NuSEXT_REC_BEGIN -> (  (  X r1.Nuplace = NuSEXT_REC_BEGIN ) |  (X r1.Nuplace = NuSEXT_REC_SENT) ) ) " -k 100
+check_ltlspec_klive -p "G ( r1.Nuplace = NuSEXT_REC_SENT -> (  (  X r1.Nuplace = NuSFINISHED_REC ) |  (X r1.Nuplace = NuSEXT_REC_SENT) ) ) " -k 100
+check_ltlspec_klive -p "G ( r1.Nuplace = NuSFINISHED_REC -> (  (  X r1.Nuplace = NuSFINISHED_REC ) |  (X r1.Nuplace = NuSSTART) ) ) " -k 100
+
+
+
+
+check_ltlspec_klive -p "G ( r2.Nuplace = NuSSTART -> ( (X r2.Nuplace = NuSSTART) | (X r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE) )) " -k 100
+	-> true
+check_ltlspec_klive -p "G ( r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE -> (  (  X r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE ) | (X r2.Nuplace = NuSINT_REC_BEGIN) | (X r2.Nuplace = NuSEXT_REC_BEGIN) ) ) " -k 100
+check_ltlspec_klive -p "G ( r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE & r2.NuVfaultyReplicaID = 0ud3_1 -> (  (  X r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE ) | (X r2.Nuplace = NuSEXT_REC_BEGIN)  ) ) " -k 100
+check_ltlspec_klive -p "G ( r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE & r2.NuVfaultyReplicaID = 0ud3_2 -> (  (  X r2.Nuplace = NuSRECEIVED_DETECTION_MESSAGE ) |  (X r2.Nuplace = NuSINT_REC_BEGIN) ) ) " -k 100
+
+check_ltlspec_klive -p "G ( r2.Nuplace = NuSINT_REC_BEGIN -> (  (  X r2.Nuplace = NuSINT_REC_BEGIN ) |  (X r2.Nuplace = NuSSTART_REBOOT) ) ) " -k 100
+check_ltlspec_klive -p "G ( r2.Nuplace = NuSSTART_REBOOT & r2.NuVtimestampDetection = 0ud3_0 -> (  (  X r2.Nuplace = NuSREBOOTED ) |  (X r2.Nuplace = NuSSTART_REBOOT) ) ) " -k 100
+check_ltlspec_klive -p "G ( r2.Nuplace = NuSSTART_REBOOT & r2.NuVtimestampDetection = 0ud3_1 -> (  (  X r2.Nuplace = NuSNOT_REBOOTED ) |  (X r2.Nuplace = NuSSTART_REBOOT) ) ) " -k 100
+check_ltlspec_klive -p "G ( r2.Nuplace = NuSREBOOTED -> (  (  X r2.Nuplace = NuSREBOOTED ) |  (X r2.Nuplace = NuSSTART) ) ) " -k 100
+check_ltlspec_klive -p "G ( r2.Nuplace = NuSNOT_REBOOTED -> (  (  X r2.Nuplace = NuSNOT_REBOOTED ) |  (X r2.Nuplace = NuSSTART) ) ) " -k 100
+
+check_ltlspec_klive -p "G ( r2.Nuplace = NuSEXT_REC_BEGIN -> (  (  X r2.Nuplace = NuSEXT_REC_BEGIN ) |  (X r2.Nuplace = NuSEXT_REC_SENT) ) ) " -k 100
+check_ltlspec_klive -p "G ( r2.Nuplace = NuSEXT_REC_SENT -> (  (  X r2.Nuplace = NuSFINISHED_REC ) |  (X r2.Nuplace = NuSEXT_REC_SENT) ) ) " -k 100
+check_ltlspec_klive -p "G ( r2.Nuplace = NuSFINISHED_REC -> (  (  X r2.Nuplace = NuSFINISHED_REC ) |  (X r2.Nuplace = NuSSTART) ) ) " -k 100
+
+
+check_ltlspec_klive -p "G ( h1.Nuplace = NuSNOT_REBOOTED -> (   h1.NuVtimestampDetection = 0ud3_1 )) " -k 100
+	-> true

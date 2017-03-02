@@ -1,0 +1,92 @@
+This is a list, along with the tool outcome, of the tested properties on the first abstraction
+I have also included some trivial tests that I performed, in order to familiarize with the tool
+	
+
+at any time, if a report is received, then the detector eventually perform the check on other detectors crashes
+
+check_ctlspec -p "AG(dr1.Nuplace = NuSREPORT_RECEIVED -> AF (dr1.Nuplace = NuSCHECKING_DELAY) )"
+check_ctlspec -p "AG(dr1.Nuplace = NuSREPORT_RECEIVED -> AF (dr1.Nuplace = NuSCHECKING_CRASH) )"
+check_ctlspec -p "AG(dr1.Nuplace = NuSREPORT_RECEIVED -> AF dr1.Nuplace = NuSCHECKING_DETECTORS )"
+
+check_ctlspec -p "AG(dr2.Nuplace = NuSREPORT_RECEIVED -> AF (dr2.Nuplace = NuSCHECKING_DELAY) )"
+check_ctlspec -p "AG(dr2.Nuplace = NuSREPORT_RECEIVED -> AF (dr2.Nuplace = NuSCHECKING_CRASH) )"
+check_ctlspec -p "AG(dr2.Nuplace = NuSREPORT_RECEIVED -> AF dr2.Nuplace = NuSCHECKING_DETECTORS )"
+
+check_ctlspec -p "AG(dr3.Nuplace = NuSREPORT_RECEIVED -> AF (dr3.Nuplace = NuSCHECKING_DELAY) )"
+check_ctlspec -p "AG(dr3.Nuplace = NuSREPORT_RECEIVED -> AF (dr3.Nuplace = NuSCHECKING_CRASH) )"
+check_ctlspec -p "AG(dr3.Nuplace = NuSREPORT_RECEIVED -> AF dr3.Nuplace = NuSCHECKING_DETECTORS )"
+
+
+check_ctlspec -p "AG (dr1.Nuplace = NuSREPORT_RECEIVED -> ( (AX dr1.Nuplace = NuSREPORT_RECEIVED) | (AX dr1.Nuplace = NuSCHOSEN_RECORD) ))"
+	-> true
+check_ctlspec -p "AG (dr1.Nuplace = NuSCHOSEN_RECORD -> AX dr1.Nuplace = NuSCHOSEN_RECORD | AX dr1.Nuplace = NuSUPDATED )"
+	-> true
+check_ctlspec -p "AG (dr1.Nuplace = NuSUPDATED -> AX dr1.Nuplace = NuSUPDATED | AX dr1.Nuplace = NuSCHECKING_DELAY )"
+	-> true
+check_ctlspec -p "AG (dr1.Nuplace = NuSCHECKING_DELAY -> AX dr1.Nuplace = NuSCHECKING_CRASH | AX dr1.Nuplace = NuSCHECKING_DELAY )"
+	-> true
+check_ctlspec -p "AG (dr1.Nuplace = NuSCHECKING_CRASH -> AX dr1.Nuplace = NuSCHECKING_CRASH | AX dr1.Nuplace = NuSCHECKING_DETECTORS )"
+	-> true
+
+
+	
+check_ctlspec -p "AG(dr2.Nuplace = NuSREPORT_RECEIVED -> (AF (dr2.Nuplace = NuSCHECKING_DELAY) ))"
+	-> true
+check_ctlspec -p "AG(dr2.Nuplace = NuSREPORT_RECEIVED -> (AF (dr2.Nuplace = NuSCHECKING_CRASH) ))"
+	-> true
+check_ctlspec -p "AG(dr2.Nuplace = NuSREPORT_RECEIVED -> (AF dr2.Nuplace = NuSCHECKING_DETECTORS ) )"
+	-> true
+
+check_ctlspec -p "AG (dr2.Nuplace = NuSREPORT_RECEIVED -> ( (AX dr2.Nuplace = NuSREPORT_RECEIVED) | (AX dr2.Nuplace = NuSCHOSEN_RECORD) ))"
+	-> true
+check_ctlspec -p "AG (dr2.Nuplace = NuSCHOSEN_RECORD -> AX dr2.Nuplace = NuSCHOSEN_RECORD | AX dr2.Nuplace = NuSUPDATED )"
+	-> true
+check_ctlspec -p "AG (dr2.Nuplace = NuSUPDATED -> AX dr2.Nuplace = NuSUPDATED | AX dr2.Nuplace = NuSCHECKING_DELAY )"
+	-> true
+check_ctlspec -p "AG (dr2.Nuplace = NuSCHECKING_DELAY -> AX dr2.Nuplace = NuSCHECKING_CRASH | AX dr2.Nuplace = NuSCHECKING_DELAY )"
+	-> true
+check_ctlspec -p "AG (dr2.Nuplace = NuSCHECKING_CRASH -> AX dr2.Nuplace = NuSCHECKING_CRASH | AX dr2.Nuplace = NuSCHECKING_DETECTORS )"
+	-> true
+
+
+	
+check_ctlspec -p "AG(dr3.Nuplace = NuSREPORT_RECEIVED -> (AF (dr3.Nuplace = NuSCHECKING_DELAY) ) )"
+	-> true
+check_ctlspec -p "AG(dr3.Nuplace = NuSREPORT_RECEIVED -> (AF (dr3.Nuplace = NuSCHECKING_CRASH) ))"
+	-> true
+check_ctlspec -p "AG(dr3.Nuplace = NuSREPORT_RECEIVED -> (AF dr3.Nuplace = NuSCHECKING_DETECTORS ))"
+	-> true
+
+check_ctlspec -p "AG (dr3.Nuplace = NuSREPORT_RECEIVED -> ( (AX dr3.Nuplace = NuSREPORT_RECEIVED) | (AX dr3.Nuplace = NuSCHOSEN_RECORD) ))"
+	-> true
+check_ctlspec -p "AG (dr3.Nuplace = NuSCHOSEN_RECORD -> AX dr3.Nuplace = NuSCHOSEN_RECORD | AX dr3.Nuplace = NuSUPDATED )"
+	-> true
+check_ctlspec -p "AG (dr3.Nuplace = NuSUPDATED -> AX dr3.Nuplace = NuSUPDATED | AX dr3.Nuplace = NuSCHECKING_DELAY )"
+	-> true
+check_ctlspec -p "AG (dr3.Nuplace = NuSCHECKING_DELAY -> AX dr3.Nuplace = NuSCHECKING_CRASH | AX dr3.Nuplace = NuSCHECKING_DELAY )"
+	-> true
+check_ctlspec -p "AG (dr3.Nuplace = NuSCHECKING_CRASH -> AX dr3.Nuplace = NuSCHECKING_CRASH | AX dr3.Nuplace = NuSCHECKING_DETECTORS )"
+	-> true
+
+
+There is no need, in this model, to use LTL in order to speedup the verification of properties.
+However, we can see that the following liveness propertiy (checked through different techniques)
+takes very long time to be verified: no output is given. 
+By contrast, its CTL counterpart gives takes few time in order to give a positive result
+
+
+check_ltlspec -p "G(dr1.Nuplace = NuSREPORT_RECEIVED -> F dr1.Nuplace = NuSCHECKING_DETECTORS )"
+check_ltlspec_klive -p "G(dr1.Nuplace = NuSREPORT_RECEIVED -> F dr1.Nuplace = NuSCHECKING_DETECTORS )" -k 100
+check_ltlspec_bcm_onepb -p "G(dr1.Nuplace = NuSREPORT_RECEIVED -> F dr1.Nuplace = NuSCHECKING_DETECTORS )" -k 100 
+
+
+
+	
+
+Just some of the first statements, in order to test the tool
+check_ctlspec -p "AG (dr1.NuVreplicaID = db1.NuVownerID & dr2.NuVreplicaID = db2.NuVownerID & dr3.NuVreplicaID = db3.NuVownerID)"
+	-> true
+check_ctlspec -p "AG(db1.Nuplace = NuSREADY_TO_UPDATE & db2.Nuplace = NuSREADY_TO_UPDATE & db3.Nuplace = NuSREADY_TO_UPDATE)"
+	-> false
+check_ctlspec -p "AF(db1.Nuplace = NuSREADY_TO_UPDATE & db2.Nuplace = NuSREADY_TO_UPDATE & db3.Nuplace = NuSREADY_TO_UPDATE & dr1.Nuplace = NuSREADY_TO_RECEIVE_REPORT & dr2.Nuplace = NuSREADY_TO_RECEIVE_REPORT & dr3.Nuplace = NuSREADY_TO_RECEIVE_REPORT)"
+	-> true

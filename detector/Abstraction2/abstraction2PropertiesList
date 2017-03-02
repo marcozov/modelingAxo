@@ -1,0 +1,138 @@
+Few more properties added
+The others
+	
+check_ctlspec -p "AG (dr1.Nuplace = NuSUPDATED -> dr1.NuVcontrollerTimestampValidityReport = m1.NuVone)"
+check_ctlspec -p "AG (dr2.Nuplace = NuSUPDATED -> dr2.NuVcontrollerTimestampValidityReport = m1.NuVone)"
+check_ctlspec -p "AG (dr3.Nuplace = NuSUPDATED -> dr3.NuVcontrollerTimestampValidityReport = m1.NuVone)"
+	all true
+	
+check_ctlspec -p "AG (dr1.Nuplace = NuSNOUPDATED -> dr1.NuVcontrollerTimestampValidityReport = m1.NuVzero)"
+check_ctlspec -p "AG (dr2.Nuplace = NuSNOUPDATED -> dr2.NuVcontrollerTimestampValidityReport = m1.NuVzero)"
+check_ctlspec -p "AG (dr3.Nuplace = NuSNOUPDATED -> dr3.NuVcontrollerTimestampValidityReport = m1.NuVzero)"
+
+check_ctlspec -p "AG (dr1.Nuplace = NuSCHOSEN_RECORD & dr1.NuVcontrollerTimestampValidityReport = m1.NuVone -> ( AX (dr1.Nuplace = NuSCHOSEN_RECORD) | AX (dr1.Nuplace = NuSUPDATED) )  )"
+check_ctlspec -p "AG (dr2.Nuplace = NuSCHOSEN_RECORD & dr2.NuVcontrollerTimestampValidityReport = m1.NuVone -> ( AX (dr2.Nuplace = NuSCHOSEN_RECORD) | AX (dr2.Nuplace = NuSUPDATED) )  )"
+check_ctlspec -p "AG (dr3.Nuplace = NuSCHOSEN_RECORD & dr3.NuVcontrollerTimestampValidityReport = m1.NuVone -> ( AX (dr3.Nuplace = NuSCHOSEN_RECORD) | AX (dr3.Nuplace = NuSUPDATED) )  )"
+	all true
+	
+check_ctlspec -p "AG (dr1.Nuplace = NuSCHOSEN_RECORD & dr1.NuVcontrollerTimestampValidityReport = m1.NuVzero -> ( AX (dr1.Nuplace = NuSCHOSEN_RECORD) | AX (dr1.Nuplace = NuSNOUPDATED) )  )"
+check_ctlspec -p "AG (dr2.Nuplace = NuSCHOSEN_RECORD & dr2.NuVcontrollerTimestampValidityReport = m1.NuVzero -> ( AX (dr2.Nuplace = NuSCHOSEN_RECORD) | AX (dr2.Nuplace = NuSNOUPDATED) )  )"
+check_ctlspec -p "AG (dr3.Nuplace = NuSCHOSEN_RECORD & dr3.NuVcontrollerTimestampValidityReport = m1.NuVzero -> ( AX (dr3.Nuplace = NuSCHOSEN_RECORD) | AX (dr3.Nuplace = NuSNOUPDATED) )  )"
+
+check_ctlspec -p "AG (dr1.Nuplace = NuSREADY_TO_RECEIVE_REPORT -> ( AX (dr1.Nuplace = NuSREADY_TO_RECEIVE_REPORT) | AX(dr1.Nuplace = NuSREPORT_RECEIVED)  ))"
+check_ctlspec -p "AG (dr1.Nuplace = NuSREPORT_RECEIVED -> ( AX (dr1.Nuplace = NuSCHOSEN_RECORD) | AX(dr1.Nuplace = NuSREPORT_RECEIVED)  ))"
+check_ctlspec -p "AG (dr1.Nuplace = NuSCHOSEN_RECORD -> (AX (dr1.Nuplace = NuSCHOSEN_RECORD) | AX (dr1.Nuplace = NuSUPDATED) | AX(dr1.Nuplace = NuSNOUPDATED)  ))"
+check_ctlspec -p "AG (dr1.Nuplace = NuSUPDATED -> ( AX (dr1.Nuplace = NuSUPDATED) | AX(dr1.Nuplace = NuSCHECKING_DELAY)  ))"
+check_ctlspec -p "AG (dr1.Nuplace = NuSNOUPDATED -> ( AX (dr1.Nuplace = NuSNOUPDATED) | AX(dr1.Nuplace = NuSCHECKING_DELAY)  ))"
+check_ctlspec -p "AG (dr1.Nuplace = NuSCHECKING_DELAY -> ( AX (dr1.Nuplace = NuSCHECKING_CRASH) | AX(dr1.Nuplace = NuSCHECKING_DELAY)  ))"
+check_ctlspec -p "AG (dr1.Nuplace = NuSCHECKING_CRASH -> ( AX (dr1.Nuplace = NuSCHECKING_CRASH) | AX(dr1.Nuplace = NuSCHECKING_DETECTORS)  ))"
+check_ctlspec -p "AG (dr1.Nuplace = NuSCHECKING_DETECTORS -> ( AX (dr1.Nuplace = NuSREADY_TO_RECEIVE_REPORT) | AX(dr1.Nuplace = NuSCHECKING_DETECTORS)  ))"
+
+check_ctlspec -p "AG (dr2.Nuplace = NuSREADY_TO_RECEIVE_REPORT -> ( AX (dr2.Nuplace = NuSREADY_TO_RECEIVE_REPORT) | AX(dr2.Nuplace = NuSREPORT_RECEIVED)  ))"
+check_ctlspec -p "AG (dr2.Nuplace = NuSREPORT_RECEIVED -> ( AX (dr2.Nuplace = NuSCHOSEN_RECORD) | AX(dr2.Nuplace = NuSREPORT_RECEIVED)  ))"
+check_ctlspec -p "AG (dr2.Nuplace = NuSCHOSEN_RECORD -> (AX (dr2.Nuplace = NuSCHOSEN_RECORD) | AX (dr2.Nuplace = NuSUPDATED) | AX(dr2.Nuplace = NuSNOUPDATED)  ))"
+check_ctlspec -p "AG (dr2.Nuplace = NuSUPDATED -> ( AX (dr2.Nuplace = NuSUPDATED) | AX(dr2.Nuplace = NuSCHECKING_DELAY)  ))"
+check_ctlspec -p "AG (dr2.Nuplace = NuSNOUPDATED -> ( AX (dr2.Nuplace = NuSNOUPDATED) | AX(dr2.Nuplace = NuSCHECKING_DELAY)  ))"
+check_ctlspec -p "AG (dr2.Nuplace = NuSCHECKING_DELAY -> ( AX (dr2.Nuplace = NuSCHECKING_CRASH) | AX(dr2.Nuplace = NuSCHECKING_DELAY)  ))"
+check_ctlspec -p "AG (dr2.Nuplace = NuSCHECKING_CRASH -> ( AX (dr2.Nuplace = NuSCHECKING_CRASH) | AX(dr2.Nuplace = NuSCHECKING_DETECTORS)  ))"
+check_ctlspec -p "AG (dr2.Nuplace = NuSCHECKING_DETECTORS -> ( AX (dr2.Nuplace = NuSREADY_TO_RECEIVE_REPORT) | AX(dr2.Nuplace = NuSCHECKING_DETECTORS)  ))"
+
+check_ctlspec -p "AG (dr3.Nuplace = NuSREADY_TO_RECEIVE_REPORT -> ( AX (dr3.Nuplace = NuSREADY_TO_RECEIVE_REPORT) | AX(dr3.Nuplace = NuSREPORT_RECEIVED)  ))"
+check_ctlspec -p "AG (dr3.Nuplace = NuSREPORT_RECEIVED -> ( AX (dr3.Nuplace = NuSCHOSEN_RECORD) | AX(dr3.Nuplace = NuSREPORT_RECEIVED)  ))"
+check_ctlspec -p "AG (dr3.Nuplace = NuSCHOSEN_RECORD -> (AX (dr3.Nuplace = NuSCHOSEN_RECORD) | AX (dr3.Nuplace = NuSUPDATED) | AX(dr3.Nuplace = NuSNOUPDATED)  ))"
+check_ctlspec -p "AG (dr3.Nuplace = NuSUPDATED -> ( AX (dr3.Nuplace = NuSUPDATED) | AX(dr3.Nuplace = NuSCHECKING_DELAY)  ))"
+check_ctlspec -p "AG (dr3.Nuplace = NuSNOUPDATED -> ( AX (dr3.Nuplace = NuSNOUPDATED) | AX(dr3.Nuplace = NuSCHECKING_DELAY)  ))"
+check_ctlspec -p "AG (dr3.Nuplace = NuSCHECKING_DELAY -> ( AX (dr3.Nuplace = NuSCHECKING_CRASH) | AX(dr3.Nuplace = NuSCHECKING_DELAY)  ))"
+check_ctlspec -p "AG (dr3.Nuplace = NuSCHECKING_CRASH -> ( AX (dr3.Nuplace = NuSCHECKING_CRASH) | AX(dr3.Nuplace = NuSCHECKING_DETECTORS)  ))"
+check_ctlspec -p "AG (dr3.Nuplace = NuSCHECKING_DETECTORS -> ( AX (dr3.Nuplace = NuSREADY_TO_RECEIVE_REPORT) | AX(dr3.Nuplace = NuSCHECKING_DETECTORS)  ))"
+
+
+
+check_ctlspec -p "AG(dr1.Nuplace = NuSREPORT_RECEIVED -> AF (dr1.Nuplace = NuSCHECKING_DELAY) )"
+check_ctlspec -p "AG(dr1.Nuplace = NuSREPORT_RECEIVED -> AF (dr1.Nuplace = NuSCHECKING_CRASH) )"
+check_ctlspec -p "AG(dr1.Nuplace = NuSREPORT_RECEIVED -> AF dr1.Nuplace = NuSCHECKING_DETECTORS )"
+
+check_ctlspec -p "AG(dr2.Nuplace = NuSREPORT_RECEIVED -> AF (dr2.Nuplace = NuSCHECKING_DELAY) )"
+check_ctlspec -p "AG(dr2.Nuplace = NuSREPORT_RECEIVED -> AF (dr2.Nuplace = NuSCHECKING_CRASH) )"
+check_ctlspec -p "AG(dr2.Nuplace = NuSREPORT_RECEIVED -> AF dr2.Nuplace = NuSCHECKING_DETECTORS )"
+
+check_ctlspec -p "AG(dr3.Nuplace = NuSREPORT_RECEIVED -> AF (dr3.Nuplace = NuSCHECKING_DELAY) )"
+check_ctlspec -p "AG(dr3.Nuplace = NuSREPORT_RECEIVED -> AF (dr3.Nuplace = NuSCHECKING_CRASH) )"
+check_ctlspec -p "AG(dr3.Nuplace = NuSREPORT_RECEIVED -> AF dr3.Nuplace = NuSCHECKING_DETECTORS )"
+	-> true
+these are all true
+
+
+
+
+
+OLD STUFF 
+Just tests that I have done at the beginning. Not very interesting
+
+if I set m1.controllerTimestampGenerator = 0:
+-- specification AG (dr1.Nuplace = NuSUPDATED -> AG dr1.NuVcontrollerTimestampValidityReport != m1.NuVzero)  is true
+-- specification AG (dr1.Nuplace = NuSUPDATED -> AG dr1.NuVcontrollerTimestampValidityReport != m1.NuVone)  is true
+-- specification AG (dr1.Nuplace = NuSUPDATED -> AG dr1.NuVcontrollerTimestampValidityReport = m1.NuVzero)  is true
+-- specification AG (dr1.Nuplace = NuSUPDATED -> AG dr1.NuVcontrollerTimestampValidityReport != m1.NuVzero)  is true
+
+everything is verified, because NuSUPDATED is never reached
+
+instead, I should verify properties on NuSNOUPDATED:
+-- specification AG (dr1.Nuplace = NuSNOUPDATED -> AG dr1.NuVcontrollerTimestampValidityReport != m1.NuVzero)  is false
+-- specification AG (dr1.Nuplace = NuSNOUPDATED -> AG dr1.NuVcontrollerTimestampValidityReport = m1.NuVzero)  is true
+-- specification AG (dr1.Nuplace = NuSNOUPDATED -> AG dr1.NuVcontrollerTimestampValidityReport = m1.NuVone)  is false
+-- specification AG (dr1.Nuplace = NuSNOUPDATED -> AG dr1.NuVcontrollerTimestampValidityReport != m1.NuVone)  is true
+
+
+if I set m1.controllerTimestampGenerator = 1, I should have the opposite situation:
+-- specification AG (dr1.Nuplace = NuSNOUPDATED -> AG dr1.NuVcontrollerTimestampValidityReport != m1.NuVzero)  is true
+-- specification AG (dr1.Nuplace = NuSNOUPDATED -> AG dr1.NuVcontrollerTimestampValidityReport != m1.NuVone)  is true
+-- specification AG (dr1.Nuplace = NuSNOUPDATED -> AG dr1.NuVcontrollerTimestampValidityReport = m1.NuVone)  is true
+-- specification AG (dr1.Nuplace = NuSNOUPDATED -> AG dr1.NuVcontrollerTimestampValidityReport = m1.NuVzero)  is true
+
+instead:
+-- specification AG (dr1.Nuplace = NuSUPDATED -> AG dr1.NuVcontrollerTimestampValidityReport = m1.NuVone)  is true
+-- specification AG (dr1.Nuplace = NuSUPDATED -> AG dr1.NuVcontrollerTimestampValidityReport != m1.NuVzero)  is false
+-- specification AG (dr1.Nuplace = NuSUPDATED -> AG dr1.NuVcontrollerTimestampValidityReport != m1.NuVone)  is true
+-- specification AG (dr1.Nuplace = NuSUPDATED -> AG dr1.NuVcontrollerTimestampValidityReport = m1.NuVzero)  is false
+
+randomized values (abstraction3) solved these issues
+
+
+what sense does it make?
+check_ctlspec -p "AG(dr1.NuVcontrollerTimestampValidityReport = m1.NuVone -> AF(dr1.Nuplace = NuSNOUPDATED))"
+	-> should be false. And it is!
+
+
+
+check_ltlspec -p "G( dr1.Nuplace = NuSUPDATED -> dr1.NuVcontrollerTimestampValidityReport = m1.NuVone  )"
+	-> true
+	
+check_ltlspec -p "G( dr1.Nuplace = NuSUPDATED -> dr1.NuVcontrollerTimestampValidityReport = m1.NuVzero  )"
+	-> also true ... but it should be false
+	
+check_ltlspec -p "G( m1.NuVone = m1.NuVzero  )"
+
+
+check_ltlspec -p "F( dr1.NuVcontrollerTimestampValidityReport = m1.NuVone )"
+	-> depends on the assigned value..
+
+check_ltlspec -p "F( dr1.Nuplace = NuSUPDATED) "
+
+
+check_ctlspec -p "AG(dr1.NuVcontrollerTimestampValidityReport = m1.NuVone -> AF(dr1.Nuplace = NuSUPDATED))"
+	-> true
+	
+check_ctlspec -p " AG(dr1.NuVcontrollerTimestampValidityReport = m1.NuVone -> EF(dr1.Nuplace = NuSUPDATED))  "
+	-> true
+
+
+
+removed:
+
+from init:
+ &
+		( (NuVreplicaIDValidityReport) = (NuVreplicaID) ) &
+		( (NuVcontrollerTimestampValidityReport) = (NuVcontrollerTimestampGenerator) ) &
+		( (NuVdetectorTimestampValidityReport) = (NuVdetectorTimestampGenerator) ) &
+		( (NuVvalidValidityReport) = (FALSE) )

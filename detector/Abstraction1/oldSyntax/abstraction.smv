@@ -1,0 +1,576 @@
+MODULE DR1(active_interaction, NuDPid)
+
+	VAR
+		NuPreceiveReportNew		:		boolean;
+		NuPchooseRecord		:		boolean;
+		NuPupdate		:		boolean;
+		NuPperformCheckDelay		:		boolean;
+		NuPperformCheckCrash		:		boolean;
+		NuPperformCheckDetectors		:		boolean;
+		NuPbackToBeginningState		:		boolean;
+		NuPperformCheckCrashAndNotifyRebooter		:		boolean;
+		NuPperformCheckDetectorsAndNotifyRebooter		:		boolean;
+		NuPbackToBeginningStateNotifyRebooter		:		boolean;
+		NuVreplicaID		:		unsigned word[3];
+		NuVdetectorTimestamp		:		unsigned word[3];
+		NuVdetectorHealth		:		unsigned word[3];
+		NuVcheckResultDelay		:		unsigned word[3];
+		NuVcheckResultCrash		:		unsigned word[3];
+		NuVcheckResultDetectors		:		unsigned word[3];
+		NuVreplicaIDValidityReport		:		unsigned word[3];
+		NuVcontrollerTimestampValidityReport		:		unsigned word[3];
+		NuVdetectorTimestampValidityReport		:		unsigned word[3];
+		NuVhealthValidityReport		:		unsigned word[3];
+		NuVvalidValidityReport		:		boolean;
+		Nuplace		:		{NuSREADY_TO_RECEIVE_REPORT, NuSREPORT_RECEIVED, NuSCHOSEN_RECORD, NuSUPDATED, NuSCHECKING_DELAY, NuSCHECKING_CRASH, NuSCHECKING_DETECTORS};
+
+
+	INIT
+		( (Nuplace) = (NuSREADY_TO_RECEIVE_REPORT) ) &
+		( (NuVreplicaID) = (NuDPid) );
+
+	INVAR
+		( (NuPbackToBeginningState) <-> (( (Nuplace) = (NuSCHECKING_DETECTORS) )) ) &
+		( (NuPperformCheckDetectors) <-> (( (Nuplace) = (NuSCHECKING_CRASH) )) ) &
+		( (NuPchooseRecord) <-> (( (Nuplace) = (NuSREPORT_RECEIVED) )) ) &
+		( (NuPperformCheckDelay) <-> (( (Nuplace) = (NuSUPDATED) )) ) &
+		( (NuPperformCheckCrash) <-> (( (Nuplace) = (NuSCHECKING_DELAY) )) ) &
+		( (NuPreceiveReportNew) <-> (( (Nuplace) = (NuSREADY_TO_RECEIVE_REPORT) )) ) &
+		( (NuPupdate) <-> (( (Nuplace) = (NuSCHOSEN_RECORD) )) );
+
+	TRANS
+		( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREADY_TO_RECEIVE_REPORT) )) & (( (next(Nuplace)) = (NuSREPORT_RECEIVED) )) )) & (( (active_interaction) = (NuI1) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREPORT_RECEIVED) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD) )) )) & (( (active_interaction) = (NuI2) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREPORT_RECEIVED) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD) )) )) & (( (active_interaction) = (NuI3) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREPORT_RECEIVED) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD) )) )) & (( (active_interaction) = (NuI4) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD) )) & (( (next(Nuplace)) = (NuSUPDATED) )) )) & (( (active_interaction) = (NuI11) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD) )) & (( (next(Nuplace)) = (NuSUPDATED) )) )) & (( (active_interaction) = (NuI12) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD) )) & (( (next(Nuplace)) = (NuSUPDATED) )) )) & (( (active_interaction) = (NuI13) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATED) )) & (( (next(Nuplace)) = (NuSCHECKING_DELAY) )) )) & (( (active_interaction) = (NuI20) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATED) )) & (( (next(Nuplace)) = (NuSCHECKING_DELAY) )) )) & (( (active_interaction) = (NuI21) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATED) )) & (( (next(Nuplace)) = (NuSCHECKING_DELAY) )) )) & (( (active_interaction) = (NuI22) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKING_DELAY) )) & (( (next(Nuplace)) = (NuSCHECKING_CRASH) )) )) & (( (active_interaction) = (NuI29) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKING_CRASH) )) & (( (next(Nuplace)) = (NuSCHECKING_DETECTORS) )) )) & (( (active_interaction) = (NuI32) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKING_DETECTORS) )) & (( (next(Nuplace)) = (NuSREADY_TO_RECEIVE_REPORT) )) )) & (( (active_interaction) = (NuI35) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (active_interaction) != (NuI35) )) & (( (( (active_interaction) != (NuI32) )) & (( (( (active_interaction) != (NuI29) )) & (( (( (active_interaction) != (NuI22) )) & (( (( (active_interaction) != (NuI21) )) & (( (( (active_interaction) != (NuI20) )) & (( (( (active_interaction) != (NuI13) )) & (( (( (active_interaction) != (NuI12) )) & (( (( (active_interaction) != (NuI11) )) & (( (( (active_interaction) != (NuI4) )) & (( (( (active_interaction) != (NuI3) )) & (( (( (active_interaction) != (NuI2) )) & (( (( (active_interaction) != (NuI1) )) & (( (( (( (( (( (( (( (( (( (( (( (( (next(Nuplace)) = (Nuplace) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) )) )) )) )) )) )) )) )) )) )) )) )) )) );
+
+
+MODULE M1(active_interaction, NuDPid)
+
+	VAR
+		NuPsendReport		:		boolean;
+		NuPgenerateReport		:		boolean;
+		NuVreplicaID		:		unsigned word[3];
+		NuVreplicaIDValidityReport		:		unsigned word[3];
+		NuVcontrollerTimestampValidityReport		:		unsigned word[3];
+		NuVdetectorTimestampValidityReport		:		unsigned word[3];
+		NuVhealthValidityReport		:		unsigned word[3];
+		NuVvalidValidityReport		:		boolean;
+		NuVcontrollerTimestampGenerator		:		unsigned word[3];
+		NuVdetectorTimestampGenerator		:		unsigned word[3];
+		Nuplace		:		{NuSHAVE_A_REPORT_TO_SEND, NuSREPORT_SENT};
+
+
+	INIT
+		( (Nuplace) = (NuSHAVE_A_REPORT_TO_SEND) ) &
+		( (NuVreplicaID) = (NuDPid) ) &
+		( (NuVcontrollerTimestampGenerator) = (0ud3_1) ) &
+		( (NuVdetectorTimestampGenerator) = (0ud3_1) ) &
+		( (NuVhealthValidityReport) = (0ud3_0) );
+
+	INVAR
+		( (NuPsendReport) <-> (( (Nuplace) = (NuSHAVE_A_REPORT_TO_SEND) )) ) &
+		( (NuPgenerateReport) <-> (( (Nuplace) = (NuSREPORT_SENT) )) ) &
+		(( NuVcontrollerTimestampValidityReport = 0ud3_0) | (NuVcontrollerTimestampValidityReport = 0ud3_1) ) &
+		( ( NuVdetectorTimestampValidityReport = 0ud3_0) | (NuVdetectorTimestampValidityReport = 0ud3_1) ) &
+		( (NuVreplicaIDValidityReport = 0ud3_1) | (NuVreplicaIDValidityReport = 0ud3_2) | (NuVreplicaIDValidityReport = 0ud3_3) );
+
+	TRANS
+		( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSHAVE_A_REPORT_TO_SEND) )) & (( (next(Nuplace)) = (NuSREPORT_SENT) )) )) & (( (active_interaction) = (NuI1) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) )) & (( (next(NuVcontrollerTimestampGenerator)) = (NuVcontrollerTimestampGenerator) )) )) & (( (next(NuVdetectorTimestampGenerator)) = (NuVdetectorTimestampGenerator) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREPORT_SENT) )) & (( (next(Nuplace)) = (NuSHAVE_A_REPORT_TO_SEND) )) )) & (( (active_interaction) = (NuI47) )) ))  ))  ))  ))  )) & (( (next(NuVcontrollerTimestampGenerator)) = (( (NuVcontrollerTimestampGenerator) + (0ud3_1) )) )) )) & (( (next(NuVdetectorTimestampGenerator)) = (( (NuVdetectorTimestampGenerator) + (0ud3_1) )) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) ) |
+		( (( (active_interaction) != (NuI47) )) & (( (( (active_interaction) != (NuI1) )) & (( (( (( (( (( (( (( (( (( (next(Nuplace)) = (Nuplace) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) )) & (( (next(NuVcontrollerTimestampGenerator)) = (NuVcontrollerTimestampGenerator) )) )) & (( (next(NuVdetectorTimestampGenerator)) = (NuVdetectorTimestampGenerator) )) )) )) );
+
+
+MODULE DR2(active_interaction, NuDPid)
+
+	VAR
+		NuPreceiveReportNew		:		boolean;
+		NuPchooseRecord		:		boolean;
+		NuPupdate		:		boolean;
+		NuPperformCheckDelay		:		boolean;
+		NuPperformCheckCrash		:		boolean;
+		NuPperformCheckDetectors		:		boolean;
+		NuPbackToBeginningState		:		boolean;
+		NuPperformCheckCrashAndNotifyRebooter		:		boolean;
+		NuPperformCheckDetectorsAndNotifyRebooter		:		boolean;
+		NuPbackToBeginningStateNotifyRebooter		:		boolean;
+		NuVreplicaID		:		unsigned word[3];
+		NuVdetectorTimestamp		:		unsigned word[3];
+		NuVdetectorHealth		:		unsigned word[3];
+		NuVcheckResultDelay		:		unsigned word[3];
+		NuVcheckResultCrash		:		unsigned word[3];
+		NuVcheckResultDetectors		:		unsigned word[3];
+		NuVreplicaIDValidityReport		:		unsigned word[3];
+		NuVcontrollerTimestampValidityReport		:		unsigned word[3];
+		NuVdetectorTimestampValidityReport		:		unsigned word[3];
+		NuVhealthValidityReport		:		unsigned word[3];
+		NuVvalidValidityReport		:		boolean;
+		Nuplace		:		{NuSREADY_TO_RECEIVE_REPORT, NuSREPORT_RECEIVED, NuSCHOSEN_RECORD, NuSUPDATED, NuSCHECKING_DELAY, NuSCHECKING_CRASH, NuSCHECKING_DETECTORS};
+
+
+	INIT
+		( (Nuplace) = (NuSREADY_TO_RECEIVE_REPORT) ) &
+		( (NuVreplicaID) = (NuDPid) );
+
+	INVAR
+		( (NuPperformCheckDelay) <-> (( (Nuplace) = (NuSUPDATED) )) ) &
+		( (NuPupdate) <-> (( (Nuplace) = (NuSCHOSEN_RECORD) )) ) &
+		( (NuPreceiveReportNew) <-> (( (Nuplace) = (NuSREADY_TO_RECEIVE_REPORT) )) ) &
+		( (NuPperformCheckCrash) <-> (( (Nuplace) = (NuSCHECKING_DELAY) )) ) &
+		( (NuPperformCheckDetectors) <-> (( (Nuplace) = (NuSCHECKING_CRASH) )) ) &
+		( (NuPbackToBeginningState) <-> (( (Nuplace) = (NuSCHECKING_DETECTORS) )) ) &
+		( (NuPchooseRecord) <-> (( (Nuplace) = (NuSREPORT_RECEIVED) )) );
+
+	TRANS
+		( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREADY_TO_RECEIVE_REPORT) )) & (( (next(Nuplace)) = (NuSREPORT_RECEIVED) )) )) & (( (active_interaction) = (NuI1) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREPORT_RECEIVED) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD) )) )) & (( (active_interaction) = (NuI5) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREPORT_RECEIVED) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD) )) )) & (( (active_interaction) = (NuI6) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREPORT_RECEIVED) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD) )) )) & (( (active_interaction) = (NuI7) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD) )) & (( (next(Nuplace)) = (NuSUPDATED) )) )) & (( (active_interaction) = (NuI14) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD) )) & (( (next(Nuplace)) = (NuSUPDATED) )) )) & (( (active_interaction) = (NuI15) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD) )) & (( (next(Nuplace)) = (NuSUPDATED) )) )) & (( (active_interaction) = (NuI16) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATED) )) & (( (next(Nuplace)) = (NuSCHECKING_DELAY) )) )) & (( (active_interaction) = (NuI23) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATED) )) & (( (next(Nuplace)) = (NuSCHECKING_DELAY) )) )) & (( (active_interaction) = (NuI24) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATED) )) & (( (next(Nuplace)) = (NuSCHECKING_DELAY) )) )) & (( (active_interaction) = (NuI25) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKING_DELAY) )) & (( (next(Nuplace)) = (NuSCHECKING_CRASH) )) )) & (( (active_interaction) = (NuI30) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKING_CRASH) )) & (( (next(Nuplace)) = (NuSCHECKING_DETECTORS) )) )) & (( (active_interaction) = (NuI33) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKING_DETECTORS) )) & (( (next(Nuplace)) = (NuSREADY_TO_RECEIVE_REPORT) )) )) & (( (active_interaction) = (NuI36) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (active_interaction) != (NuI36) )) & (( (( (active_interaction) != (NuI33) )) & (( (( (active_interaction) != (NuI30) )) & (( (( (active_interaction) != (NuI25) )) & (( (( (active_interaction) != (NuI24) )) & (( (( (active_interaction) != (NuI23) )) & (( (( (active_interaction) != (NuI16) )) & (( (( (active_interaction) != (NuI15) )) & (( (( (active_interaction) != (NuI14) )) & (( (( (active_interaction) != (NuI7) )) & (( (( (active_interaction) != (NuI6) )) & (( (( (active_interaction) != (NuI5) )) & (( (( (active_interaction) != (NuI1) )) & (( (( (( (( (( (( (( (( (( (( (( (( (next(Nuplace)) = (Nuplace) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) )) )) )) )) )) )) )) )) )) )) )) )) )) );
+
+
+MODULE DR3(active_interaction, NuDPid)
+
+	VAR
+		NuPreceiveReportNew		:		boolean;
+		NuPchooseRecord		:		boolean;
+		NuPupdate		:		boolean;
+		NuPperformCheckDelay		:		boolean;
+		NuPperformCheckCrash		:		boolean;
+		NuPperformCheckDetectors		:		boolean;
+		NuPbackToBeginningState		:		boolean;
+		NuPperformCheckCrashAndNotifyRebooter		:		boolean;
+		NuPperformCheckDetectorsAndNotifyRebooter		:		boolean;
+		NuPbackToBeginningStateNotifyRebooter		:		boolean;
+		NuVreplicaID		:		unsigned word[3];
+		NuVdetectorTimestamp		:		unsigned word[3];
+		NuVdetectorHealth		:		unsigned word[3];
+		NuVcheckResultDelay		:		unsigned word[3];
+		NuVcheckResultCrash		:		unsigned word[3];
+		NuVcheckResultDetectors		:		unsigned word[3];
+		NuVreplicaIDValidityReport		:		unsigned word[3];
+		NuVcontrollerTimestampValidityReport		:		unsigned word[3];
+		NuVdetectorTimestampValidityReport		:		unsigned word[3];
+		NuVhealthValidityReport		:		unsigned word[3];
+		NuVvalidValidityReport		:		boolean;
+		Nuplace		:		{NuSREADY_TO_RECEIVE_REPORT, NuSREPORT_RECEIVED, NuSCHOSEN_RECORD, NuSUPDATED, NuSCHECKING_DELAY, NuSCHECKING_CRASH, NuSCHECKING_DETECTORS};
+
+
+	INIT
+		( (Nuplace) = (NuSREADY_TO_RECEIVE_REPORT) ) &
+		( (NuVreplicaID) = (NuDPid) );
+
+	INVAR
+		( (NuPperformCheckDetectors) <-> (( (Nuplace) = (NuSCHECKING_CRASH) )) ) &
+		( (NuPchooseRecord) <-> (( (Nuplace) = (NuSREPORT_RECEIVED) )) ) &
+		( (NuPreceiveReportNew) <-> (( (Nuplace) = (NuSREADY_TO_RECEIVE_REPORT) )) ) &
+		( (NuPperformCheckCrash) <-> (( (Nuplace) = (NuSCHECKING_DELAY) )) ) &
+		( (NuPupdate) <-> (( (Nuplace) = (NuSCHOSEN_RECORD) )) ) &
+		( (NuPperformCheckDelay) <-> (( (Nuplace) = (NuSUPDATED) )) ) &
+		( (NuPbackToBeginningState) <-> (( (Nuplace) = (NuSCHECKING_DETECTORS) )) );
+
+	TRANS
+		( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREADY_TO_RECEIVE_REPORT) )) & (( (next(Nuplace)) = (NuSREPORT_RECEIVED) )) )) & (( (active_interaction) = (NuI1) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREPORT_RECEIVED) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD) )) )) & (( (active_interaction) = (NuI8) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREPORT_RECEIVED) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD) )) )) & (( (active_interaction) = (NuI9) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREPORT_RECEIVED) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD) )) )) & (( (active_interaction) = (NuI10) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD) )) & (( (next(Nuplace)) = (NuSUPDATED) )) )) & (( (active_interaction) = (NuI17) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD) )) & (( (next(Nuplace)) = (NuSUPDATED) )) )) & (( (active_interaction) = (NuI18) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD) )) & (( (next(Nuplace)) = (NuSUPDATED) )) )) & (( (active_interaction) = (NuI19) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATED) )) & (( (next(Nuplace)) = (NuSCHECKING_DELAY) )) )) & (( (active_interaction) = (NuI26) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATED) )) & (( (next(Nuplace)) = (NuSCHECKING_DELAY) )) )) & (( (active_interaction) = (NuI27) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATED) )) & (( (next(Nuplace)) = (NuSCHECKING_DELAY) )) )) & (( (active_interaction) = (NuI28) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKING_DELAY) )) & (( (next(Nuplace)) = (NuSCHECKING_CRASH) )) )) & (( (active_interaction) = (NuI31) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKING_CRASH) )) & (( (next(Nuplace)) = (NuSCHECKING_DETECTORS) )) )) & (( (active_interaction) = (NuI34) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKING_DETECTORS) )) & (( (next(Nuplace)) = (NuSREADY_TO_RECEIVE_REPORT) )) )) & (( (active_interaction) = (NuI37) )) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) ) |
+		( (( (active_interaction) != (NuI37) )) & (( (( (active_interaction) != (NuI34) )) & (( (( (active_interaction) != (NuI31) )) & (( (( (active_interaction) != (NuI28) )) & (( (( (active_interaction) != (NuI27) )) & (( (( (active_interaction) != (NuI26) )) & (( (( (active_interaction) != (NuI19) )) & (( (( (active_interaction) != (NuI18) )) & (( (( (active_interaction) != (NuI17) )) & (( (( (active_interaction) != (NuI10) )) & (( (( (active_interaction) != (NuI9) )) & (( (( (active_interaction) != (NuI8) )) & (( (( (active_interaction) != (NuI1) )) & (( (( (( (( (( (( (( (( (( (( (( (( (next(Nuplace)) = (Nuplace) )) & (( (next(NuVreplicaID)) = (NuVreplicaID) )) )) & (( (next(NuVdetectorTimestamp)) = (NuVdetectorTimestamp) )) )) & (( (next(NuVdetectorHealth)) = (NuVdetectorHealth) )) )) & (( (next(NuVcheckResultDelay)) = (NuVcheckResultDelay) )) )) & (( (next(NuVcheckResultCrash)) = (NuVcheckResultCrash) )) )) & (( (next(NuVcheckResultDetectors)) = (NuVcheckResultDetectors) )) )) & (( (next(NuVreplicaIDValidityReport)) = (NuVreplicaIDValidityReport) )) )) & (( (next(NuVcontrollerTimestampValidityReport)) = (NuVcontrollerTimestampValidityReport) )) )) & (( (next(NuVdetectorTimestampValidityReport)) = (NuVdetectorTimestampValidityReport) )) )) & (( (next(NuVhealthValidityReport)) = (NuVhealthValidityReport) )) )) & (( (next(NuVvalidValidityReport)) = (NuVvalidValidityReport) )) )) )) )) )) )) )) )) )) )) )) )) )) )) );
+
+
+MODULE DB2(active_interaction, NuDPid)
+
+	VAR
+		NuPchooseRecord1		:		boolean;
+		NuPchooseRecord2		:		boolean;
+		NuPchooseRecord3		:		boolean;
+		NuPupdate1		:		boolean;
+		NuPupdate2		:		boolean;
+		NuPupdate3		:		boolean;
+		NuPperformCheckDelay1		:		boolean;
+		NuPperformCheckDelay2		:		boolean;
+		NuPperformCheckDelay3		:		boolean;
+		NuPperformCheckCrash		:		boolean;
+		NuPperformCheckDetectors		:		boolean;
+		NuPbackToBeginningState		:		boolean;
+		NuPinit1		:		boolean;
+		NuPinit2		:		boolean;
+		NuPinit3		:		boolean;
+		NuVownerID		:		unsigned word[3];
+		NuVreplicaID1		:		unsigned word[3];
+		NuVvalidityReplica1		:		boolean;
+		NuVreplicaID2		:		unsigned word[3];
+		NuVvalidityReplica2		:		boolean;
+		NuVreplicaID3		:		unsigned word[3];
+		NuVvalidityReplica3		:		boolean;
+		NuVmaxControllerTS		:		unsigned word[3];
+		NuVmaxDetectorTS		:		unsigned word[3];
+		Nuplace		:		{NuSSTART, NuSREADY_TO_UPDATE, NuSCHOSEN_RECORD1, NuSCHOSEN_RECORD2, NuSCHOSEN_RECORD3, NuSUPDATE1, NuSUPDATE2, NuSUPDATE3, NuSFINISHED_CHECK_DELAY1, NuSFINISHED_CHECK_DELAY2, NuSFINISHED_CHECK_DELAY3, NuSREADY_TO_CHECK, NuSCHECKING_CRASH, NuSCHECKING_DETECTORS, NuSCHECKED_DELAY, NuSCHECKED_CRASH, NuSCHECKED_DETECTORS, NuSSTART_CHECKING_CRASH, NuSSTART_CHECKING_DETECTORS, NuSDETERMINED_MAX_DETECTOR_TS, NuSLAST_DETECTOR1_CHECKED, NuSLAST_DETECTOR2_CHECKED};
+
+
+	INIT
+		( (Nuplace) = (NuSSTART) ) &
+		( (NuVreplicaID1) = (0ud3_1) ) &
+		( (NuVreplicaID2) = (0ud3_2) ) &
+		( (NuVreplicaID3) = (0ud3_3) ) &
+		( (NuVownerID) = (NuDPid) );
+
+	INVAR
+		( (NuPperformCheckDelay1) <-> (( (Nuplace) = (NuSUPDATE1) )) ) &
+		( (NuPperformCheckDelay2) <-> (( (Nuplace) = (NuSUPDATE2) )) ) &
+		( (NuPperformCheckDelay3) <-> (( (Nuplace) = (NuSUPDATE3) )) ) &
+		( (NuPbackToBeginningState) <-> (( (Nuplace) = (NuSCHECKED_DETECTORS) )) ) &
+		( (NuPperformCheckCrash) <-> (( (Nuplace) = (NuSCHECKED_DELAY) )) ) &
+		( (NuPchooseRecord2) <-> (( (Nuplace) = (NuSREADY_TO_UPDATE) )) ) &
+		( (NuPchooseRecord1) <-> (( (Nuplace) = (NuSREADY_TO_UPDATE) )) ) &
+		( (NuPchooseRecord3) <-> (( (Nuplace) = (NuSREADY_TO_UPDATE) )) ) &
+		( (NuPinit1) <-> (( (( (Nuplace) = (NuSSTART) )) & (( (NuVownerID) = (0ud3_1) )) )) ) &
+		( (NuPinit2) <-> (( (( (Nuplace) = (NuSSTART) )) & (( (NuVownerID) = (0ud3_2) )) )) ) &
+		( (NuPinit3) <-> (( (( (Nuplace) = (NuSSTART) )) & (( (NuVownerID) = (0ud3_3) )) )) ) &
+		( (NuPperformCheckDetectors) <-> (( (Nuplace) = (NuSCHECKED_CRASH) )) ) &
+		( (NuPupdate1) <-> (( (Nuplace) = (NuSCHOSEN_RECORD1) )) ) &
+		( (NuPupdate3) <-> (( (Nuplace) = (NuSCHOSEN_RECORD3) )) ) &
+		( (NuPupdate2) <-> (( (Nuplace) = (NuSCHOSEN_RECORD2) )) );
+
+	TRANS
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSREADY_TO_UPDATE) )) )) & (( (active_interaction) = (NuI41) )) )) & (( (next(NuVvalidityReplica1)) = (TRUE) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSREADY_TO_UPDATE) )) )) & (( (active_interaction) = (NuI42) )) )) & (( (next(NuVvalidityReplica2)) = (TRUE) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSREADY_TO_UPDATE) )) )) & (( (active_interaction) = (NuI43) )) )) & (( (next(NuVvalidityReplica3)) = (TRUE) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREADY_TO_UPDATE) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD1) )) )) & (( (active_interaction) = (NuI5) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREADY_TO_UPDATE) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD2) )) )) & (( (active_interaction) = (NuI6) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREADY_TO_UPDATE) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD3) )) )) & (( (active_interaction) = (NuI7) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD1) )) & (( (next(Nuplace)) = (NuSUPDATE1) )) )) & (( (active_interaction) = (NuI14) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD2) )) & (( (next(Nuplace)) = (NuSUPDATE2) )) )) & (( (active_interaction) = (NuI15) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD3) )) & (( (next(Nuplace)) = (NuSUPDATE3) )) )) & (( (active_interaction) = (NuI16) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATE1) )) & (( (next(Nuplace)) = (NuSCHECKED_DELAY) )) )) & (( (active_interaction) = (NuI23) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATE2) )) & (( (next(Nuplace)) = (NuSCHECKED_DELAY) )) )) & (( (active_interaction) = (NuI24) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATE3) )) & (( (next(Nuplace)) = (NuSCHECKED_DELAY) )) )) & (( (active_interaction) = (NuI25) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKED_DELAY) )) & (( (next(Nuplace)) = (NuSCHECKED_CRASH) )) )) & (( (active_interaction) = (NuI30) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKED_CRASH) )) & (( (next(Nuplace)) = (NuSCHECKED_DETECTORS) )) )) & (( (active_interaction) = (NuI33) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKED_DETECTORS) )) & (( (next(Nuplace)) = (NuSREADY_TO_UPDATE) )) )) & (( (active_interaction) = (NuI36) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (active_interaction) != (NuI36) )) & (( (( (active_interaction) != (NuI33) )) & (( (( (active_interaction) != (NuI30) )) & (( (( (active_interaction) != (NuI25) )) & (( (( (active_interaction) != (NuI24) )) & (( (( (active_interaction) != (NuI23) )) & (( (( (active_interaction) != (NuI16) )) & (( (( (active_interaction) != (NuI15) )) & (( (( (active_interaction) != (NuI14) )) & (( (( (active_interaction) != (NuI7) )) & (( (( (active_interaction) != (NuI6) )) & (( (( (active_interaction) != (NuI5) )) & (( (( (active_interaction) != (NuI43) )) & (( (( (active_interaction) != (NuI42) )) & (( (( (active_interaction) != (NuI41) )) & (( (( (( (( (( (( (( (( (( (( (next(Nuplace)) = (Nuplace) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) )) )) )) )) )) )) )) )) )) )) )) )) )) )) )) );
+
+
+MODULE DB1(active_interaction, NuDPid)
+
+	VAR
+		NuPchooseRecord1		:		boolean;
+		NuPchooseRecord2		:		boolean;
+		NuPchooseRecord3		:		boolean;
+		NuPupdate1		:		boolean;
+		NuPupdate2		:		boolean;
+		NuPupdate3		:		boolean;
+		NuPperformCheckDelay1		:		boolean;
+		NuPperformCheckDelay2		:		boolean;
+		NuPperformCheckDelay3		:		boolean;
+		NuPperformCheckCrash		:		boolean;
+		NuPperformCheckDetectors		:		boolean;
+		NuPbackToBeginningState		:		boolean;
+		NuPinit1		:		boolean;
+		NuPinit2		:		boolean;
+		NuPinit3		:		boolean;
+		NuVownerID		:		unsigned word[3];
+		NuVreplicaID1		:		unsigned word[3];
+		NuVvalidityReplica1		:		boolean;
+		NuVreplicaID2		:		unsigned word[3];
+		NuVvalidityReplica2		:		boolean;
+		NuVreplicaID3		:		unsigned word[3];
+		NuVvalidityReplica3		:		boolean;
+		NuVmaxControllerTS		:		unsigned word[3];
+		NuVmaxDetectorTS		:		unsigned word[3];
+		Nuplace		:		{NuSSTART, NuSREADY_TO_UPDATE, NuSCHOSEN_RECORD1, NuSCHOSEN_RECORD2, NuSCHOSEN_RECORD3, NuSUPDATE1, NuSUPDATE2, NuSUPDATE3, NuSFINISHED_CHECK_DELAY1, NuSFINISHED_CHECK_DELAY2, NuSFINISHED_CHECK_DELAY3, NuSREADY_TO_CHECK, NuSCHECKING_CRASH, NuSCHECKING_DETECTORS, NuSCHECKED_DELAY, NuSCHECKED_CRASH, NuSCHECKED_DETECTORS, NuSSTART_CHECKING_CRASH, NuSSTART_CHECKING_DETECTORS, NuSDETERMINED_MAX_DETECTOR_TS, NuSLAST_DETECTOR1_CHECKED, NuSLAST_DETECTOR2_CHECKED};
+
+
+	INIT
+		( (Nuplace) = (NuSSTART) ) &
+		( (NuVreplicaID1) = (0ud3_1) ) &
+		( (NuVreplicaID2) = (0ud3_2) ) &
+		( (NuVreplicaID3) = (0ud3_3) ) &
+		( (NuVownerID) = (NuDPid) );
+
+	INVAR
+		( (NuPupdate1) <-> (( (Nuplace) = (NuSCHOSEN_RECORD1) )) ) &
+		( (NuPinit3) <-> (( (( (Nuplace) = (NuSSTART) )) & (( (NuVownerID) = (0ud3_3) )) )) ) &
+		( (NuPupdate2) <-> (( (Nuplace) = (NuSCHOSEN_RECORD2) )) ) &
+		( (NuPinit2) <-> (( (( (Nuplace) = (NuSSTART) )) & (( (NuVownerID) = (0ud3_2) )) )) ) &
+		( (NuPupdate3) <-> (( (Nuplace) = (NuSCHOSEN_RECORD3) )) ) &
+		( (NuPinit1) <-> (( (( (Nuplace) = (NuSSTART) )) & (( (NuVownerID) = (0ud3_1) )) )) ) &
+		( (NuPperformCheckDelay3) <-> (( (Nuplace) = (NuSUPDATE3) )) ) &
+		( (NuPperformCheckDelay2) <-> (( (Nuplace) = (NuSUPDATE2) )) ) &
+		( (NuPperformCheckDelay1) <-> (( (Nuplace) = (NuSUPDATE1) )) ) &
+		( (NuPperformCheckCrash) <-> (( (Nuplace) = (NuSCHECKED_DELAY) )) ) &
+		( (NuPbackToBeginningState) <-> (( (Nuplace) = (NuSCHECKED_DETECTORS) )) ) &
+		( (NuPchooseRecord1) <-> (( (Nuplace) = (NuSREADY_TO_UPDATE) )) ) &
+		( (NuPchooseRecord2) <-> (( (Nuplace) = (NuSREADY_TO_UPDATE) )) ) &
+		( (NuPchooseRecord3) <-> (( (Nuplace) = (NuSREADY_TO_UPDATE) )) ) &
+		( (NuPperformCheckDetectors) <-> (( (Nuplace) = (NuSCHECKED_CRASH) )) );
+
+	TRANS
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSREADY_TO_UPDATE) )) )) & (( (active_interaction) = (NuI38) )) )) & (( (next(NuVvalidityReplica1)) = (TRUE) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSREADY_TO_UPDATE) )) )) & (( (active_interaction) = (NuI39) )) )) & (( (next(NuVvalidityReplica2)) = (TRUE) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSREADY_TO_UPDATE) )) )) & (( (active_interaction) = (NuI40) )) )) & (( (next(NuVvalidityReplica3)) = (TRUE) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREADY_TO_UPDATE) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD1) )) )) & (( (active_interaction) = (NuI2) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREADY_TO_UPDATE) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD2) )) )) & (( (active_interaction) = (NuI3) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREADY_TO_UPDATE) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD3) )) )) & (( (active_interaction) = (NuI4) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD1) )) & (( (next(Nuplace)) = (NuSUPDATE1) )) )) & (( (active_interaction) = (NuI11) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD2) )) & (( (next(Nuplace)) = (NuSUPDATE2) )) )) & (( (active_interaction) = (NuI12) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD3) )) & (( (next(Nuplace)) = (NuSUPDATE3) )) )) & (( (active_interaction) = (NuI13) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATE1) )) & (( (next(Nuplace)) = (NuSCHECKED_DELAY) )) )) & (( (active_interaction) = (NuI20) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATE2) )) & (( (next(Nuplace)) = (NuSCHECKED_DELAY) )) )) & (( (active_interaction) = (NuI21) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATE3) )) & (( (next(Nuplace)) = (NuSCHECKED_DELAY) )) )) & (( (active_interaction) = (NuI22) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKED_DELAY) )) & (( (next(Nuplace)) = (NuSCHECKED_CRASH) )) )) & (( (active_interaction) = (NuI29) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKED_CRASH) )) & (( (next(Nuplace)) = (NuSCHECKED_DETECTORS) )) )) & (( (active_interaction) = (NuI32) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKED_DETECTORS) )) & (( (next(Nuplace)) = (NuSREADY_TO_UPDATE) )) )) & (( (active_interaction) = (NuI35) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (active_interaction) != (NuI35) )) & (( (( (active_interaction) != (NuI32) )) & (( (( (active_interaction) != (NuI29) )) & (( (( (active_interaction) != (NuI22) )) & (( (( (active_interaction) != (NuI21) )) & (( (( (active_interaction) != (NuI20) )) & (( (( (active_interaction) != (NuI13) )) & (( (( (active_interaction) != (NuI12) )) & (( (( (active_interaction) != (NuI11) )) & (( (( (active_interaction) != (NuI4) )) & (( (( (active_interaction) != (NuI3) )) & (( (( (active_interaction) != (NuI2) )) & (( (( (active_interaction) != (NuI40) )) & (( (( (active_interaction) != (NuI39) )) & (( (( (active_interaction) != (NuI38) )) & (( (( (( (( (( (( (( (( (( (( (next(Nuplace)) = (Nuplace) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) )) )) )) )) )) )) )) )) )) )) )) )) )) )) )) );
+
+
+MODULE DB3(active_interaction, NuDPid)
+
+	VAR
+		NuPchooseRecord1		:		boolean;
+		NuPchooseRecord2		:		boolean;
+		NuPchooseRecord3		:		boolean;
+		NuPupdate1		:		boolean;
+		NuPupdate2		:		boolean;
+		NuPupdate3		:		boolean;
+		NuPperformCheckDelay1		:		boolean;
+		NuPperformCheckDelay2		:		boolean;
+		NuPperformCheckDelay3		:		boolean;
+		NuPperformCheckCrash		:		boolean;
+		NuPperformCheckDetectors		:		boolean;
+		NuPbackToBeginningState		:		boolean;
+		NuPinit1		:		boolean;
+		NuPinit2		:		boolean;
+		NuPinit3		:		boolean;
+		NuVownerID		:		unsigned word[3];
+		NuVreplicaID1		:		unsigned word[3];
+		NuVvalidityReplica1		:		boolean;
+		NuVreplicaID2		:		unsigned word[3];
+		NuVvalidityReplica2		:		boolean;
+		NuVreplicaID3		:		unsigned word[3];
+		NuVvalidityReplica3		:		boolean;
+		NuVmaxControllerTS		:		unsigned word[3];
+		NuVmaxDetectorTS		:		unsigned word[3];
+		Nuplace		:		{NuSSTART, NuSREADY_TO_UPDATE, NuSCHOSEN_RECORD1, NuSCHOSEN_RECORD2, NuSCHOSEN_RECORD3, NuSUPDATE1, NuSUPDATE2, NuSUPDATE3, NuSFINISHED_CHECK_DELAY1, NuSFINISHED_CHECK_DELAY2, NuSFINISHED_CHECK_DELAY3, NuSREADY_TO_CHECK, NuSCHECKING_CRASH, NuSCHECKING_DETECTORS, NuSCHECKED_DELAY, NuSCHECKED_CRASH, NuSCHECKED_DETECTORS, NuSSTART_CHECKING_CRASH, NuSSTART_CHECKING_DETECTORS, NuSDETERMINED_MAX_DETECTOR_TS, NuSLAST_DETECTOR1_CHECKED, NuSLAST_DETECTOR2_CHECKED};
+
+
+	INIT
+		( (Nuplace) = (NuSSTART) ) &
+		( (NuVreplicaID1) = (0ud3_1) ) &
+		( (NuVreplicaID2) = (0ud3_2) ) &
+		( (NuVreplicaID3) = (0ud3_3) ) &
+		( (NuVownerID) = (NuDPid) );
+
+	INVAR
+		( (NuPperformCheckDetectors) <-> (( (Nuplace) = (NuSCHECKED_CRASH) )) ) &
+		( (NuPchooseRecord3) <-> (( (Nuplace) = (NuSREADY_TO_UPDATE) )) ) &
+		( (NuPchooseRecord2) <-> (( (Nuplace) = (NuSREADY_TO_UPDATE) )) ) &
+		( (NuPchooseRecord1) <-> (( (Nuplace) = (NuSREADY_TO_UPDATE) )) ) &
+		( (NuPperformCheckDelay2) <-> (( (Nuplace) = (NuSUPDATE2) )) ) &
+		( (NuPperformCheckDelay3) <-> (( (Nuplace) = (NuSUPDATE3) )) ) &
+		( (NuPperformCheckDelay1) <-> (( (Nuplace) = (NuSUPDATE1) )) ) &
+		( (NuPbackToBeginningState) <-> (( (Nuplace) = (NuSCHECKED_DETECTORS) )) ) &
+		( (NuPinit2) <-> (( (( (Nuplace) = (NuSSTART) )) & (( (NuVownerID) = (0ud3_2) )) )) ) &
+		( (NuPinit3) <-> (( (( (Nuplace) = (NuSSTART) )) & (( (NuVownerID) = (0ud3_3) )) )) ) &
+		( (NuPinit1) <-> (( (( (Nuplace) = (NuSSTART) )) & (( (NuVownerID) = (0ud3_1) )) )) ) &
+		( (NuPupdate3) <-> (( (Nuplace) = (NuSCHOSEN_RECORD3) )) ) &
+		( (NuPupdate2) <-> (( (Nuplace) = (NuSCHOSEN_RECORD2) )) ) &
+		( (NuPupdate1) <-> (( (Nuplace) = (NuSCHOSEN_RECORD1) )) ) &
+		( (NuPperformCheckCrash) <-> (( (Nuplace) = (NuSCHECKED_DELAY) )) );
+
+	TRANS
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSREADY_TO_UPDATE) )) )) & (( (active_interaction) = (NuI44) )) )) & (( (next(NuVvalidityReplica1)) = (TRUE) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSREADY_TO_UPDATE) )) )) & (( (active_interaction) = (NuI45) )) )) & (( (next(NuVvalidityReplica2)) = (TRUE) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSSTART) )) & (( (next(Nuplace)) = (NuSREADY_TO_UPDATE) )) )) & (( (active_interaction) = (NuI46) )) )) & (( (next(NuVvalidityReplica3)) = (TRUE) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREADY_TO_UPDATE) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD1) )) )) & (( (active_interaction) = (NuI8) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREADY_TO_UPDATE) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD2) )) )) & (( (active_interaction) = (NuI9) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSREADY_TO_UPDATE) )) & (( (next(Nuplace)) = (NuSCHOSEN_RECORD3) )) )) & (( (active_interaction) = (NuI10) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD1) )) & (( (next(Nuplace)) = (NuSUPDATE1) )) )) & (( (active_interaction) = (NuI17) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD2) )) & (( (next(Nuplace)) = (NuSUPDATE2) )) )) & (( (active_interaction) = (NuI18) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHOSEN_RECORD3) )) & (( (next(Nuplace)) = (NuSUPDATE3) )) )) & (( (active_interaction) = (NuI19) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATE1) )) & (( (next(Nuplace)) = (NuSCHECKED_DELAY) )) )) & (( (active_interaction) = (NuI26) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATE2) )) & (( (next(Nuplace)) = (NuSCHECKED_DELAY) )) )) & (( (active_interaction) = (NuI27) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSUPDATE3) )) & (( (next(Nuplace)) = (NuSCHECKED_DELAY) )) )) & (( (active_interaction) = (NuI28) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKED_DELAY) )) & (( (next(Nuplace)) = (NuSCHECKED_CRASH) )) )) & (( (active_interaction) = (NuI31) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKED_CRASH) )) & (( (next(Nuplace)) = (NuSCHECKED_DETECTORS) )) )) & (( (active_interaction) = (NuI34) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (( (( (( (( (( (( (( (( (( (( (Nuplace) = (NuSCHECKED_DETECTORS) )) & (( (next(Nuplace)) = (NuSREADY_TO_UPDATE) )) )) & (( (active_interaction) = (NuI37) )) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) ) |
+		( (( (active_interaction) != (NuI37) )) & (( (( (active_interaction) != (NuI34) )) & (( (( (active_interaction) != (NuI31) )) & (( (( (active_interaction) != (NuI28) )) & (( (( (active_interaction) != (NuI27) )) & (( (( (active_interaction) != (NuI26) )) & (( (( (active_interaction) != (NuI19) )) & (( (( (active_interaction) != (NuI18) )) & (( (( (active_interaction) != (NuI17) )) & (( (( (active_interaction) != (NuI10) )) & (( (( (active_interaction) != (NuI9) )) & (( (( (active_interaction) != (NuI8) )) & (( (( (active_interaction) != (NuI46) )) & (( (( (active_interaction) != (NuI45) )) & (( (( (active_interaction) != (NuI44) )) & (( (( (( (( (( (( (( (( (( (( (next(Nuplace)) = (Nuplace) )) & (( (next(NuVownerID)) = (NuVownerID) )) )) & (( (next(NuVreplicaID1)) = (NuVreplicaID1) )) )) & (( (next(NuVvalidityReplica1)) = (NuVvalidityReplica1) )) )) & (( (next(NuVreplicaID2)) = (NuVreplicaID2) )) )) & (( (next(NuVvalidityReplica2)) = (NuVvalidityReplica2) )) )) & (( (next(NuVreplicaID3)) = (NuVreplicaID3) )) )) & (( (next(NuVvalidityReplica3)) = (NuVvalidityReplica3) )) )) & (( (next(NuVmaxControllerTS)) = (NuVmaxControllerTS) )) )) & (( (next(NuVmaxDetectorTS)) = (NuVmaxDetectorTS) )) )) )) )) )) )) )) )) )) )) )) )) )) )) )) )) );
+
+
+MODULE main
+
+	VAR
+		NuInteraction		:		{NuI1, NuI2, NuI3, NuI4, NuI5, NuI6, NuI7, NuI8, NuI9, NuI10, NuI11, NuI12, NuI13, NuI14, NuI15, NuI16, NuI17, NuI18, NuI19, NuI20, NuI21, NuI22, NuI23, NuI24, NuI25, NuI26, NuI27, NuI28, NuI29, NuI30, NuI31, NuI32, NuI33, NuI34, NuI35, NuI36, NuI37, NuI38, NuI39, NuI40, NuI41, NuI42, NuI43, NuI44, NuI45, NuI46, NuI47};
+		dr1	:	DR1(NuInteraction, 0ud3_1);
+		m1	:	M1(NuInteraction, 0ud3_1);
+		dr2	:	DR2(NuInteraction, 0ud3_2);
+		dr3	:	DR3(NuInteraction, 0ud3_3);
+		db2	:	DB2(NuInteraction, 0ud3_2);
+		db1	:	DB1(NuInteraction, 0ud3_1);
+		db3	:	DB3(NuInteraction, 0ud3_3);
+
+	DEFINE
+		update31		:=		( (db3.NuPupdate1) & (dr3.NuPupdate) );
+		performCheckDelay11		:=		( (db1.NuPperformCheckDelay1) & (dr1.NuPperformCheckDelay) );
+		update32		:=		( (db3.NuPupdate2) & (dr3.NuPupdate) );
+		init23		:=		db2.NuPinit3;
+		startUpdate23		:=		( (( (db2.NuPchooseRecord3) & (dr2.NuPchooseRecord) )) & (( (db2.NuVreplicaID3) = (dr2.NuVreplicaIDValidityReport) )) );
+		init21		:=		db2.NuPinit1;
+		performCheckDetectors11		:=		( (db1.NuPperformCheckDetectors) & (dr1.NuPperformCheckDetectors) );
+		update21		:=		( (db2.NuPupdate1) & (dr2.NuPupdate) );
+		performCheckDelay32		:=		( (db3.NuPperformCheckDelay2) & (dr3.NuPperformCheckDelay) );
+		update22		:=		( (db2.NuPupdate2) & (dr2.NuPupdate) );
+		performCheckDelay33		:=		( (db3.NuPperformCheckDelay3) & (dr3.NuPperformCheckDelay) );
+		performCheckDetectors33		:=		( (db3.NuPperformCheckDetectors) & (dr3.NuPperformCheckDetectors) );
+		performCheckCrash33		:=		( (db3.NuPperformCheckCrash) & (dr3.NuPperformCheckCrash) );
+		performCheckDelay13		:=		( (db1.NuPperformCheckDelay3) & (dr1.NuPperformCheckDelay) );
+		backToBeginningState11		:=		( (db1.NuPbackToBeginningState) & (dr1.NuPbackToBeginningState) );
+		startUpdate31		:=		( (( (db3.NuPchooseRecord1) & (dr3.NuPchooseRecord) )) & (( (db3.NuVreplicaID1) = (dr3.NuVreplicaIDValidityReport) )) );
+		init11		:=		db1.NuPinit1;
+		performCheckDetectors22		:=		( (db2.NuPperformCheckDetectors) & (dr2.NuPperformCheckDetectors) );
+		update33		:=		( (db3.NuPupdate3) & (dr3.NuPupdate) );
+		update23		:=		( (db2.NuPupdate3) & (dr2.NuPupdate) );
+		backToBeginningState33		:=		( (db3.NuPbackToBeginningState) & (dr3.NuPbackToBeginningState) );
+		generate		:=		m1.NuPgenerateReport;
+		startUpdate33		:=		( (( (db3.NuPchooseRecord3) & (dr3.NuPchooseRecord) )) & (( (db3.NuVreplicaID3) = (dr3.NuVreplicaIDValidityReport) )) );
+		startUpdate13		:=		( (( (db1.NuPchooseRecord3) & (dr1.NuPchooseRecord) )) & (( (db1.NuVreplicaID3) = (dr1.NuVreplicaIDValidityReport) )) );
+		performCheckDelay23		:=		( (db2.NuPperformCheckDelay3) & (dr2.NuPperformCheckDelay) );
+		init13		:=		db1.NuPinit3;
+		init31		:=		db3.NuPinit1;
+		init32		:=		db3.NuPinit2;
+		performCheckDelay21		:=		( (db2.NuPperformCheckDelay1) & (dr2.NuPperformCheckDelay) );
+		startUpdate22		:=		( (( (db2.NuPchooseRecord2) & (dr2.NuPchooseRecord) )) & (( (db2.NuVreplicaID2) = (dr2.NuVreplicaIDValidityReport) )) );
+		update13		:=		( (db1.NuPupdate3) & (dr1.NuPupdate) );
+		performCheckCrash22		:=		( (db2.NuPperformCheckCrash) & (dr2.NuPperformCheckCrash) );
+		performCheckDelay12		:=		( (db1.NuPperformCheckDelay2) & (dr1.NuPperformCheckDelay) );
+		init33		:=		db3.NuPinit3;
+		backToBeginningState22		:=		( (db2.NuPbackToBeginningState) & (dr2.NuPbackToBeginningState) );
+		performCheckDelay31		:=		( (db3.NuPperformCheckDelay1) & (dr3.NuPperformCheckDelay) );
+		fromMaskerToDetectors		:=		( (( (( (m1.NuPsendReport) & (dr1.NuPreceiveReportNew) )) & (dr2.NuPreceiveReportNew) )) & (dr3.NuPreceiveReportNew) );
+		performCheckDelay22		:=		( (db2.NuPperformCheckDelay2) & (dr2.NuPperformCheckDelay) );
+		init12		:=		db1.NuPinit2;
+		startUpdate12		:=		( (( (db1.NuPchooseRecord2) & (dr1.NuPchooseRecord) )) & (( (db1.NuVreplicaID2) = (dr1.NuVreplicaIDValidityReport) )) );
+		startUpdate11		:=		( (( (db1.NuPchooseRecord1) & (dr1.NuPchooseRecord) )) & (( (db1.NuVreplicaID1) = (dr1.NuVreplicaIDValidityReport) )) );
+		startUpdate21		:=		( (( (db2.NuPchooseRecord1) & (dr2.NuPchooseRecord) )) & (( (db2.NuVreplicaID1) = (dr2.NuVreplicaIDValidityReport) )) );
+		performCheckCrash11		:=		( (db1.NuPperformCheckCrash) & (dr1.NuPperformCheckCrash) );
+		update12		:=		( (db1.NuPupdate2) & (dr1.NuPupdate) );
+		startUpdate32		:=		( (( (db3.NuPchooseRecord2) & (dr3.NuPchooseRecord) )) & (( (db3.NuVreplicaID2) = (dr3.NuVreplicaIDValidityReport) )) );
+		init22		:=		db2.NuPinit2;
+		update11		:=		( (db1.NuPupdate1) & (dr1.NuPupdate) );
+
+
+	INVAR
+		( (( (NuInteraction) = (NuI17) )) -> (update31) ) &
+		( (( (NuInteraction) = (NuI20) )) -> (performCheckDelay11) ) &
+		( (( (NuInteraction) = (NuI18) )) -> (update32) ) &
+		( (( (NuInteraction) = (NuI43) )) -> (init23) ) &
+		( (( (NuInteraction) = (NuI7) )) -> (startUpdate23) ) &
+		( (( (NuInteraction) = (NuI41) )) -> (init21) ) &
+		( (( (NuInteraction) = (NuI32) )) -> (performCheckDetectors11) ) &
+		( (( (NuInteraction) = (NuI14) )) -> (update21) ) &
+		( (( (NuInteraction) = (NuI27) )) -> (performCheckDelay32) ) &
+		( (( (NuInteraction) = (NuI15) )) -> (update22) ) &
+		( (( (NuInteraction) = (NuI28) )) -> (performCheckDelay33) ) &
+		( (( (NuInteraction) = (NuI34) )) -> (performCheckDetectors33) ) &
+		( (( (NuInteraction) = (NuI31) )) -> (performCheckCrash33) ) &
+		( (( (NuInteraction) = (NuI22) )) -> (performCheckDelay13) ) &
+		( (( (NuInteraction) = (NuI35) )) -> (backToBeginningState11) ) &
+		( (( (NuInteraction) = (NuI8) )) -> (startUpdate31) ) &
+		( (( (NuInteraction) = (NuI38) )) -> (init11) ) &
+		( (( (NuInteraction) = (NuI33) )) -> (performCheckDetectors22) ) &
+		( (( (NuInteraction) = (NuI19) )) -> (update33) ) &
+		( (( (NuInteraction) = (NuI16) )) -> (update23) ) &
+		( (( (NuInteraction) = (NuI37) )) -> (backToBeginningState33) ) &
+		( (( (NuInteraction) = (NuI47) )) -> (generate) ) &
+		( (( (NuInteraction) = (NuI10) )) -> (startUpdate33) ) &
+		( (( (NuInteraction) = (NuI4) )) -> (startUpdate13) ) &
+		( (( (NuInteraction) = (NuI25) )) -> (performCheckDelay23) ) &
+		( (( (NuInteraction) = (NuI40) )) -> (init13) ) &
+		( (( (NuInteraction) = (NuI44) )) -> (init31) ) &
+		( (( (NuInteraction) = (NuI45) )) -> (init32) ) &
+		( (( (NuInteraction) = (NuI23) )) -> (performCheckDelay21) ) &
+		( (( (NuInteraction) = (NuI6) )) -> (startUpdate22) ) &
+		( (( (NuInteraction) = (NuI13) )) -> (update13) ) &
+		( (( (NuInteraction) = (NuI30) )) -> (performCheckCrash22) ) &
+		( (( (NuInteraction) = (NuI21) )) -> (performCheckDelay12) ) &
+		( (( (NuInteraction) = (NuI46) )) -> (init33) ) &
+		( (( (NuInteraction) = (NuI36) )) -> (backToBeginningState22) ) &
+		( (( (NuInteraction) = (NuI26) )) -> (performCheckDelay31) ) &
+		( (( (NuInteraction) = (NuI1) )) -> (fromMaskerToDetectors) ) &
+		( (( (NuInteraction) = (NuI24) )) -> (performCheckDelay22) ) &
+		( (( (NuInteraction) = (NuI39) )) -> (init12) ) &
+		( (( (NuInteraction) = (NuI3) )) -> (startUpdate12) ) &
+		( (( (NuInteraction) = (NuI2) )) -> (startUpdate11) ) &
+		( (( (NuInteraction) = (NuI5) )) -> (startUpdate21) ) &
+		( (( (NuInteraction) = (NuI29) )) -> (performCheckCrash11) ) &
+		( (( (NuInteraction) = (NuI12) )) -> (update12) ) &
+		( (( (NuInteraction) = (NuI9) )) -> (startUpdate32) ) &
+		( (( (NuInteraction) = (NuI42) )) -> (init22) ) &
+		( (( (NuInteraction) = (NuI11) )) -> (update11) );
+
+	TRANS
+		( (( (NuInteraction) = (NuI1) )) -> (( (( (( (( (( (( (( (( (( (( (( (( (( (( (( (next(dr1.NuVreplicaIDValidityReport)) = (m1.NuVreplicaIDValidityReport) )) & (( (next(dr1.NuVcontrollerTimestampValidityReport)) = (m1.NuVcontrollerTimestampValidityReport) )) )) & (( (next(dr1.NuVdetectorTimestampValidityReport)) = (m1.NuVdetectorTimestampValidityReport) )) )) & (( (next(dr1.NuVhealthValidityReport)) = (m1.NuVhealthValidityReport) )) )) & (( (next(dr1.NuVvalidValidityReport)) = (m1.NuVvalidValidityReport) )) )) & (( (next(dr2.NuVreplicaIDValidityReport)) = (m1.NuVreplicaIDValidityReport) )) )) & (( (next(dr2.NuVcontrollerTimestampValidityReport)) = (m1.NuVcontrollerTimestampValidityReport) )) )) & (( (next(dr2.NuVdetectorTimestampValidityReport)) = (m1.NuVdetectorTimestampValidityReport) )) )) & (( (next(dr2.NuVhealthValidityReport)) = (m1.NuVhealthValidityReport) )) )) & (( (next(dr2.NuVvalidValidityReport)) = (m1.NuVvalidValidityReport) )) )) & (( (next(dr3.NuVreplicaIDValidityReport)) = (m1.NuVreplicaIDValidityReport) )) )) & (( (next(dr3.NuVcontrollerTimestampValidityReport)) = (m1.NuVcontrollerTimestampValidityReport) )) )) & (( (next(dr3.NuVdetectorTimestampValidityReport)) = (m1.NuVdetectorTimestampValidityReport) )) )) & (( (next(dr3.NuVhealthValidityReport)) = (m1.NuVhealthValidityReport) )) )) & (( (next(dr3.NuVvalidValidityReport)) = (m1.NuVvalidValidityReport) )) )) );
+
+
+SPEC AG(dr1.Nuplace = NuSREPORT_RECEIVED -> AF (dr1.Nuplace = NuSCHECKING_DELAY) )
+SPEC AG(dr1.Nuplace = NuSREPORT_RECEIVED -> AF (dr1.Nuplace = NuSCHECKING_CRASH) )
+SPEC AG(dr1.Nuplace = NuSREPORT_RECEIVED -> AF dr1.Nuplace = NuSCHECKING_DETECTORS )
+
+SPEC AG(dr2.Nuplace = NuSREPORT_RECEIVED -> AF (dr2.Nuplace = NuSCHECKING_DELAY) )
+SPEC AG(dr2.Nuplace = NuSREPORT_RECEIVED -> AF (dr2.Nuplace = NuSCHECKING_CRASH) )
+SPEC AG(dr2.Nuplace = NuSREPORT_RECEIVED -> AF dr2.Nuplace = NuSCHECKING_DETECTORS )
+ 
+SPEC AG(dr3.Nuplace = NuSREPORT_RECEIVED -> AF (dr3.Nuplace = NuSCHECKING_DELAY) )
+SPEC AG(dr3.Nuplace = NuSREPORT_RECEIVED -> AF (dr3.Nuplace = NuSCHECKING_CRASH) )
+SPEC AG(dr3.Nuplace = NuSREPORT_RECEIVED -> AF dr3.Nuplace = NuSCHECKING_DETECTORS )
+
+SPEC AG (dr1.Nuplace = NuSREPORT_RECEIVED -> ( (AX dr1.Nuplace = NuSREPORT_RECEIVED) | (AX dr1.Nuplace = NuSCHOSEN_RECORD) ))
+SPEC AG (dr1.Nuplace = NuSCHOSEN_RECORD -> AX dr1.Nuplace = NuSCHOSEN_RECORD | AX dr1.Nuplace = NuSUPDATED )
+SPEC AG (dr1.Nuplace = NuSUPDATED -> AX dr1.Nuplace = NuSUPDATED | AX dr1.Nuplace = NuSCHECKING_DELAY )
+SPEC AG (dr1.Nuplace = NuSCHECKING_DELAY -> AX dr1.Nuplace = NuSCHECKING_CRASH | AX dr1.Nuplace = NuSCHECKING_DELAY )
+SPEC AG (dr1.Nuplace = NuSCHECKING_CRASH -> AX dr1.Nuplace = NuSCHECKING_CRASH | AX dr1.Nuplace = NuSCHECKING_DETECTORS )
+	
+SPEC AG(dr2.Nuplace = NuSREPORT_RECEIVED -> (AF (dr2.Nuplace = NuSCHECKING_DELAY) ))
+SPEC AG(dr2.Nuplace = NuSREPORT_RECEIVED -> (AF (dr2.Nuplace = NuSCHECKING_CRASH) ))
+SPEC AG(dr2.Nuplace = NuSREPORT_RECEIVED -> (AF dr2.Nuplace = NuSCHECKING_DETECTORS ) )
+SPEC AG (dr2.Nuplace = NuSREPORT_RECEIVED -> ( (AX dr2.Nuplace = NuSREPORT_RECEIVED) | (AX dr2.Nuplace = NuSCHOSEN_RECORD) ))
+SPEC AG (dr2.Nuplace = NuSCHOSEN_RECORD -> AX dr2.Nuplace = NuSCHOSEN_RECORD | AX dr2.Nuplace = NuSUPDATED )
+SPEC AG (dr2.Nuplace = NuSUPDATED -> AX dr2.Nuplace = NuSUPDATED | AX dr2.Nuplace = NuSCHECKING_DELAY )
+SPEC AG (dr2.Nuplace = NuSCHECKING_DELAY -> AX dr2.Nuplace = NuSCHECKING_CRASH | AX dr2.Nuplace = NuSCHECKING_DELAY )
+SPEC AG (dr2.Nuplace = NuSCHECKING_CRASH -> AX dr2.Nuplace = NuSCHECKING_CRASH | AX dr2.Nuplace = NuSCHECKING_DETECTORS )
+
+SPEC AG(dr3.Nuplace = NuSREPORT_RECEIVED -> (AF (dr3.Nuplace = NuSCHECKING_DELAY) ) )
+SPEC AG(dr3.Nuplace = NuSREPORT_RECEIVED -> (AF (dr3.Nuplace = NuSCHECKING_CRASH) ))
+SPEC AG(dr3.Nuplace = NuSREPORT_RECEIVED -> (AF dr3.Nuplace = NuSCHECKING_DETECTORS ))
+SPEC AG (dr3.Nuplace = NuSREPORT_RECEIVED -> ( (AX dr3.Nuplace = NuSREPORT_RECEIVED) | (AX dr3.Nuplace = NuSCHOSEN_RECORD) ))
+SPEC AG (dr3.Nuplace = NuSCHOSEN_RECORD -> AX dr3.Nuplace = NuSCHOSEN_RECORD | AX dr3.Nuplace = NuSUPDATED )
+SPEC AG (dr3.Nuplace = NuSUPDATED -> AX dr3.Nuplace = NuSUPDATED | AX dr3.Nuplace = NuSCHECKING_DELAY )
+SPEC AG (dr3.Nuplace = NuSCHECKING_DELAY -> AX dr3.Nuplace = NuSCHECKING_CRASH | AX dr3.Nuplace = NuSCHECKING_DELAY )
+SPEC AG (dr3.Nuplace = NuSCHECKING_CRASH -> AX dr3.Nuplace = NuSCHECKING_CRASH | AX dr3.Nuplace = NuSCHECKING_DETECTORS )

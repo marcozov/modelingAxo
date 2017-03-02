@@ -1,0 +1,244 @@
+ANOTHER PROPERTY TO ADD:
+	-> a detector will eventually always able to receive a validity report
+	
+	
+check_ctlspec -p "AG ( db1.Nuplace = NuSCHOSEN_RECORD1 -> dr1.Nuplace = NuSCHOSEN_RECORD     )"
+check_ctlspec -p "AG ( db1.Nuplace = NuSCHOSEN_RECORD2 -> dr1.Nuplace = NuSCHOSEN_RECORD     )"
+check_ctlspec -p "AG ( db1.Nuplace = NuSCHOSEN_RECORD3 -> dr1.Nuplace = NuSCHOSEN_RECORD     )"
+	
+check_ctlspec -p "AG ( dr1.Nuplace = NuSCHOSEN_RECORD -> db1.Nuplace = NuSCHOSEN_RECORD1     )"
+	-> false
+check_ctlspec -p "AG ( dr1.Nuplace = NuSCHOSEN_RECORD -> db1.Nuplace = NuSCHOSEN_RECORD2     )"
+	-> false
+check_ctlspec -p "AG ( dr1.Nuplace = NuSCHOSEN_RECORD -> db1.Nuplace = NuSCHOSEN_RECORD3     )"
+	-> false
+	
+checks performed to debug a deadlock. It turned out that probably there has been a bug in the conversion from the BIP model to the NuXmv model
+check_ctlspec -p "dr1.Nuplace = NuSCHOSEN_RECORD -> db1.Nuplace != NuSREADY_TO_UPDATE "
+check_ctlspec -p "db1.Nuplace = NuSREADY_TO_UPDATE -> dr1.Nuplace != NuSCHOSEN_RECORD"
+check_ctlspec -p "AG ( dr1.Nuplace = NuSCHOSEN_RECORD -> ( db1.Nuplace = NuSCHOSEN_RECORD1 | db1.Nuplace = NuSCHOSEN_RECORD2 | db1.Nuplace = NuSCHOSEN_RECORD3) )"
+check_ctlspec -p "AG ( dr1.Nuplace = NuSCHOSEN_RECORD <-> (db1.Nuplace = NuSCHOSEN_RECORD1 | db1.Nuplace = NuSCHOSEN_RECORD2 | db1.Nuplace = NuSCHOSEN_RECORD3 ))  "
+-- specification AG (dr1.Nuplace = NuSCHOSEN_RECORD <-> ((db1.Nuplace = NuSCHOSEN_RECORD1 | db1.Nuplace = NuSCHOSEN_RECORD2) | db1.Nuplace = NuSCHOSEN_RECORD3))  is true
+
+check_ctlspec -p "AG ( db1.Nuplace = NuSCHECKING_DELAY1 -> dr1.Nuplace = NuSCHECKING_DELAY  )"
+check_ctlspec -p "AG ( db1.Nuplace = NuSCHECKING_DELAY2 -> dr1.Nuplace = NuSCHECKING_DELAY  )"
+check_ctlspec -p "AG ( db1.Nuplace = NuSCHECKING_DELAY3 -> dr1.Nuplace = NuSCHECKING_DELAY  )"
+
+check_ctlspec -p "AG ( dr1.Nuplace = NuSCHECKING_DELAY <-> (db1.Nuplace = NuSCHECKING_DELAY1 | db1.Nuplace = NuSCHECKING_DELAY2 | db1.Nuplace = NuSCHECKING_DELAY3 | db1.Nuplace = NuSCHECKED_DELAY1 | db1.Nuplace = NuSCHECKED_DELAY2 | db1.Nuplace = NuSCHECKED_DELAY3 | db1.Nuplace = NuSDELAY_FAULTY1 | db1.Nuplace = NuSDELAY_FAULTY2 | db1.Nuplace = NuSDELAY_FAULTY3 ))  "
+-- specification AG (dr1.Nuplace = NuSCHECKING_DELAY <-> ((((((((db1.Nuplace = NuSCHECKING_DELAY1 | db1.Nuplace = NuSCHECKING_DELAY2) | db1.Nuplace = NuSCHECKING_DELAY3) | db1.Nuplace = NuSCHECKED_DELAY1) | db1.Nuplace = NuSCHECKED_DELAY2) | db1.Nuplace = NuSCHECKED_DELAY3) | db1.Nuplace = NuSDELAY_FAULTY1) | db1.Nuplace = NuSDELAY_FAULTY2) | db1.Nuplace = NuSDELAY_FAULTY3))  is true
+
+
+
+check on the faulty replica (a non valid validity report is sent.. )
+DELAY FAULTS:
+ACCURACY
+check_ctlspec -p "AG (db1.Nuplace = NuSDELAY_FAULTY1 -> db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports)"
+-- specification AG (db1.Nuplace = NuSDELAY_FAULTY1 -> db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports)  is true
+
+check_ctlspec -p "AG (db1.Nuplace = NuSDELAY_FAULTY2 -> db1.NuVconsecutiveFaultyReports2 = m1.NuVmaxConsecutiveFaultyReports)"
+-- specification AG (db1.Nuplace = NuSDELAY_FAULTY2 -> db1.NuVconsecutiveFaultyReports2 = m1.NuVmaxConsecutiveFaultyReports)  is true
+
+check_ctlspec -p "AG (db1.Nuplace = NuSDELAY_FAULTY3 -> db1.NuVconsecutiveFaultyReports3 = m1.NuVmaxConsecutiveFaultyReports)"
+-- specification AG (db1.Nuplace = NuSDELAY_FAULTY3 -> db1.NuVconsecutiveFaultyReports3 = m1.NuVmaxConsecutiveFaultyReports)  is true
+
+COMPLETENESS
+check_ctlspec -p "AG (   (db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports & db1.Nuplace = NuSCHECKING_DELAY1) -> (AX db1.Nuplace = NuSDELAY_FAULTY1 | AX db1.Nuplace = NuSCHECKING_DELAY1  ) )"
+check_ctlspec -p "AG (   (db1.NuVconsecutiveFaultyReports2 = m1.NuVmaxConsecutiveFaultyReports & db1.Nuplace = NuSCHECKING_DELAY2) -> (AX db1.Nuplace = NuSDELAY_FAULTY2 | AX db1.Nuplace = NuSCHECKING_DELAY2  ) )"
+check_ctlspec -p "AG (   (db1.NuVconsecutiveFaultyReports3 = m1.NuVmaxConsecutiveFaultyReports & db1.Nuplace = NuSCHECKING_DELAY3) -> (AX db1.Nuplace = NuSDELAY_FAULTY3 | AX db1.Nuplace = NuSCHECKING_DELAY3  ) )"
+
+check_ctlspec -p "EF (db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports)"
+check_ctlspec -p "EF (db1.NuVconsecutiveFaultyReports2 = m1.NuVmaxConsecutiveFaultyReports)"
+check_ctlspec -p "EF (db1.NuVconsecutiveFaultyReports3 = m1.NuVmaxConsecutiveFaultyReports)"
+check_ctlspec -p "AG ((db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports  -> (AF db1.Nuplace = NuSDELAY_FAULTY1 ) )   )"
+check_ctlspec -p "AG ((db1.NuVconsecutiveFaultyReports2 = m1.NuVmaxConsecutiveFaultyReports  -> (AF db1.Nuplace = NuSDELAY_FAULTY2 ) )   )"
+check_ctlspec -p "AG ((db1.NuVconsecutiveFaultyReports3 = m1.NuVmaxConsecutiveFaultyReports  -> (AF db1.Nuplace = NuSDELAY_FAULTY3 ) )   )"
+
+
+
+
+tests that were done in order to check 
+check_ctlspec -p "AG (dr1.Nuplace = NuSREPORT_RECEIVED -> (AF dr1.Nuplace = NuSCHECKING_DELAY))"
+	-> true
+check_ctlspec -p "AG  (db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports -> (AF (db1.Nuplace = NuSCHECKING_DELAY1)  ) )"
+check_ltlspec -p "G  (db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports -> (F (db1.Nuplace = NuSCHECKING_DELAY1)  ) )"
+check_ltlspec_klive -p "G  (db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports -> (F (db1.Nuplace = NuSCHECKING_DELAY1)  ) )" -k 100
+	
+-- specification AG (db1.Nuplace = NuSDELAY_FAULTY1 -> !(AG db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports))  is true
+(i.e. the counter of faults is resetted once a delay fault is detected)
+
+check_ctlspec -p "AG (db1.Nuplace = NuSDELAY_FAULTY1 -> (AX db1.Nuplace = NuSDELAY_FAULTY1 | AX db1.NuVconsecutiveFaultyReports1 = 0ud4_0 ))"
+check_ctlspec -p "AG (db1.Nuplace = NuSDELAY_FAULTY2 -> (AX db1.Nuplace = NuSDELAY_FAULTY2 | AX db1.NuVconsecutiveFaultyReports2 = 0ud4_0 ))"
+check_ctlspec -p "AG (db1.Nuplace = NuSDELAY_FAULTY3 -> (AX db1.Nuplace = NuSDELAY_FAULTY3 | AX db1.NuVconsecutiveFaultyReports3 = 0ud4_0 ))"
+
+
+CRASH FAULTS:
+
+
+ACCURACY
+check_ctlspec -p "AG (db1.Nuplace = NuSCRASH_FAULTY1 -> db1.NuVmaxControllerTS = 0ud4_1)"
+-- specification AG (db1.Nuplace = NuSCRASH_FAULTY1 -> db1.NuVmaxControllerTS = m1.NuVone)  is true
+check_ctlspec -p "AG (db1.Nuplace = NuSCRASH_FAULTY2 -> db1.NuVmaxControllerTS = 0ud4_2)"
+	-> true
+check_ctlspec -p "AG (db1.Nuplace = NuSCRASH_FAULTY3 -> db1.NuVmaxControllerTS = 0ud4_3)"
+	-> true
+	
+COMPLETENESS
+check_ctlspec -p "AG (db1.NuVmaxControllerTS = 0ud4_1 & db1.Nuplace = NuSCHECKING_CRASH1 -> (AX db1.Nuplace = NuSCRASH_FAULTY1 | AX db1.Nuplace = NuSCHECKING_CRASH1 ) )"
+check_ctlspec -p "AG (db1.NuVmaxControllerTS != 0ud4_1 & db1.Nuplace = NuSCHECKING_CRASH1 -> (AX db1.Nuplace != NuSCRASH_FAULTY1) )"
+check_ctlspec -p "EF (db1.NuVmaxControllerTS = 0ud4_1 & db1.Nuplace = NuSCHECKING_CRASH1)"
+check_ctlspec -p "EF (db1.NuVmaxControllerTS = 0ud4_1 & db1.Nuplace = NuSUPDATED1)"
+check_ctlspec -p "AG (db1.NuVmaxControllerTS = 0ud4_1 & db1.Nuplace = NuSCHECKING_CRASH1 -> (AF db1.Nuplace = NuSCRASH_FAULTY1 ) )"
+check_ctlspec -p "AG (db1.NuVmaxControllerTS = 0ud4_1 & db1.Nuplace = NuSUPDATED1 -> (AF db1.Nuplace = NuSCRASH_FAULTY1 ) )"
+
+check_ctlspec -p "AG (db1.NuVmaxControllerTS = 0ud4_2 & db1.Nuplace = NuSCHECKING_CRASH2 -> (AX db1.Nuplace = NuSCRASH_FAULTY2 | AX db1.Nuplace = NuSCHECKING_CRASH2 ) )"
+check_ctlspec -p "AG (db1.NuVmaxControllerTS != 0ud4_2 & db1.Nuplace = NuSCHECKING_CRASH2 -> (AX db1.Nuplace != NuSCRASH_FAULTY2) )"
+check_ctlspec -p "EF (db1.NuVmaxControllerTS = 0ud4_2 & db1.Nuplace = NuSCHECKING_CRASH2)"
+check_ctlspec -p "EF (db1.NuVmaxControllerTS = 0ud4_2 & db1.Nuplace = NuSUPDATED2)"
+check_ctlspec -p "AG (db1.NuVmaxControllerTS = 0ud4_2 & db1.Nuplace = NuSCHECKING_CRASH2 -> (AF db1.Nuplace = NuSCRASH_FAULTY2 ) )"
+check_ctlspec -p "AG (db1.NuVmaxControllerTS = 0ud4_2 & db1.Nuplace = NuSUPDATED2 -> (AF db1.Nuplace = NuSCRASH_FAULTY2 ) )"
+
+check_ctlspec -p "AG (db1.NuVmaxControllerTS = 0ud4_3 & db1.Nuplace = NuSCHECKING_CRASH3 -> (AX db1.Nuplace = NuSCRASH_FAULTY3 | AX db1.Nuplace = NuSCHECKING_CRASH3 ) )"
+check_ctlspec -p "AG (db1.NuVmaxControllerTS != 0ud4_3 & db1.Nuplace = NuSCHECKING_CRASH3 -> (AX db1.Nuplace != NuSCRASH_FAULTY3) )"
+check_ctlspec -p "EF (db1.NuVmaxControllerTS = 0ud4_3 & db1.Nuplace = NuSCHECKING_CRASH3)"
+check_ctlspec -p "EF (db1.NuVmaxControllerTS = 0ud4_3 & db1.Nuplace = NuSUPDATED3)"
+check_ctlspec -p "AG (db1.NuVmaxControllerTS = 0ud4_3 & db1.Nuplace = NuSCHECKING_CRASH3 -> (AF db1.Nuplace = NuSCRASH_FAULTY3 ) )"
+check_ctlspec -p "AG (db1.NuVmaxControllerTS = 0ud4_3 & db1.Nuplace = NuSUPDATED3 -> (AF db1.Nuplace = NuSCRASH_FAULTY3 ) )"
+
+
+check_ctlspec -p "AG (dr1.Nuplace = NuSNOUPDATED -> dr1.NuVcontrollerTimestampValidityReport = 0ud4_0)"
+check_ctlspec -p "AG (dr1.Nuplace = NuSUPDATED -> dr1.NuVcontrollerTimestampValidityReport = 0ud4_1)"
+check_ctlspec -p "AG (dr1.Nuplace = NuSCHOSEN_RECORD & dr1.NuVcontrollerTimestampValidityReport = 0ud4_1 -> ( AX (dr1.Nuplace = NuSCHOSEN_RECORD) | AX (dr1.Nuplace = NuSUPDATE) )  )"
+check_ctlspec -p "AG (dr1.Nuplace = NuSCHOSEN_RECORD & dr1.NuVcontrollerTimestampValidityReport = 0ud4_0 -> ( AX (dr1.Nuplace = NuSCHOSEN_RECORD) | AX (dr1.Nuplace = NuSNOUPDATED) )  )"
+
+the old ones:
+check_ctlspec -p "AG (dr1.Nuplace = NuSREADY_TO_RECEIVE_REPORT -> ( AX (dr1.Nuplace = NuSREADY_TO_RECEIVE_REPORT) | AX(dr1.Nuplace = NuSREPORT_RECEIVED)  ))"
+check_ctlspec -p "AG (dr1.Nuplace = NuSREPORT_RECEIVED -> ( AX (dr1.Nuplace = NuSCHOSEN_RECORD) | AX(dr1.Nuplace = NuSREPORT_RECEIVED)  ))"
+check_ctlspec -p "AG (dr1.Nuplace = NuSCHOSEN_RECORD -> (  (AX (dr1.Nuplace = NuSCHOSEN_RECORD)) | (AX (dr1.Nuplace = NuSUPDATE)) | ( AX(dr1.Nuplace = NuSNOUPDATED)  ) ) )"
+check_ctlspec -p "AG (dr1.Nuplace = NuSUPDATED -> ( AX (dr1.Nuplace = NuSUPDATED) | AX(dr1.Nuplace = NuSCHECKING_DELAY)  ))"
+check_ctlspec -p "AG (dr1.Nuplace = NuSNOUPDATED -> ( AX (dr1.Nuplace = NuSNOUPDATED) | AX(dr1.Nuplace = NuSCHECKING_DELAY)  ))"
+check_ctlspec -p "AG (dr1.Nuplace = NuSCHECKING_DELAY -> ( AX (dr1.Nuplace = NuSCHECKING_CRASH) | AX(dr1.Nuplace = NuSCHECKING_DELAY)  ))"
+check_ctlspec -p "AG (dr1.Nuplace = NuSCHECKING_CRASH -> ( AX (dr1.Nuplace = NuSCHECKING_CRASH) | AX(dr1.Nuplace = NuSCHECKING_DETECTORS)  ))"
+check_ctlspec -p "AG (dr1.Nuplace = NuSCHECKING_DETECTORS -> ( AX (dr1.Nuplace = NuSREADY_TO_RECEIVE_REPORT) | AX(dr1.Nuplace = NuSCHECKING_DETECTORS)  ))"
+
+
+
+
+check_ctlspec -p "AG ( db1.Nuplace = NuSDELAY_FAULTY3 -> ( AX (db1.Nuplace = NuSDELAY_FAULTY3)   )  )"
+		-> ok, this is the bug. but why is this statement true?!?!?!??!
+check_ctlspec -p "AG ( db1.Nuplace = NuSDELAY_FAULTY2 -> ( AX (db1.Nuplace = NuSDELAY_FAULTY2)   )  )"
+check_ctlspec -p "AG ( db1.Nuplace = NuSDELAY_FAULTY1 -> ( AX (db1.Nuplace = NuSDELAY_FAULTY1)   )  )"
+these 2 return false... and this is correct!
+These checks were performed in order to find a bug
+
+
+check_ctlspec -p "EF db1.NuVmaxControllerTS = 0ud4_0"
+check_ctlspec -p "EF db1.NuVmaxControllerTS = 0ud4_1"
+check_ctlspec -p "EF db1.NuVmaxControllerTS = 0ud4_2"
+check_ctlspec -p "EF db1.NuVmaxControllerTS = 0ud4_3"
+
+check_ctlspec -p "AG (db1.NuVmaxControllerTS != m1.NuVone -> (db1.Nuplace != NuSCRASH_FAULTY1 & db1.Nuplace != NuSCRASH_FAULTY2 & db1.Nuplace != NuSCRASH_FAULTY3) | AX db1.Nuplace = db1.Nuplace)"
+
+
+
+
+
+due to the change of the model, the following properties are different from the previous models' (some state changed name)
+
+
+
+
+
+
+
+check_ctlspec -p "EF (db1.NuVconsecutiveFaultyReports3 = m1.NuVmaxConsecutiveFaultyReports & db1.Nuplace = NuSUPDATED3)"
+check_ctlspec -p "AG (   (db1.NuVconsecutiveFaultyReports3 = m1.NuVmaxConsecutiveFaultyReports & (db1.Nuplace = NuSUPDATED3) -> (AF db1.Nuplace = NuSDELAY_FAULTY3 ) )   )"
+check_ctlspec -p "AG (   (db1.NuVconsecutiveFaultyReports3 = m1.NuVmaxConsecutiveFaultyReports & (db1.Nuplace = NuSCHECKING_DELAY3) -> (AF db1.Nuplace = NuSDELAY_FAULTY3 ) )   )"
+check_ctlspec -p "AG (   (db1.NuVconsecutiveFaultyReports3 = m1.NuVmaxConsecutiveFaultyReports  -> (AF db1.Nuplace = NuSDELAY_FAULTY3 ) )   )"
+
+
+I have also randomized values:
+	- controllerTimestamp (validityReport)	(M1)  -> remove ( (NuVcontrollerTimestampValidityReport) = (NuVcontrollerTimestampGenerator) )
+	- detectorTimestamp (validityReport)	(M1)  -> remove ( (NuVdetectorTimestampValidityReport) = (NuVdetectorTimestampGenerator) )
+	- replicaID (for the validity report)	(M1)  -> remove ( (NuVreplicaIDValidityReport) = (NuVreplicaID) )
+	- validValidityReport (for the VR)		(M1)  -> remove ( (NuVvalidValidityReport) = (TRUE) )
+	- maxControllerTS						(DB1) -> remove ( (NuVmaxControllerTS) = (0ud4_0) )
+	- maxDetectorTS							(DB1) -> (should be already random)
+
+With random values, the following properties now make sense:
+
+check_ctlspec -p "AG (dr1.Nuplace = NuSUPDATED ->  dr1.NuVcontrollerTimestampValidityReport != m1.NuVzero)"
+	-> true
+check_ctlspec -p "AG (dr1.Nuplace = NuSUPDATED ->  dr1.NuVcontrollerTimestampValidityReport != m1.NuVone)"
+	-> false
+check_ctlspec -p "AG (dr1.Nuplace = NuSUPDATED ->  dr1.NuVcontrollerTimestampValidityReport = m1.NuVone)"
+	-> true
+check_ctlspec -p "AG (dr1.Nuplace = NuSUPDATED ->  dr1.NuVcontrollerTimestampValidityReport = m1.NuVzero)"
+	-> false
+	
+	
+	
+After randomizing also the validity flag:
+nuXmv > check_ctlspec -p "EF m1.NuVvalidValidityReport = FALSE"
+-- specification EF m1.NuVvalidValidityReport = FALSE  is true
+nuXmv > check_ctlspec -p "EF m1.NuVvalidValidityReport = TRUE"
+-- specification EF m1.NuVvalidValidityReport = TRUE  is true
+nuXmv > check_ctlspec -p "EF dr1.NuVvalidValidityReport = TRUE"
+-- specification EF dr1.NuVvalidValidityReport = TRUE  is true
+nuXmv > check_ctlspec -p "EF dr1.NuVvalidValidityReport = FALSE"
+-- specification EF dr1.NuVvalidValidityReport = FALSE  is true
+
+check_ctlspec -p "AG( dr1.NuVcontrollerTimestampValidityReport = m1.NuVone -> !(AX dr1.Nuplace = NuSUPDATED | AX dr1.Nuplace = dr1.Nuplace) )"
+	-> false
+	
+this means that a new validity report has been received
+check_ctlspec -p "AG( dr1.NuVcontrollerTimestampValidityReport = m1.NuVone -> (AX dr1.Nuplace = NuSUPDATED | AX dr1.Nuplace = dr1.Nuplace) )"
+	-> true (but probably only the following one is correct)
+check_ctlspec -p " AG ((dr1.NuVcontrollerTimestampValidityReport = m1.NuVone & dr1.Nuplace = NuSCHOSEN_RECORD) -> (AX dr1.Nuplace = NuSCHOSEN_RECORD | AX dr1.Nuplace = NuSUPDATE))"
+	-> true
+
+	
+
+OLD
+how can they both be verified?
+-- specification (db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports -> AX db1.Nuplace != NuSDELAY_FAULTY1)  is true
+-- specification (db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports -> AX db1.Nuplace = NuSDELAY_FAULTY1)  is true
+they can be verified because it means that db1 does not change its state, while another atom may change it.
+This is the correct property:
+-- specification AG (db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports -> (EX db1.Nuplace = db1.Nuplace | EX db1.Nuplace = NuSDELAY_FAULTY1))  is true
+-- specification AG (db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports -> !(EX db1.Nuplace = db1.Nuplace | EX db1.Nuplace = NuSDELAY_FAULTY1))  is false
+
+-- specification AG (db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports -> (AX db1.Nuplace = db1.Nuplace | AX db1.Nuplace = NuSDELAY_FAULTY1))  is true
+-- specification AG (db1.NuVconsecutiveFaultyReports1 = m1.NuVmaxConsecutiveFaultyReports -> !(AX db1.Nuplace = db1.Nuplace | AX db1.Nuplace = NuSDELAY_FAULTY1))  is false
+
+	
+However, to have really random values, I should also remove the updates in the trasitions of these variables
+After perfoming the operation with NuVmaxControllerTS, check_fsm is still verified
+Moreover, the following properties can be now considered:
+-- specification EF db1.NuVmaxControllerTS = 0ud4_0  is true
+-- specification EF db1.NuVmaxControllerTS = 0ud4_1  is true
+-- specification EF db1.NuVmaxControllerTS = 0ud4_2  
+-- specification EF db1.NuVmaxControllerTS = 0ud4_3
+this means that the random value will eventually take all these values
+
+-- specification EF dr1.NuVcontrollerTimestampValidityReport = 0ud4_0  is true
+-- specification EF dr1.NuVcontrollerTimestampValidityReport = 0ud4_1  is true
+-- specification EF dr1.NuVcontrollerTimestampValidityReport = 0ud4_2  is true
+and so on...
+
+Now all conditions should take this into consideration: one guard must be a sort of "default" (i.e. a case that differs from all the others)
+	-> for instance: if we have only 2 values for timestamp (0 and 1), the condition should be == 0 for one, and != 0 for the other (instead of == 1)
+	
+check_ctlspec -p "EF m1.NuVreplicaIDValidityReport = 0ud3_0"
+	-> true
+check_ctlspec -p "EF m1.NuVreplicaIDValidityReport = 0ud3_1"
+	-> true
+check_ctlspec -p "EF m1.NuVreplicaIDValidityReport = 0ud3_2"
+	-> true
+check_ctlspec -p "EF m1.NuVreplicaIDValidityReport = 0ud3_3"
+	-> true
+
+
+check_ctlspec -p "EF m1.NuVvalidValidityReport = TRUE"
+check_ctlspec -p "EF m1.NuVvalidValidityReport = FALSE"
+check_ctlspec -p "EF dr1.NuVvalidValidityReport = TRUE"
+check_ctlspec -p "EF dr1.NuVvalidValidityReport = FALSE"
